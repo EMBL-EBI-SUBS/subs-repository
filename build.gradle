@@ -2,8 +2,10 @@ apply plugin: 'java'
 apply plugin: 'spring-boot'
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
     compile project(':subs-data-model')
+
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+
     testCompile("junit:junit")
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
