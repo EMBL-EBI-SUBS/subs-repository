@@ -69,10 +69,10 @@ uploadArchives {
 
             pom.project {
                 packaging 'jar'
-                url 'https://github.com/EMBL-EBI-SUBS/subs-processing-model'
+                url 'https://github.com/EMBL-EBI-SUBS/subs-repository'
 
                 scm {
-                    url 'https://github.com/EMBL-EBI-SUBS/subs-processing-model.git'
+                    url 'https://github.com/EMBL-EBI-SUBS/subs-repository.git'
                 }
 
                 licenses {
