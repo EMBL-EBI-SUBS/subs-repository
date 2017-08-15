@@ -1,0 +1,8 @@
+.idea
+*.iml
+build
+.gradle
+.DS_Store
+gradle.properties
+*/application.pid
+**/application.pid
