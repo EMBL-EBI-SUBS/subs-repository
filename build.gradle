@@ -1,5 +1,5 @@
 group 'uk.ac.ebi.subs'
-version '0.1.0-SNAPSHOT'
+version '0.1.1-SNAPSHOT'
 
 
 apply plugin: 'java'
@@ -23,14 +23,15 @@ repositories {
         mavenLocal()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         mavenCentral()
+
 }
 
 dependencies {
     compileOnly("org.projectlombok:lombok:1.16.12")
 
     compile("uk.ac.ebi.subs:subs-processing-model:0.1.0-SNAPSHOT")
-    compile("uk.ac.ebi.subs:subs-data-model:1.0.5-SNAPSHOT")
-    compile("uk.ac.ebi.subs:validator-common:1.16.0-SNAPSHOT")
+    compile("uk.ac.ebi.subs:subs-data-model:0.1.0-SNAPSHOT")
+    compile("uk.ac.ebi.subs:validator-common:0.1.0-SNAPSHOT")
 
     compile ('org.atteo:evo-inflector:1.2.1') // better pluralisation
 
