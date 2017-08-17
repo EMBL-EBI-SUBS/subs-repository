@@ -7,11 +7,13 @@ import uk.ac.ebi.subs.data.Submission;
 import uk.ac.ebi.subs.data.component.SampleRef;
 import uk.ac.ebi.subs.data.submittable.Sample;
 import uk.ac.ebi.subs.processing.SubmissionEnvelope;
+import uk.ac.ebi.subs.repository.model.StoredSubmittable;
 import uk.ac.ebi.subs.repository.repos.SubmissionRepository;
 import uk.ac.ebi.subs.repository.repos.submittables.*;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @Service
 public class SubmissionEnvelopeServiceImpl implements SubmissionEnvelopeService {
@@ -65,5 +67,22 @@ public class SubmissionEnvelopeServiceImpl implements SubmissionEnvelopeService 
         submissionEnvelope.getStudies().addAll(studyRepository.findBySubmissionId(submissionId));
 
         return submissionEnvelope;
+    }
+
+    @Override
+    public Stream<? extends StoredSubmittable> submissionContents(String submissionId){
+        return Stream.of(
+                analysisRepository,
+                assayDataRepository,
+                assayRepository,
+                egaDacPolicyRepository,
+                egaDacRepository,
+                egaDatasetRepository,
+                projectRepository,
+                protocolRepository,
+                sampleGroupRepository,
+                sampleRepository,
+                studyRepository
+        ).flatMap(repo -> repo.streamBySubmissionId(submissionId));
     }
 }
