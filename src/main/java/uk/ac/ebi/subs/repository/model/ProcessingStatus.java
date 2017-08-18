@@ -65,8 +65,6 @@ public class ProcessingStatus extends uk.ac.ebi.subs.data.status.ProcessingStatu
         this.setSubmittableId(storedSubmittable.getId());
         this.setSubmittableType(storedSubmittable.getClass().getSimpleName());
 
-        if (storedSubmittable.getArchive() != null) this.setArchive(storedSubmittable.getArchive().name());
-
         this.setAlias(storedSubmittable.getAlias());
 
     }
