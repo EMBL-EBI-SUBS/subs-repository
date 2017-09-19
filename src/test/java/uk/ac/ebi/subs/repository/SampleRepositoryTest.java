@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import uk.ac.ebi.subs.TestRepoApplication;
 import uk.ac.ebi.subs.repository.model.Sample;
 import uk.ac.ebi.subs.repository.model.Submission;
 import uk.ac.ebi.subs.repository.repos.SubmissionRepository;
@@ -20,11 +19,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = TestRepoApplication.class)
+@SpringBootTest
 public class SampleRepositoryTest {
 
     @Autowired
@@ -42,8 +44,6 @@ public class SampleRepositoryTest {
     @Before
     public void buildUp() {
         tearDown();
-
-
     }
 
     private void submissionWithTwoSamples() {
@@ -81,7 +81,6 @@ public class SampleRepositoryTest {
 
         submissionWithTwoSamples();
 
-
         assertThat(sampleRepository.findBySubmissionId(testSub.getId(), pageRequest).getTotalElements(), is(equalTo((long) samples.size())));
 
         assertThat(sampleRepository.submittablesInTeam(testSub.getTeam().getName(), pageRequest).getTotalElements(), is(equalTo((long) samples.size())));
@@ -113,7 +112,6 @@ public class SampleRepositoryTest {
         Sample currentVersion = sampleRepository.findFirstByTeamNameAndAliasOrderByCreatedDateDesc(testSub.getTeam().getName(), samples.get(1).getAlias());
         //should be most recent version
         assertThat(currentVersion.getCreatedDate(), is(equalTo(samples.get(1).getCreatedDate())));
-
     }
 
 }

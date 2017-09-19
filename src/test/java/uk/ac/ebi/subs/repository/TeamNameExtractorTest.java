@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import uk.ac.ebi.subs.TestRepoApplication;
 import uk.ac.ebi.subs.data.component.Team;
 import uk.ac.ebi.subs.data.status.SubmissionStatusEnum;
 import uk.ac.ebi.subs.repository.model.ProcessingStatus;
@@ -30,7 +29,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = TestRepoApplication.class)
+@SpringBootTest
 public class TeamNameExtractorTest {
 
     private TeamNameExtractor teamNameExtractor;
@@ -71,7 +70,6 @@ public class TeamNameExtractorTest {
         submissionStatusRepository.insert(submission.getSubmissionStatus());
         submissionRepository.insert(submission);
 
-
         String statusTeamName = teamNameExtractor.submissionStatusTeam(submission.getSubmissionStatus());
 
         assertThat(statusTeamName, is(equalTo(teamName)));
@@ -87,20 +85,16 @@ public class TeamNameExtractorTest {
         submissionStatusRepository.insert(submission.getSubmissionStatus());
         submissionRepository.insert(submission);
 
-
         String submissionIdTeam = teamNameExtractor.submissionIdTeam(submission.getId());
 
         assertThat(submissionIdTeam, is(equalTo(teamName)));
     }
-
-
 
     private Team createTeam(String teamName) {
         Team team = new Team();
         team.setName(teamName);
         return team;
     }
-
 
     public Sample createSample(Team team) {
         Sample sample = new Sample();
@@ -140,8 +134,6 @@ public class TeamNameExtractorTest {
         ).forEach(
                 repo -> repo.deleteAll()
         );
-
     }
-
 
 }

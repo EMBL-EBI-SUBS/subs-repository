@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import uk.ac.ebi.subs.TestRepoApplication;
 import uk.ac.ebi.subs.data.component.Team;
 import uk.ac.ebi.subs.repository.model.Sample;
 import uk.ac.ebi.subs.repository.repos.submittables.SampleRepository;
@@ -20,11 +19,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.emptyIterable;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = TestRepoApplication.class)
+@SpringBootTest
 public class SubmittablesInTeamTest {
 
     @Autowired
@@ -55,13 +57,11 @@ public class SubmittablesInTeamTest {
     public void testAggregation() throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
 
-
         sampleRepository.save(sample("bob", "1st", sdf.parse("2000-01-01")));
         sampleRepository.save(sample("bob", "2nd", sdf.parse("2000-01-02")));
         sampleRepository.save(sample("bob", "3rd", sdf.parse("2000-01-03")));
         sampleRepository.save(sample("alice", "1st"));
         sampleRepository.save(sample("charlotte", "1st"));
-
 
         Page<Sample> samples = sampleRepository.submittablesInTeam(teamName, new PageRequest(0, 2));
 
@@ -77,7 +77,6 @@ public class SubmittablesInTeamTest {
         assertThat(samples, notNullValue());
         assertThat(samples.getTotalElements(), is(equalTo(3L)));
         assertThat(samples.getContent().get(0).getAlias(), equalTo("charlotte"));
-
     }
 
 
