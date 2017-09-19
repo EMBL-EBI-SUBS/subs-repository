@@ -1,38 +1,32 @@
 package uk.ac.ebi.subs.repository;
 
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import uk.ac.ebi.subs.TestRepoApplication;
 import uk.ac.ebi.subs.repository.model.ProcessingStatus;
 import uk.ac.ebi.subs.repository.repos.status.ProcessingStatusRepository;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = TestRepoApplication.class)
+@SpringBootTest
 public class ProcessingStatusRepositoryTest {
 
     @Autowired
     private ProcessingStatusRepository processingStatusRepository;
 
-    private final Logger logger = LoggerFactory.getLogger(ProcessingStatusRepositoryTest.class);
-
-
     @Before
     public void buildUp() {
         processingStatusRepository.deleteAll();
-
     }
 
     @Test
@@ -54,12 +48,10 @@ public class ProcessingStatusRepositoryTest {
             }
         }
 
-
         Map<String,Integer> statusCounts = processingStatusRepository.summariseSubmissionStatus("foo");
         assertThat(statusCounts,notNullValue());
 
         assertThat(statusCounts,is(equalTo(expected)));
-
     }
 
     @Test
@@ -82,12 +74,10 @@ public class ProcessingStatusRepositoryTest {
             }
         }
 
-
         Map<String,Map<String,Integer>> statusCounts = processingStatusRepository.summariseSubmissionStatusAndType("foo");
         assertThat(statusCounts,notNullValue());
 
         assertThat(statusCounts,is(equalTo(expected)));
-
     }
 
 
