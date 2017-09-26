@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties("usi.repository.config")
 @Data
+/**
+ * Control which submittables are exposed through spring data rest
+ */
 public class UsiRepositoryConfig {
     private boolean analysisEnabled = true;
     private boolean assayDataEnabled = true;

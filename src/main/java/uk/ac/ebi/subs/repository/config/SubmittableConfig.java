@@ -3,6 +3,8 @@ package uk.ac.ebi.subs.repository.config;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.ac.ebi.subs.data.component.*;
@@ -15,6 +17,9 @@ import java.util.stream.Collectors;
 @Configuration
 @RequiredArgsConstructor
 public class SubmittableConfig {
+
+
+    private final Logger logger = LoggerFactory.getLogger(SubmittableConfig.class);
 
     @Data(staticConstructor = "of")
     static class RepoTypeRefConfig<T extends StoredSubmittable> {
@@ -30,7 +35,11 @@ public class SubmittableConfig {
     public List<RepoTypeRefConfig<?>> availableRepoConfig() {
         List<RepoTypeRefConfig<?>> configList = new ArrayList<>();
 
+        logger.debug("Generating RepTypeRefConfig list");
+        logger.debug("Using config {}",this.repositoryConfig);
+
         if (repositoryConfig.isAnalysisEnabled()) {
+            logger.info("Analysis repo exposed");
             configList.add(
                     RepoTypeRefConfig.of(
                             Analysis.class,
@@ -41,6 +50,7 @@ public class SubmittableConfig {
         }
 
         if (repositoryConfig.isAssayDataEnabled()) {
+            logger.info("Assay data repo exposed");
             configList.add(
                     RepoTypeRefConfig.of(
                             AssayData.class,
@@ -51,6 +61,7 @@ public class SubmittableConfig {
         }
 
         if (repositoryConfig.isAssayEnabled()) {
+            logger.info("Assay repo exposed");
             configList.add(
                     RepoTypeRefConfig.of(
                             Assay.class,
@@ -61,6 +72,7 @@ public class SubmittableConfig {
         }
 
         if (repositoryConfig.isEgaDacPolicyEnabled()) {
+            logger.info("Ega Dac Policy repo exposed");
             configList.add(
                     RepoTypeRefConfig.of(
                             EgaDacPolicy.class,
@@ -71,6 +83,7 @@ public class SubmittableConfig {
         }
 
         if (repositoryConfig.isEgaDacEnabled()) {
+            logger.info("Ega Dac repo exposed");
             configList.add(
                     RepoTypeRefConfig.of(
                             EgaDac.class,
@@ -81,6 +94,7 @@ public class SubmittableConfig {
         }
 
         if (repositoryConfig.isEgaDatasetEnabled()) {
+            logger.info("Ega Dataset repo exposed");
             configList.add(
                     RepoTypeRefConfig.of(
                             EgaDataset.class,
@@ -91,6 +105,7 @@ public class SubmittableConfig {
         }
 
         if (repositoryConfig.isProjectEnabled()) {
+            logger.info("Project repo exposed");
             configList.add(
                     RepoTypeRefConfig.of(
                             Project.class,
@@ -101,6 +116,7 @@ public class SubmittableConfig {
         }
 
         if (repositoryConfig.isProtocolEnabled()) {
+            logger.info("Protocol repo exposed");
             configList.add(
                     RepoTypeRefConfig.of(
                             Protocol.class,
@@ -111,6 +127,7 @@ public class SubmittableConfig {
         }
 
         if (repositoryConfig.isSampleGroupEnabled()) {
+            logger.info("Sample Group repo exposed");
             configList.add(
                     RepoTypeRefConfig.of(
                             SampleGroup.class,
@@ -121,6 +138,7 @@ public class SubmittableConfig {
         }
 
         if (repositoryConfig.isSampleEnabled()) {
+            logger.info("Sample repo exposed");
             configList.add(
                     RepoTypeRefConfig.of(
                             Sample.class,
@@ -131,6 +149,7 @@ public class SubmittableConfig {
         }
 
         if (repositoryConfig.isStudyEnabled()) {
+            logger.info("Study repo exposed");
             configList.add(
                     RepoTypeRefConfig.of(
                             Study.class,
@@ -139,6 +158,8 @@ public class SubmittableConfig {
                     )
             );
         }
+
+        logger.debug("Submittables configuration list produed: {}",configList);
 
         return Collections.unmodifiableList(configList);
     }
