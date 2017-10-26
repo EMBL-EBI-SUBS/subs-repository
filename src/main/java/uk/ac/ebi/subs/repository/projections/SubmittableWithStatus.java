@@ -28,7 +28,6 @@ public interface SubmittableWithStatus {
 
     Date getLastModifiedDate();
     String getLastModifiedBy();
-    Archive getArchive();
     String getAccession();
     Team getTeam();
     String getAlias();
