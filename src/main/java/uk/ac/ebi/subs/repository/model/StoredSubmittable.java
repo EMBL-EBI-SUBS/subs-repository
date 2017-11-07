@@ -1,6 +1,7 @@
 package uk.ac.ebi.subs.repository.model;
 
 
+import org.springframework.hateoas.Identifiable;
 import uk.ac.ebi.subs.data.component.AbstractSubsRef;
 import uk.ac.ebi.subs.data.submittable.Submittable;
 import uk.ac.ebi.subs.validator.data.ValidationResult;
@@ -9,7 +10,7 @@ import java.util.Date;
 import java.util.stream.Stream;
 
 
-public interface StoredSubmittable extends Submittable {
+public interface StoredSubmittable extends Submittable, Identifiable<String> {
 
     ValidationResult getValidationResult();
 
