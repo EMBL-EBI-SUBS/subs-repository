@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.hateoas.Identifiable;
 
 import java.util.Date;
 
@@ -17,7 +18,7 @@ import java.util.Date;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Document
-public class Submission extends uk.ac.ebi.subs.data.Submission {
+public class Submission extends uk.ac.ebi.subs.data.Submission implements Identifiable<String> {
 
     @DBRef
     private SubmissionStatus submissionStatus;
