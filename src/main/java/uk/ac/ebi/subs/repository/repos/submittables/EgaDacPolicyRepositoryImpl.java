@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.subs.repository.model.EgaDacPolicy;
 import uk.ac.ebi.subs.repository.repos.submittables.support.SubmittablesAggregateSupport;
 
+import java.util.List;
+
 @Component
 public class EgaDacPolicyRepositoryImpl implements SubmittableRepositoryCustom<EgaDacPolicy> {
 
@@ -20,5 +22,10 @@ public class EgaDacPolicyRepositoryImpl implements SubmittableRepositoryCustom<E
     @Override
     public Page<EgaDacPolicy> submittablesInTeam(String teamName, Pageable pageable) {
         return aggregateSupport.itemsByTeam(teamName, pageable);
+    }
+
+    @Override
+    public Page<EgaDacPolicy> submittablesInTeams(List<String> teamNames, Pageable pageable) {
+        return aggregateSupport.itemsByTeams(teamNames, pageable);
     }
 }
