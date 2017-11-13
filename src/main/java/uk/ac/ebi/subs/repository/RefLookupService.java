@@ -2,7 +2,6 @@ package uk.ac.ebi.subs.repository;
 
 import uk.ac.ebi.subs.data.component.AbstractSubsRef;
 
-import uk.ac.ebi.subs.data.submittable.Submittable;
 import uk.ac.ebi.subs.repository.model.StoredSubmittable;
 
 import java.util.Collection;
