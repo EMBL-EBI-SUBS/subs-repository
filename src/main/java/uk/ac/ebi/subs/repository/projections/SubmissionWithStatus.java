@@ -18,6 +18,9 @@ public interface SubmissionWithStatus {
     @Value("#{target.submitter.email}")
     String getSubmitter();
 
+    String getName();
+    String getProjectName();
+
     Date getLastModifiedDate();
     String getLastModifiedBy();
 }

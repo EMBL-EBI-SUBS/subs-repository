@@ -34,6 +34,9 @@ public class Submission extends uk.ac.ebi.subs.data.Submission implements Identi
     @LastModifiedBy
     private String lastModifiedBy;
 
+    private String name;
+    private String projectName;
+
     public SubmissionStatus getSubmissionStatus() {
         return submissionStatus;
     }
@@ -80,5 +83,21 @@ public class Submission extends uk.ac.ebi.subs.data.Submission implements Identi
 
     public void setLastModifiedBy(String lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 }
