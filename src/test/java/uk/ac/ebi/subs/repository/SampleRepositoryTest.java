@@ -119,7 +119,7 @@ public class SampleRepositoryTest {
         Page<Sample> aliaseSortedSamplesInTeam = sampleRepository.submittablesInTeam(
                 testSub.getTeam().getName(),sortedPageRequest
         );
-        
+
     }
 
 }

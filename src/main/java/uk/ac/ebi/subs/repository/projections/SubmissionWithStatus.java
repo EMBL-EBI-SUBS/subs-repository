@@ -23,4 +23,6 @@ public interface SubmissionWithStatus {
 
     Date getLastModifiedDate();
     String getLastModifiedBy();
+    Date getCreatedDate();
+    String getCreatedBy();
 }
