@@ -12,7 +12,7 @@ import uk.ac.ebi.subs.repository.security.PreAuthorizeSubmissionStatusTeamName;
 
 
 @RepositoryRestResource
-public interface SubmissionStatusRepository extends MongoRepository<SubmissionStatus, String> {
+public interface SubmissionStatusRepository extends MongoRepository<SubmissionStatus, String>, SubmissionStatusRepositoryCustom{
 
     // exported as GET /things/:id
     @Override

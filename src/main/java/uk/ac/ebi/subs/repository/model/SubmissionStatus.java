@@ -6,6 +6,7 @@ import lombok.ToString;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.Identifiable;
+import uk.ac.ebi.subs.data.component.Team;
 import uk.ac.ebi.subs.data.status.SubmissionStatusEnum;
 
 import java.util.Date;
@@ -27,6 +28,8 @@ public class SubmissionStatus extends uk.ac.ebi.subs.data.status.SubmissionStatu
     private String createdBy;
     @LastModifiedBy
     private String lastModifiedBy;
+
+    private Team team;
 
     public SubmissionStatus() {
     }
@@ -82,4 +85,8 @@ public class SubmissionStatus extends uk.ac.ebi.subs.data.status.SubmissionStatu
     public void setLastModifiedBy(String lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
     }
+
+    public Team getTeam() {return team;}
+
+    public void setTeam(Team team) {this.team = team;}
 }
