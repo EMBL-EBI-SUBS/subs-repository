@@ -37,6 +37,7 @@ public class SubmissionHelperService {
 
         SubmissionStatus submissionStatus = new SubmissionStatus(SubmissionStatusEnum.Draft);
         submissionStatus.setId(UUID.randomUUID().toString());
+        submissionStatus.setTeam(submission.getTeam());
         submissionStatusRepository.insert(submissionStatus);
 
         submission.setSubmissionStatus(submissionStatus);

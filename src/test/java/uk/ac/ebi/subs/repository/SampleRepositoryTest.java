@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import uk.ac.ebi.subs.repository.model.Sample;
 import uk.ac.ebi.subs.repository.model.Submission;
@@ -112,6 +113,13 @@ public class SampleRepositoryTest {
         Sample currentVersion = sampleRepository.findFirstByTeamNameAndAliasOrderByCreatedDateDesc(testSub.getTeam().getName(), samples.get(1).getAlias());
         //should be most recent version
         assertThat(currentVersion.getCreatedDate(), is(equalTo(samples.get(1).getCreatedDate())));
+
+        PageRequest sortedPageRequest = new PageRequest(0, 10, Sort.Direction.DESC,"alias");
+
+        Page<Sample> aliaseSortedSamplesInTeam = sampleRepository.submittablesInTeam(
+                testSub.getTeam().getName(),sortedPageRequest
+        );
+
     }
 
 }

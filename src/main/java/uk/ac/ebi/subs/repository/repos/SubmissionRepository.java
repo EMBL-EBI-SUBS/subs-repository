@@ -16,6 +16,8 @@ import uk.ac.ebi.subs.repository.security.PostAuthorizeReturnObjectHasTeamName;
 import uk.ac.ebi.subs.repository.security.PreAuthorizeParamTeamName;
 import uk.ac.ebi.subs.repository.security.PreAuthorizeSubmissionTeamName;
 
+import java.util.List;
+
 @RepositoryRestResource(excerptProjection = SubmissionWithStatus.class)
 public interface SubmissionRepository extends MongoRepository<Submission, String> {
 
@@ -54,6 +56,10 @@ public interface SubmissionRepository extends MongoRepository<Submission, String
 
     @RestResource(exported = false)
     Submission findBySubmissionStatusId(String submissionStatusId);
+
+
+    @RestResource(exported = false)
+    Page<Submission> findByTeamNameInOrderByCreatedByDesc(List<String> teamNames, Pageable pageable);
 
 
 }

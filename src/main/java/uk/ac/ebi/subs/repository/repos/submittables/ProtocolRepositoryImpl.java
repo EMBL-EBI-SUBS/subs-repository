@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.subs.repository.model.Protocol;
 import uk.ac.ebi.subs.repository.repos.submittables.support.SubmittablesAggregateSupport;
 
+import java.util.List;
+
 @Component
 public class ProtocolRepositoryImpl implements SubmittableRepositoryCustom<Protocol> {
 
@@ -19,6 +21,11 @@ public class ProtocolRepositoryImpl implements SubmittableRepositoryCustom<Proto
     @Override
     public Page<Protocol> submittablesInTeam(String teamName, Pageable pageable) {
         return aggregateSupport.itemsByTeam(teamName, pageable);
+    }
+
+    @Override
+    public Page<Protocol> submittablesInTeams(List<String> teamNames, Pageable pageable) {
+        return aggregateSupport.itemsByTeams(teamNames, pageable);
     }
 
 }

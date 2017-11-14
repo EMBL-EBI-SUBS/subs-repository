@@ -4,14 +4,20 @@ package uk.ac.ebi.subs.repository.model;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.springframework.data.annotation.*;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.Identifiable;
+import uk.ac.ebi.subs.data.component.Team;
 import uk.ac.ebi.subs.data.status.SubmissionStatusEnum;
 
 import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
+@CompoundIndexes({
+        @CompoundIndex(background = true, name = "team", def = "{ 'team.name': 1}")
+})
 @Document
 public class SubmissionStatus extends uk.ac.ebi.subs.data.status.SubmissionStatus implements Identifiable<String> {
 
@@ -27,6 +33,8 @@ public class SubmissionStatus extends uk.ac.ebi.subs.data.status.SubmissionStatu
     private String createdBy;
     @LastModifiedBy
     private String lastModifiedBy;
+
+    private Team team;
 
     public SubmissionStatus() {
     }
@@ -82,4 +90,8 @@ public class SubmissionStatus extends uk.ac.ebi.subs.data.status.SubmissionStatu
     public void setLastModifiedBy(String lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
     }
+
+    public Team getTeam() {return team;}
+
+    public void setTeam(Team team) {this.team = team;}
 }
