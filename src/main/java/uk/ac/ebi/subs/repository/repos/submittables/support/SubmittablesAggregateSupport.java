@@ -4,7 +4,10 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
 import uk.ac.ebi.subs.repository.model.StoredSubmittable;
@@ -28,7 +31,7 @@ public class SubmittablesAggregateSupport<T extends StoredSubmittable> {
     }
 
     public Page<T> itemsByTeam(String teamName, Pageable pageable) {
-        return itemsByTeams(Arrays.asList(teamName),pageable);
+        return itemsByTeams(Arrays.asList(teamName), pageable);
     }
 
     public Page<T> itemsByTeams(List<String> teamNames, Pageable pageable) {
@@ -74,7 +77,7 @@ public class SubmittablesAggregateSupport<T extends StoredSubmittable> {
 
         AggregationResults aggregationResults = mongoTemplate.aggregate(Aggregation.newAggregation(
                 teamMatchOperation(teamNames),
-                sortAliasCreatedDate(),
+                sort(pageable),
                 groupByAliasWithFirstItem(),
                 skip((long) pageable.getOffset()),
                 limit((long) pageable.getPageSize()),
@@ -85,15 +88,25 @@ public class SubmittablesAggregateSupport<T extends StoredSubmittable> {
     }
 
     private GroupOperation groupByAliasWithFirstItem() {
-        return group("alias","team.name").first("$$ROOT").as("first");
+        return group("alias", "team.name").first("$$ROOT").as("first");
     }
 
     private GroupOperation groupByAlias() {
-        return group("alias","team.name");
+        return group("alias", "team.name");
     }
 
-    private SortOperation sortAliasCreatedDate() {
-        return sort(Sort.Direction.DESC, "alias").and(Sort.Direction.DESC, "team.name").and(Sort.Direction.DESC, "createdDate");
+    private SortOperation sort(Pageable pageable) {
+        Sort sort;
+
+        if (pageable.getSort() == null){
+            sort = new Sort(Sort.Direction.DESC, "alias")
+                    .and(new Sort(Sort.Direction.DESC, "createdDate"));
+        }
+        else {
+            sort = pageable.getSort();
+        }
+
+        return Aggregation.sort(sort);
     }
 
     private MatchOperation teamMatchOperation(List<String> teamNames) {
