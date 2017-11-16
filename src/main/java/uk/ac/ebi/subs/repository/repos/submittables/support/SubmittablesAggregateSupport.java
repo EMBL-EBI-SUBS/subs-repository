@@ -9,14 +9,23 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.*;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.GroupOperation;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import uk.ac.ebi.subs.repository.model.StoredSubmittable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.limit;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.replaceRoot;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.skip;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 public class SubmittablesAggregateSupport<T extends StoredSubmittable> {
@@ -75,14 +84,21 @@ public class SubmittablesAggregateSupport<T extends StoredSubmittable> {
     private List<T> getLimitedItemListByTeams(List<String> teamNames, Pageable pageable) {
         final List<T> resultsList = new ArrayList<>();
 
-        AggregationResults aggregationResults = mongoTemplate.aggregate(Aggregation.newAggregation(
+        final List<AggregationOperation> aggOps = new ArrayList<>(Arrays.asList(
                 teamMatchOperation(teamNames),
-                sort(pageable),
+                sortAliasCreatedDate(),
                 groupByAliasWithFirstItem(),
                 skip((long) pageable.getOffset()),
                 limit((long) pageable.getPageSize()),
                 replaceRoot("first")
-        ), clazz, clazz);
+        ));
+
+        if (pageable.getSort() != null) {
+            aggOps.add(new SortOperation(pageable.getSort()));
+        }
+
+        AggregationResults aggregationResults = mongoTemplate.aggregate(Aggregation.newAggregation(
+                aggOps), clazz, clazz);
 
         return aggregationResults.getMappedResults();
     }
@@ -95,19 +111,10 @@ public class SubmittablesAggregateSupport<T extends StoredSubmittable> {
         return group("alias", "team.name");
     }
 
-    private SortOperation sort(Pageable pageable) {
-        Sort sort;
-
-        if (pageable.getSort() == null){
-            sort = new Sort(Sort.Direction.DESC, "alias")
-                    .and(new Sort(Sort.Direction.DESC, "createdDate"));
-        }
-        else {
-            sort = pageable.getSort();
-        }
-
-        return Aggregation.sort(sort);
+    private SortOperation sortAliasCreatedDate() {
+        return Aggregation.sort(Sort.Direction.DESC, "alias").and(Sort.Direction.DESC, "team.name").and(Sort.Direction.DESC, "createdDate");
     }
+
 
     private MatchOperation teamMatchOperation(List<String> teamNames) {
         return match(where("team.name").in(teamNames));
