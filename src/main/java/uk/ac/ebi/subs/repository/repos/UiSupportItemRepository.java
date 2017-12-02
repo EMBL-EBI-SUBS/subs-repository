@@ -3,6 +3,7 @@ package uk.ac.ebi.subs.repository.repos;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.access.method.P;
 import uk.ac.ebi.subs.repository.model.UiSupportItem;
@@ -25,7 +26,7 @@ public interface UiSupportItemRepository extends MongoRepository<UiSupportItem, 
     Page<UiSupportItem> findAll(Pageable pageable);
 
     @RestResource(exported = true,rel="by-name")
-    UiSupportItem findOneByName(String name);
+    UiSupportItem findOneByName(@Param("name") String name);
 
     // Restricts PUT /uiSupportItems/:id and PATCH /uiSupportItems/:id to admin users
     @Override
