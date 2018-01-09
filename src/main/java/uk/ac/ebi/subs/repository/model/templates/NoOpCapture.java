@@ -39,11 +39,6 @@ public class NoOpCapture implements Capture {
     }
 
     @Override
-    public boolean isAcceptable(int position, List<String> headers, List<String> values) {
-        return true;
-    }
-
-    @Override
     public List<String> expectedColumnHeaders() {
         return Collections.emptyList();
     }
