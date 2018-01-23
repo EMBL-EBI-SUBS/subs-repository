@@ -1,6 +1,9 @@
 package uk.ac.ebi.subs.repository.model;
 
 
+import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.springframework.data.annotation.*;
@@ -33,6 +36,13 @@ public class Submission extends uk.ac.ebi.subs.data.Submission implements Identi
     private String createdBy;
     @LastModifiedBy
     private String lastModifiedBy;
+
+    private String name;
+    private String projectName;
+
+
+    @JsonRawValue
+    private String uiData;
 
     public SubmissionStatus getSubmissionStatus() {
         return submissionStatus;
@@ -80,5 +90,34 @@ public class Submission extends uk.ac.ebi.subs.data.Submission implements Identi
 
     public void setLastModifiedBy(String lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getUiData() {
+        return uiData;
+    }
+
+    public void setUiData(String uiData) {
+        this.uiData = uiData;
+    }
+
+    @JsonSetter("uiData")
+    public void setUiData(JsonNode uiData) {
+        this.uiData = uiData.toString();
     }
 }

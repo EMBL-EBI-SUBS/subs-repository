@@ -1,28 +1,42 @@
 package uk.ac.ebi.subs.repository.model;
 
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.springframework.data.annotation.*;
-import org.springframework.data.mongodb.core.index.CompoundIndex;
-import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Version;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.Identifiable;
-import uk.ac.ebi.subs.data.component.Team;
-import uk.ac.ebi.subs.data.status.SubmissionStatusEnum;
 
 import java.util.Date;
 
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-@CompoundIndexes({
-        @CompoundIndex(background = true, name = "team", def = "{ 'team.name': 1}")
-})
+/**
+ * Represents data required to populate the user interface
+ *
+ * This could include help text, example values or any other data that doesn't change dynamically
+ *
+ * The value field can contain any valid JSON.
+ *
+ * The document can be identified by the name, which is unique
+ *
+ */
 @Document
-public class SubmissionStatus extends uk.ac.ebi.subs.data.status.SubmissionStatus implements Identifiable<String> {
+public class UiSupportItem implements Identifiable<String> {
 
     @Id
     private String id;
+
+    @Indexed(unique = true)
+    private String name;
+
+    @JsonRawValue
+    private String value;
+
     @Version
     private Long version;
     @CreatedDate
@@ -34,13 +48,6 @@ public class SubmissionStatus extends uk.ac.ebi.subs.data.status.SubmissionStatu
     @LastModifiedBy
     private String lastModifiedBy;
 
-    private Team team;
-
-    public SubmissionStatus() {
-    }
-    public SubmissionStatus(SubmissionStatusEnum submissionStatusEnum) {
-        super(submissionStatusEnum);
-    }
 
     @Override
     public String getId() {
@@ -49,6 +56,26 @@ public class SubmissionStatus extends uk.ac.ebi.subs.data.status.SubmissionStatu
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public void setValue(JsonNode json) {
+        this.value = json.toString();
     }
 
     public Long getVersion() {
@@ -90,8 +117,4 @@ public class SubmissionStatus extends uk.ac.ebi.subs.data.status.SubmissionStatu
     public void setLastModifiedBy(String lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
     }
-
-    public Team getTeam() {return team;}
-
-    public void setTeam(Team team) {this.team = team;}
 }

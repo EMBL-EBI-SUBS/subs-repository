@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.subs.repository.model.AssayData;
 import uk.ac.ebi.subs.repository.repos.submittables.support.SubmittablesAggregateSupport;
 
+import java.util.List;
+
 @Component
 public class AssayDataRepositoryImpl implements SubmittableRepositoryCustom<AssayData> {
 
@@ -20,6 +22,11 @@ public class AssayDataRepositoryImpl implements SubmittableRepositoryCustom<Assa
     @Override
     public Page<AssayData> submittablesInTeam(String teamName, Pageable pageable) {
         return aggregateSupport.itemsByTeam(teamName, pageable);
+    }
+
+    @Override
+    public Page<AssayData> submittablesInTeams(List<String> teamNames, Pageable pageable) {
+        return aggregateSupport.itemsByTeams(teamNames, pageable);
     }
 
 }

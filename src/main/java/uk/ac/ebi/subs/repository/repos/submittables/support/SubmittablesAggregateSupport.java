@@ -2,18 +2,30 @@ package uk.ac.ebi.subs.repository.repos.submittables.support;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.*;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.GroupOperation;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import uk.ac.ebi.subs.repository.model.StoredSubmittable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.limit;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.replaceRoot;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.skip;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 public class SubmittablesAggregateSupport<T extends StoredSubmittable> {
@@ -28,15 +40,19 @@ public class SubmittablesAggregateSupport<T extends StoredSubmittable> {
     }
 
     public Page<T> itemsByTeam(String teamName, Pageable pageable) {
-        List<T> resultsList = getLimitedItemListByTeam(teamName, pageable);
-        long totalItemsCount = getTotalItemCountByTeam(teamName);
+        return itemsByTeams(Arrays.asList(teamName), pageable);
+    }
+
+    public Page<T> itemsByTeams(List<String> teamNames, Pageable pageable) {
+        List<T> resultsList = getLimitedItemListByTeams(teamNames, pageable);
+        long totalItemsCount = getTotalItemCountByTeams(teamNames);
         return new PageImpl<T>(resultsList, pageable, totalItemsCount);
     }
 
-    private long getTotalItemCountByTeam(String teamName) {
+    private long getTotalItemCountByTeams(List<String> teamNames) {
         AggregationResults aggregationResults = mongoTemplate.aggregate(
                 Aggregation.newAggregation(
-                        teamMatchOperation(teamName),
+                        teamMatchOperation(teamNames),
                         groupByAlias(),
                         group().count().as("count")
                 ),
@@ -65,35 +81,43 @@ public class SubmittablesAggregateSupport<T extends StoredSubmittable> {
         return -1;
     }
 
-    private List<T> getLimitedItemListByTeam(String teamName, Pageable pageable) {
+    private List<T> getLimitedItemListByTeams(List<String> teamNames, Pageable pageable) {
         final List<T> resultsList = new ArrayList<>();
 
-        AggregationResults aggregationResults = mongoTemplate.aggregate(Aggregation.newAggregation(
-                teamMatchOperation(teamName),
+        final List<AggregationOperation> aggOps = new ArrayList<>(Arrays.asList(
+                teamMatchOperation(teamNames),
                 sortAliasCreatedDate(),
                 groupByAliasWithFirstItem(),
                 skip((long) pageable.getOffset()),
                 limit((long) pageable.getPageSize()),
                 replaceRoot("first")
-        ), clazz, clazz);
+        ));
+
+        if (pageable.getSort() != null) {
+            aggOps.add(new SortOperation(pageable.getSort()));
+        }
+
+        AggregationResults aggregationResults = mongoTemplate.aggregate(Aggregation.newAggregation(
+                aggOps), clazz, clazz);
 
         return aggregationResults.getMappedResults();
     }
 
     private GroupOperation groupByAliasWithFirstItem() {
-        return group("alias").first("$$ROOT").as("first");
+        return group("alias", "team.name").first("$$ROOT").as("first");
     }
 
     private GroupOperation groupByAlias() {
-        return group("alias");
+        return group("alias", "team.name");
     }
 
     private SortOperation sortAliasCreatedDate() {
-        return sort(Sort.Direction.DESC, "alias").and(Sort.Direction.DESC, "createdDate");
+        return Aggregation.sort(Sort.Direction.DESC, "alias").and(Sort.Direction.DESC, "team.name").and(Sort.Direction.DESC, "createdDate");
     }
 
-    private MatchOperation teamMatchOperation(String teamName) {
-        return match(where("team.name").is(teamName));
+
+    private MatchOperation teamMatchOperation(List<String> teamNames) {
+        return match(where("team.name").in(teamNames));
     }
 
 }

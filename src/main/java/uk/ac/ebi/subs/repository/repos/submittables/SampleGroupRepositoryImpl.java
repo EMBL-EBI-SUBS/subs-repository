@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.subs.repository.model.SampleGroup;
 import uk.ac.ebi.subs.repository.repos.submittables.support.SubmittablesAggregateSupport;
 
+import java.util.List;
+
 @Component
 public class SampleGroupRepositoryImpl implements SubmittableRepositoryCustom<SampleGroup> {
 
@@ -21,4 +23,8 @@ public class SampleGroupRepositoryImpl implements SubmittableRepositoryCustom<Sa
         return aggregateSupport.itemsByTeam(teamName, pageable);
     }
 
+    @Override
+    public Page<SampleGroup> submittablesInTeams(List<String> teamNames, Pageable pageable) {
+        return aggregateSupport.itemsByTeams(teamNames, pageable);
+    }
 }

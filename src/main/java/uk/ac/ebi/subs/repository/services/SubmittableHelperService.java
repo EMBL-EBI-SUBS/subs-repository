@@ -20,20 +20,38 @@ public class SubmittableHelperService {
     private ProcessingStatusRepository processingStatusRepository;
     private ValidationResultRepository validationResultRepository;
 
-    public void setupNewSubmittable(StoredSubmittable submittable){
+    /**
+     * Please avoid using this method, it will be removed in a future release.
+     *
+     * @deprecated use {@link #uuidAndTeamFromSubmissionSetUp(StoredSubmittable)}  and
+     * {@link #processingStatusAndValidationResultSetUp(StoredSubmittable)} instead.
+     */
+    @Deprecated
+    public void setupNewSubmittable(StoredSubmittable submittable) {
+        uuidAndTeamFromSubmissionSetUp(submittable);
+        processingStatusAndValidationResultSetUp(submittable);
+    }
+
+    public void uuidAndTeamFromSubmissionSetUp(StoredSubmittable submittable) {
         submittable.setId(UUID.randomUUID().toString());
 
-        /*
-        Spring Data Rest does not validate until after the 'Before' events have been handled, so we can't rely on having
-        a submission. If there's no submission, the submittable won't be valid
-         */
-        if (submittable.getSubmission() == null)
+        // Spring Data Rest does not validate until after the 'Before' events have been handled, so we can't rely on having
+        // a submission. If there's no submission, the submittable won't be valid
+        if (submittable.getSubmission() == null) {
             return;
-
-        createProcessingStatus(submittable);
-        createValidationResult(submittable);
-
+        }
         setTeamFromSubmission(submittable);
+    }
+
+    public void processingStatusAndValidationResultSetUp(StoredSubmittable submittable) {
+        createValidationResult(submittable);
+        createProcessingStatus(submittable);
+    }
+
+    public void setTeamFromSubmission(StoredSubmittable submittable) {
+        if (submittable.getSubmission() != null) {
+            submittable.setTeam(submittable.getSubmission().getTeam());
+        }
     }
 
     private void createValidationResult(StoredSubmittable submittable) {
@@ -53,9 +71,4 @@ public class SubmittableHelperService {
         processingStatusRepository.insert(processingStatus);
     }
 
-    public void setTeamFromSubmission(StoredSubmittable submittable) {
-        if (submittable.getSubmission() != null) {
-            submittable.setTeam(submittable.getSubmission().getTeam());
-        }
-    }
 }
