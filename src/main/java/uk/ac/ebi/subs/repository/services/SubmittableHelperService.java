@@ -4,21 +4,26 @@ import org.springframework.stereotype.Component;
 import uk.ac.ebi.subs.repository.model.ProcessingStatus;
 import uk.ac.ebi.subs.repository.model.StoredSubmittable;
 import uk.ac.ebi.subs.repository.repos.status.ProcessingStatusRepository;
+import uk.ac.ebi.subs.repository.repos.submittables.SubmittableRepository;
 import uk.ac.ebi.subs.validator.data.ValidationResult;
 import uk.ac.ebi.subs.validator.repository.ValidationResultRepository;
 
+import java.util.Map;
 import java.util.UUID;
 
 @Component
 public class SubmittableHelperService {
 
-    public SubmittableHelperService(ProcessingStatusRepository processingStatusRepository, ValidationResultRepository validationResultRepository) {
+    public SubmittableHelperService(ProcessingStatusRepository processingStatusRepository, ValidationResultRepository validationResultRepository,
+                                    Map<Class<? extends StoredSubmittable>, SubmittableRepository<? extends StoredSubmittable>> submittableRepositoryMap) {
         this.processingStatusRepository = processingStatusRepository;
         this.validationResultRepository = validationResultRepository;
+        this.submittableRepositoryMap = submittableRepositoryMap;
     }
 
     private ProcessingStatusRepository processingStatusRepository;
     private ValidationResultRepository validationResultRepository;
+    private Map<Class<? extends StoredSubmittable>, SubmittableRepository<? extends StoredSubmittable>> submittableRepositoryMap;
 
     /**
      * Please avoid using this method, it will be removed in a future release.
@@ -63,12 +68,18 @@ public class SubmittableHelperService {
         validationResultRepository.save(validationResult);
 
         submittable.setValidationResult(validationResult);
+
+        SubmittableRepository repository = submittableRepositoryMap.get(submittable.getClass());
+        repository.save(submittable);
     }
 
     private void createProcessingStatus(StoredSubmittable submittable) {
         ProcessingStatus processingStatus = ProcessingStatus.createForSubmittable(submittable);
         processingStatus.setId(UUID.randomUUID().toString());
         processingStatusRepository.insert(processingStatus);
+
+        SubmittableRepository repository = submittableRepositoryMap.get(submittable.getClass());
+        repository.save(submittable);
     }
 
 }
