@@ -19,7 +19,6 @@ buildscript {
 }
 
 repositories {
-        mavenLocal()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         mavenCentral()
 }
@@ -41,19 +40,6 @@ dependencies {
 
     compile 'org.springframework.security:spring-security-core'
 }
-
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
-    repositories {
-        mavenLocal()
-    }
-}
-
 
 task sourceJar(type: Jar) { from sourceSets.main.allJava }
 
