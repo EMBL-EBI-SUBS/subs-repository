@@ -26,7 +26,7 @@ public class Template implements Identifiable<String> {
     private String id;
 
     @NonNull
-    @Indexed(unique = true)
+    @Indexed
     private String name;
 
     @Indexed
