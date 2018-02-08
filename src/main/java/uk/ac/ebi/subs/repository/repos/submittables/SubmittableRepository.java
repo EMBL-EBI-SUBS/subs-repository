@@ -65,6 +65,10 @@ public interface SubmittableRepository<T extends StoredSubmittable> extends Mong
     @PreAuthorizeParamTeamName
     Page<T> submittablesInTeam(@Param("teamName") String teamName, Pageable pageable);
 
+    @RestResource(exported = true, path = "by-submissionId-and-alias")
+    @PreAuthorizeSubmissionIdTeamName
+    T findOneBySubmissionIdAndAlias(@P("submissionId") @Param("submissionId") String submissionId, @P("alias") @Param("alias") String alias);
+
     @RestResource(exported = true, path = "current-version", rel = "current-version")
     @PreAuthorizeParamTeamName
     T findFirstByTeamNameAndAliasOrderByCreatedDateDesc(@Param("teamName") String teamName, @Param("alias") String alias);
