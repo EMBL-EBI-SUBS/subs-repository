@@ -1,5 +1,7 @@
 package uk.ac.ebi.subs.repository.model.sheets;
 
+import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import lombok.NonNull;
 import org.springframework.util.Assert;
@@ -14,6 +16,13 @@ public class Row {
     @NonNull
     private List<String> cells;
     private boolean ignored;
+
+    @JsonRawValue
+    private String document;
+
+    private void setDocument(JsonNode jsonNode){
+        this.document = jsonNode.toString();
+    }
 
     public Row() {
         cells = new LinkedList<>();
