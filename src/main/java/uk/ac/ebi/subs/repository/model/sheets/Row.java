@@ -20,8 +20,12 @@ public class Row {
     @JsonRawValue
     private String document;
 
-    private void setDocument(JsonNode jsonNode){
+    public void setDocument(JsonNode jsonNode){
         this.document = jsonNode.toString();
+    }
+
+    public void setDocument(String json){
+        this.document = json;
     }
 
     public Row() {
