@@ -24,10 +24,6 @@ public class Row {
         this.document = jsonNode.toString();
     }
 
-    public void setDocument(String json){
-        this.document = json;
-    }
-
     public Row() {
         cells = new LinkedList<>();
     }
