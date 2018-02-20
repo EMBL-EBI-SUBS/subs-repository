@@ -16,6 +16,8 @@ import org.springframework.hateoas.Identifiable;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Data
 @Builder(toBuilder = true)
@@ -28,6 +30,15 @@ public class Template implements Identifiable<String> {
     @NonNull
     @Indexed
     private String name;
+
+    @Indexed
+    @Builder.Default
+    private Set<String> tags = new TreeSet<>();
+
+    public Template addTag(String tag){
+        tags.add(tag);
+        return this;
+    }
 
     @Indexed
     private String targetType;
