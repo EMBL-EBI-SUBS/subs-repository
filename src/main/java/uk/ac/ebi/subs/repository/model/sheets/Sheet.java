@@ -34,16 +34,17 @@ import java.util.Optional;
 @Data
 public class Sheet {
 
-    private Template template;
-    private String sourceFileName;
-
-    private SheetStatusEnum status;
-
     @DBRef
     private Submission submission;
 
-    private Team team;
+    @DBRef
+    private Template template;
 
+    private String sourceFileName;
+    private String sheetName;
+
+    private SheetStatusEnum status;
+    private Team team;
 
     @Id
     private String id;
@@ -59,38 +60,17 @@ public class Sheet {
     @LastModifiedBy
     private String lastModifiedBy;
 
-
-    private Integer headerRowIndex;
+    public int getTotalRowCount(){
+        return rows.size();
+    }
+    public int getProcessedRowCount(){
+        return (int)rows.stream().filter(Row::isProcessed).count();
+    }
 
     @NonNull
     private List<Row> rows = new LinkedList<>();
 
-    private List<Capture> mappings = new ArrayList<>();
-    private String sheetName;
-
-    private int firstRowsLimit = 3;
-
-    @JsonIgnore
-    public List<Row> getFirstRows() {
-        List<Row> sublist = new LinkedList<>();
-        ListIterator<Row> rowListIterator;
-
-        if (headerRowIndex == null) {
-            rowListIterator = rows.listIterator(headerRowIndex);
-        } else {
-            rowListIterator = rows.listIterator();
-        }
-
-        while (sublist.size() < this.firstRowsLimit && rowListIterator.hasNext()) {
-            Row row = rowListIterator.next();
-            if (!row.isIgnored()) {
-                sublist.add(row);
-            }
-        }
-
-        return sublist;
-    }
-
+    private Row headerRow;
 
     public Row addRow(String[] row) {
         return this.addRow(new Row(row));

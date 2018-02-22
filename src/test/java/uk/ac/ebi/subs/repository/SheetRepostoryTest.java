@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
+import uk.ac.ebi.subs.repository.model.sheets.Row;
 import uk.ac.ebi.subs.repository.model.sheets.Sheet;
 import uk.ac.ebi.subs.repository.model.templates.Template;
 import uk.ac.ebi.subs.repository.repos.SheetRepository;
@@ -33,9 +34,7 @@ public class SheetRepostoryTest {
 
     private Sheet exampleSheet() {
         Sheet sheet = new Sheet();
-        sheet.setTemplate(Template.builder().targetType("thing").name("bob").build());
-        sheet.setHeaderRowIndex(1);
-        sheet.addRow(new String[]{"header1", "header2", "header3", "header4"});
+        sheet.setHeaderRow(new Row(new String[]{"header1", "header2", "header3", "header4"}));
         sheet.addRow(new String[]{"a", "", "b", "c"});
         sheet.addRow(new String[]{"4", "", "5", "6"});
         return sheet;

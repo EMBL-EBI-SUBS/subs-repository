@@ -14,19 +14,17 @@ import java.util.*;
 @Data
 public class Row {
     @NonNull
-    private List<String> cells;
-    private boolean ignored;
+    private List<String> cells = new LinkedList<>();
 
-    @JsonRawValue
-    private String document;
+    private List<String> errors = new LinkedList<>();
 
-    public void setDocument(JsonNode jsonNode){
-        this.document = jsonNode.toString();
+    private boolean processed;
+
+    public boolean hasErrors(){
+        return !errors.isEmpty();
     }
 
-    public Row() {
-        cells = new LinkedList<>();
-    }
+    public Row() {}
 
     public Row(String[] s) {
         this.cells = new LinkedList<>(Arrays.asList(s));
