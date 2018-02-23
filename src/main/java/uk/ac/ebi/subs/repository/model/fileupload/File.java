@@ -35,4 +35,6 @@ public class File {
     private String createdBy;
 
     private FileStatus status;
+
+    private String checksum;
 }
