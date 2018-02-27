@@ -46,6 +46,8 @@ public class Sheet {
     private SheetStatusEnum status;
     private Team team;
 
+    private String targetType;
+
     @Id
     private String id;
 

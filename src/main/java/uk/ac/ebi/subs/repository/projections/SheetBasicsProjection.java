@@ -12,8 +12,11 @@ public interface SheetBasicsProjection {
     @Value("#{target.template.name}")
     String getTemplateName();
 
-    @Value("#{target.template.targetType}")
-    String getTemplateTargetType();
+    int getTotalRowCount();
+
+    int getProcessedRowCount();
+
+    String getTargetType();
 
     String getSourceFileName();
 
