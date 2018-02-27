@@ -37,6 +37,7 @@ public class SheetRepostoryTest {
         sheet.setHeaderRow(new Row(new String[]{"header1", "header2", "header3", "header4"}));
         sheet.addRow(new String[]{"a", "", "b", "c"});
         sheet.addRow(new String[]{"4", "", "5", "6"});
+
         return sheet;
     }
 
@@ -55,4 +56,8 @@ public class SheetRepostoryTest {
         System.out.println(sheets.getContent());
     }
 
+    @Test
+    public void testfetchBySubmissionAndTemplateType(){
+        sheetRepository.findBySubmissionIdAndTargetType("bob","bob", new PageRequest(0,10));
+    }
 }

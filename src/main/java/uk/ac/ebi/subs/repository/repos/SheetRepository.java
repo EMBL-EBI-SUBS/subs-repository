@@ -62,9 +62,9 @@ public interface SheetRepository extends MongoRepository<Sheet,String> {
 
     @RestResource(exported = true, path= "by-submission-and-target-type",rel= "by-submission-and-target-type")
     @PreAuthorizeSubmissionIdTeamName
-    Page<Sheet> findBySubmissionIdAndTemplateTargetType(
+    Page<Sheet> findBySubmissionIdAndTargetType(
             @P("submissionId") @Param("submissionId") String submissionId,
-            @P("templateTargetType") @Param("templateTargetType") String templateTargetType,
+            @P("targetType") @Param("targetType") String targetType,
             Pageable pageable
     );
 
