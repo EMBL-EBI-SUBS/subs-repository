@@ -8,6 +8,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.access.method.P;
 import uk.ac.ebi.subs.repository.model.fileupload.File;
 import uk.ac.ebi.subs.repository.model.fileupload.FileStatus;
+import uk.ac.ebi.subs.repository.security.PreAuthorizeSubmissionIdTeamName;
 
 /**
  * This is a MongoDB data REST repository for {@link File}s.
@@ -34,8 +35,16 @@ public interface FileRepository extends MongoRepository<File, String> {
     @RestResource(exported = false)
     public void delete(@P("entity") File entity);
 
+    @PreAuthorizeSubmissionIdTeamName
     File findByGeneratedTusId(String generatedTusId);
+
+    @RestResource(path= "by-submission", rel= "by-submission")
+    @PreAuthorizeSubmissionIdTeamName
     Page<File> findBySubmissionId(String submissionId, Pageable pageable);
+
+    @PreAuthorizeSubmissionIdTeamName
     File findByFilenameAndSubmissionId(String filename, String submissionId);
+
+    @PreAuthorizeSubmissionIdTeamName
     Page<File> findByStatus(FileStatus status, Pageable pageable);
 }
