@@ -11,6 +11,8 @@ import uk.ac.ebi.subs.repository.model.fileupload.File;
 import uk.ac.ebi.subs.repository.model.fileupload.FileStatus;
 import uk.ac.ebi.subs.repository.security.PreAuthorizeSubmissionIdTeamName;
 
+import java.util.List;
+
 /**
  * This is a MongoDB data REST repository for {@link File}s.
  * We restrict to use the POST/PUT/PATCH request through this REST repository.
@@ -38,6 +40,9 @@ public interface FileRepository extends MongoRepository<File, String> {
 
     @PreAuthorizeSubmissionIdTeamName
     File findByGeneratedTusId(String generatedTusId);
+
+    @RestResource(exported = false)
+    List<File> findBySubmissionId(String submissionId);
 
     @RestResource(path= "by-submission", rel= "by-submission")
     @PreAuthorizeSubmissionIdTeamName
