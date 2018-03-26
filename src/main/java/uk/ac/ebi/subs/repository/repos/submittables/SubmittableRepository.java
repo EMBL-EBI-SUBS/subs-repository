@@ -96,7 +96,7 @@ public interface SubmittableRepository<T extends StoredSubmittable> extends Mong
     T findFirstByAccessionOrderByCreatedDateDesc(@Param("accession") String accession);
 
     @RestResource(exported = false)
-    List<T> findBySubmissionIdAndAliasIn(String submissionId, String alias);
+    List<T> findBySubmissionIdAndAlias(String submissionId, String alias);
 
 
     @RestResource(exported = false)
