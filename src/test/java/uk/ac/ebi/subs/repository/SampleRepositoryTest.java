@@ -16,6 +16,7 @@ import uk.ac.ebi.subs.repository.repos.SubmissionRepository;
 import uk.ac.ebi.subs.repository.repos.submittables.SampleRepository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -87,6 +88,9 @@ public class SampleRepositoryTest {
         assertThat(sampleRepository.submittablesInTeam(testSub.getTeam().getName(), pageRequest).getTotalElements(), is(equalTo((long) samples.size())));
 
         assertThat(sampleRepository.findFirstByTeamNameAndAliasOrderByCreatedDateDesc(testSub.getTeam().getName(), "two"), notNullValue());
+
+
+        assertThat(sampleRepository.findBySubmissionIdAndAliasIn(testSub.getId(), Arrays.asList("two")).size(), is(equalTo(1)));
     }
 
     @Test
@@ -121,5 +125,6 @@ public class SampleRepositoryTest {
         );
 
     }
+
 
 }
