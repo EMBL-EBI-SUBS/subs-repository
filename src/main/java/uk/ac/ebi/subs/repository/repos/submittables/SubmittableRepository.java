@@ -15,6 +15,7 @@ import uk.ac.ebi.subs.repository.security.PreAuthorizeParamTeamName;
 import uk.ac.ebi.subs.repository.security.PreAuthorizeSubmissionIdTeamName;
 import uk.ac.ebi.subs.repository.security.PreAuthorizeSubmittableTeamName;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -55,6 +56,10 @@ public interface SubmittableRepository<T extends StoredSubmittable> extends Mong
     @RestResource(exported = false)
     List<T> findBySubmissionId(String submissionId);
 
+    @RestResource(exported = false)
+    List<T> findBySubmissionIdAndAliasIn(String submissionId, Collection<String> alias);
+
+
     @RestResource(exported = true, path = "by-submission", rel = "by-submission")
     @PreAuthorizeSubmissionIdTeamName
     Page<T> findBySubmissionId(@P("submissionId") @Param("submissionId") String submissionId, Pageable pageable);
@@ -91,7 +96,7 @@ public interface SubmittableRepository<T extends StoredSubmittable> extends Mong
     T findFirstByAccessionOrderByCreatedDateDesc(@Param("accession") String accession);
 
     @RestResource(exported = false)
-    List<T> findBySubmissionIdAndAlias(String submissionId, String alias);
+    List<T> findBySubmissionIdAndAliasIn(String submissionId, String alias);
 
 
     @RestResource(exported = false)
