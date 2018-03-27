@@ -15,6 +15,7 @@ import uk.ac.ebi.subs.repository.security.PreAuthorizeParamTeamName;
 import uk.ac.ebi.subs.repository.security.PreAuthorizeSubmissionIdTeamName;
 import uk.ac.ebi.subs.repository.security.PreAuthorizeSubmittableTeamName;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -55,6 +56,10 @@ public interface SubmittableRepository<T extends StoredSubmittable> extends Mong
     @RestResource(exported = false)
     List<T> findBySubmissionId(String submissionId);
 
+    @RestResource(exported = false)
+    List<T> findBySubmissionIdAndAliasIn(String submissionId, Collection<String> alias);
+
+
     @RestResource(exported = true, path = "by-submission", rel = "by-submission")
     @PreAuthorizeSubmissionIdTeamName
     Page<T> findBySubmissionId(@P("submissionId") @Param("submissionId") String submissionId, Pageable pageable);
@@ -64,6 +69,10 @@ public interface SubmittableRepository<T extends StoredSubmittable> extends Mong
     @Query("'team.name': ?0") //THIS IS A DUMMY QUERY, real implementation comes from Implementation of SubmittableRepositoryCustom
     @PreAuthorizeParamTeamName
     Page<T> submittablesInTeam(@Param("teamName") String teamName, Pageable pageable);
+
+    @RestResource(exported = true, path = "by-submissionId-and-alias", rel = "by-submissionId-and-alias")
+    @PreAuthorizeSubmissionIdTeamName
+    T findOneBySubmissionIdAndAlias(@P("submissionId") @Param("submissionId") String submissionId, @P("alias") @Param("alias") String alias);
 
     @RestResource(exported = true, path = "current-version", rel = "current-version")
     @PreAuthorizeParamTeamName

@@ -13,6 +13,7 @@ public class NoOpCapture implements Capture {
 
     private String displayName;
 
+
     @Override
     public int capture(int position, List<String> headers, List<String> values, JSONObject document) {
         return ++position;
@@ -41,5 +42,10 @@ public class NoOpCapture implements Capture {
     @Override
     public List<String> expectedColumnHeaders() {
         return Collections.emptyList();
+    }
+
+    @Override
+    public boolean isRequired() {
+        return false;
     }
 }

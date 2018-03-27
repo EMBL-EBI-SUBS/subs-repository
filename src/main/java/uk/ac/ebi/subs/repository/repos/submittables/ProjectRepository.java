@@ -11,7 +11,7 @@ import uk.ac.ebi.subs.repository.security.PreAuthorizeSubmissionIdTeamName;
 
 import java.util.List;
 
-@RepositoryRestResource(excerptProjection = SubmittableWithStatus.class)
+@RepositoryRestResource
 public interface ProjectRepository extends SubmittableRepository<Project> {
 
     @RestResource(exported = true, path = "project-by-submission", rel = "project-by-submission")

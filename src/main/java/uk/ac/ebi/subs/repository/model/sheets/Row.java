@@ -1,5 +1,7 @@
 package uk.ac.ebi.subs.repository.model.sheets;
 
+import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import lombok.NonNull;
 import org.springframework.util.Assert;
@@ -12,12 +14,17 @@ import java.util.*;
 @Data
 public class Row {
     @NonNull
-    private List<String> cells;
-    private boolean ignored;
+    private List<String> cells = new LinkedList<>();
 
-    public Row() {
-        cells = new LinkedList<>();
+    private List<String> errors = new LinkedList<>();
+
+    private boolean processed;
+
+    public boolean hasErrors(){
+        return !errors.isEmpty();
     }
+
+    public Row() {}
 
     public Row(String[] s) {
         this.cells = new LinkedList<>(Arrays.asList(s));

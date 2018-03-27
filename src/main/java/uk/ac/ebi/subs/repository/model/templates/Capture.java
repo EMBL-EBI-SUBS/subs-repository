@@ -23,6 +23,8 @@ public interface Capture {
     String getDisplayName();
     void setDisplayName(String displayName);
 
+    boolean isRequired();
+
     default void setCaptureInList(int position, List<Capture> captures, String header){
         Capture cap = this;
         captures.set(position,cap);
