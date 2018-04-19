@@ -1,7 +1,10 @@
 package uk.ac.ebi.subs.repository.model.fileupload;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,31 +13,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document
 @Data
-public class File {
+@EqualsAndHashCode(callSuper=true)
+@CompoundIndexes({
+        @CompoundIndex(background = true, name = "generatedTusId", def = "{ 'generatedTusId': 1 }"),
+        @CompoundIndex(background = true, name = "filename", def = "{ 'filename': 1 }"),
+        @CompoundIndex(background = true, name = "submissionId", def = "{ 'submissionId': 1 }")
+})
+public class File extends uk.ac.ebi.subs.data.fileupload.File {
 
     @Id
     private String id;
-
-    @Indexed
-    private String generatedTusId;
-
-    @Indexed
-    private String filename;
-
-    private String uploadPath;
-
-    private String targetPath;
-
-    @Indexed
-    private String submissionId;
-
-    private long totalSize;
-
-    private long uploadedSize;
-
-    private String createdBy;
-
-    private FileStatus status;
-
-    private String checksum;
-}
+           }
