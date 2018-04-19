@@ -6,7 +6,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import uk.ac.ebi.subs.validator.data.ValidationResult;
 
 /**
  * This MongoDB document describes information of a file to be uploaded to the various biological archives.
@@ -23,4 +25,16 @@ public class File extends uk.ac.ebi.subs.data.fileupload.File {
 
     @Id
     private String id;
-           }
+
+    @DBRef
+    private ValidationResult validationResult;
+
+    public ValidationResult getValidationResult() {
+        return validationResult;
+    }
+
+    public void setValidationResult(ValidationResult validationResult) {
+        this.validationResult = validationResult;
+    }
+
+}
