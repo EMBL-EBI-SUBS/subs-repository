@@ -25,13 +25,6 @@ public class SubmittableHelperService {
     private ValidationResultRepository validationResultRepository;
     private Map<Class<? extends StoredSubmittable>, SubmittableRepository<? extends StoredSubmittable>> submittableRepositoryMap;
 
-    /**
-     * Please avoid using this method, it will be removed in a future release.
-     *
-     * @deprecated use {@link #uuidAndTeamFromSubmissionSetUp(StoredSubmittable)}  and
-     * {@link #processingStatusAndValidationResultSetUp(StoredSubmittable)} instead.
-     */
-    @Deprecated
     public void setupNewSubmittable(StoredSubmittable submittable) {
         uuidAndTeamFromSubmissionSetUp(submittable);
         processingStatusAndValidationResultSetUp(submittable);
@@ -64,6 +57,7 @@ public class SubmittableHelperService {
         validationResult.setEntityUuid(submittable.getId());
         validationResult.setUuid(UUID.randomUUID().toString());
 
+        validationResult.setEntityType(submittable.getClass().getSimpleName());
         validationResult.setSubmissionId(submittable.getSubmission().getId());
         validationResultRepository.save(validationResult);
 
