@@ -26,17 +26,17 @@ public interface FileRepository extends MongoRepository<File, String> {
     // controls PUT /things and PATCH /things/:id
     @Override
     @RestResource(exported = false)
-    public <F extends File> F save(@P("entity") F entity);
+    <F extends File> F save(@P("entity") F entity);
 
     // controls POST /things
     @Override
     @RestResource(exported = false)
-    public <F extends File> F insert(@P("entity") F s);
+    <F extends File> F insert(@P("entity") F s);
 
     // exported as DELETE /things/:id
     @Override
-    @RestResource(exported = false)
-    public void delete(@P("entity") File entity);
+    @RestResource
+    void delete(@P("entity") File entity);
 
     @PreAuthorizeSubmissionIdTeamName
     File findByGeneratedTusId(String generatedTusId);
