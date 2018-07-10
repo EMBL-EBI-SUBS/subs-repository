@@ -1,5 +1,5 @@
 group 'uk.ac.ebi.subs'
-version '2.5.1-SNAPSHOT'
+version '2.6.0-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    compile("uk.ac.ebi.subs:validator-common:2.6.2-SNAPSHOT")
+    compile("uk.ac.ebi.subs:validator-common:2.7.0-SNAPSHOT")
 
     compile ('org.atteo:evo-inflector:1.2.1') // better pluralisation
     compile("org.json:json:20160810")
