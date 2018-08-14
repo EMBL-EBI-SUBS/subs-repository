@@ -40,9 +40,11 @@ public class Submission extends uk.ac.ebi.subs.data.Submission implements Identi
     private String name;
     private String projectName;
 
-
     @JsonRawValue
     private String uiData;
+
+    @DBRef
+    private SubmissionPlan submissionPlan;
 
     public SubmissionStatus getSubmissionStatus() {
         return submissionStatus;
@@ -119,5 +121,13 @@ public class Submission extends uk.ac.ebi.subs.data.Submission implements Identi
     @JsonSetter("uiData")
     public void setUiData(JsonNode uiData) {
         this.uiData = uiData.toString();
+    }
+
+    public SubmissionPlan getSubmissionPlan() {
+        return submissionPlan;
+    }
+
+    public void setSubmissionPlan(SubmissionPlan submissionPlan) {
+        this.submissionPlan = submissionPlan;
     }
 }
