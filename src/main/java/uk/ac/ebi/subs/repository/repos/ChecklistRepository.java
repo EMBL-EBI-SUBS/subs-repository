@@ -8,15 +8,18 @@ import uk.ac.ebi.subs.repository.model.Checklist;
 @RepositoryRestResource
 public interface ChecklistRepository extends MongoRepository<Checklist, String> {
 
+    @RestResource(exported = true, path = "by-data-type-id", rel = "by-data-type-id")
+    <S extends Checklist> S findByDataTypeID(String dataTypeID);
+
     @Override
     @RestResource(exported = false) // Prevent exposing PUT /things and PATCH /things/:id through REST
-    public <S extends Checklist> S save(S entity);
+    <S extends Checklist> S save(S entity);
 
     @Override
     @RestResource(exported = false) // Prevent exposing POST /things
-    public <S extends Checklist> S insert(S s);
+    <S extends Checklist> S insert(S s);
 
     @Override
     @RestResource(exported = false) // Prevent exposing  DELETE /things/:id
-    public void delete(Checklist entity);
+    void delete(Checklist entity);
 }
