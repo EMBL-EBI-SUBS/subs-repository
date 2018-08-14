@@ -10,7 +10,7 @@ import uk.ac.ebi.subs.repository.model.templates.Template;
 
 @Data
 @Document
-public class DataTypeTemplate {
+public class Checklist {
 
     @Id
     private String id;

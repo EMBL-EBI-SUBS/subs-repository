@@ -50,8 +50,8 @@ public interface StoredSubmittable extends Submittable, Identifiable<String> {
 
     void setDataType(DataType dataType);
 
-    DataTypeTemplate getDataTypeTemplate();
+    Checklist getChecklist();
 
-    void setDataTypeTemplate (DataTypeTemplate dataTypeTemplate );
+    void setChecklist(Checklist checklist);
 }
 

@@ -45,7 +45,7 @@ public class AssayData extends uk.ac.ebi.subs.data.submittable.AssayData impleme
     @DBRef
     private DataType dataType;
     @DBRef
-    private DataTypeTemplate dataTypeTemplate;
+    private Checklist checklist;
 
     @Override
     public DataType getDataType() {
@@ -58,13 +58,13 @@ public class AssayData extends uk.ac.ebi.subs.data.submittable.AssayData impleme
     }
 
     @Override
-    public DataTypeTemplate getDataTypeTemplate() {
-        return dataTypeTemplate;
+    public Checklist getChecklist() {
+        return checklist;
     }
 
     @Override
-    public void setDataTypeTemplate(DataTypeTemplate dataTypeTemplate) {
-        this.dataTypeTemplate = dataTypeTemplate;
+    public void setChecklist(Checklist checklist) {
+        this.checklist = checklist;
     }
 
     public ValidationResult getValidationResult() {

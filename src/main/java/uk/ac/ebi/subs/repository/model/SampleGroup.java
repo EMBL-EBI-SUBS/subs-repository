@@ -47,7 +47,7 @@ public class SampleGroup extends uk.ac.ebi.subs.data.submittable.SampleGroup imp
     @DBRef
     private DataType dataType;
     @DBRef
-    private DataTypeTemplate dataTypeTemplate;
+    private Checklist checklist;
 
     @Override
     public DataType getDataType() {
@@ -60,13 +60,13 @@ public class SampleGroup extends uk.ac.ebi.subs.data.submittable.SampleGroup imp
     }
 
     @Override
-    public DataTypeTemplate getDataTypeTemplate() {
-        return dataTypeTemplate;
+    public Checklist getChecklist() {
+        return checklist;
     }
 
     @Override
-    public void setDataTypeTemplate(DataTypeTemplate dataTypeTemplate) {
-        this.dataTypeTemplate = dataTypeTemplate;
+    public void setChecklist(Checklist checklist) {
+        this.checklist = checklist;
     }
 
     public ValidationResult getValidationResult() {
