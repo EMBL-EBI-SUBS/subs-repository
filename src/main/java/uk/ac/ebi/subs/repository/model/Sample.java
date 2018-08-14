@@ -48,6 +48,30 @@ public class Sample extends uk.ac.ebi.subs.data.submittable.Sample implements St
     private Submission submission;
     @DBRef
     private ValidationResult validationResult;
+    @DBRef
+    private DataType dataType;
+    @DBRef
+    private Checklist checklist;
+
+    @Override
+    public DataType getDataType() {
+        return dataType;
+    }
+
+    @Override
+    public void setDataType(DataType dataType) {
+        this.dataType = dataType;
+    }
+
+    @Override
+    public Checklist getChecklist() {
+        return checklist;
+    }
+
+    @Override
+    public void setChecklist(Checklist checklist) {
+        this.checklist = checklist;
+    }
 
     public ValidationResult getValidationResult() {
         return validationResult;

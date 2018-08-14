@@ -45,5 +45,13 @@ public interface StoredSubmittable extends Submittable, Identifiable<String> {
     void setLastModifiedBy(String lastModifiedBy);
 
     Stream<AbstractSubsRef> refs();
+
+    DataType getDataType();
+
+    void setDataType(DataType dataType);
+
+    Checklist getChecklist();
+
+    void setChecklist(Checklist checklist);
 }
 
