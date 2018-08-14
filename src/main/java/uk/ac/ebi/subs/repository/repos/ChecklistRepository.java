@@ -9,7 +9,7 @@ import uk.ac.ebi.subs.repository.model.Checklist;
 public interface ChecklistRepository extends MongoRepository<Checklist, String> {
 
     @RestResource(exported = true, path = "by-data-type-id", rel = "by-data-type-id")
-    <S extends Checklist> S findByDataTypeID(String dataTypeID);
+    <S extends Checklist> S findByDataTypeId(String dataTypeID);
 
     @Override
     @RestResource(exported = false) // Prevent exposing PUT /things and PATCH /things/:id through REST
