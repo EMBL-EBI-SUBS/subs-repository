@@ -49,6 +49,10 @@ public class Analysis extends uk.ac.ebi.subs.data.submittable.Analysis implement
     private Submission submission;
     @DBRef
     private ValidationResult validationResult;
+    @DBRef
+    private DataType dataType;
+    @DBRef
+    private DataTypeTemplate dataTypeTemplate;
 
     public ValidationResult getValidationResult() {
         return validationResult;
@@ -114,5 +118,25 @@ public class Analysis extends uk.ac.ebi.subs.data.submittable.Analysis implement
 
     public void setLastModifiedBy(String lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
+    }
+
+    @Override
+    public DataType getDataType() {
+        return dataType;
+    }
+
+    @Override
+    public void setDataType(DataType dataType) {
+        this.dataType = dataType;
+    }
+
+    @Override
+    public DataTypeTemplate getDataTypeTemplate() {
+        return dataTypeTemplate;
+    }
+
+    @Override
+    public void setDataTypeTemplate(DataTypeTemplate dataTypeTemplate) {
+        this.dataTypeTemplate = dataTypeTemplate;
     }
 }

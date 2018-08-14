@@ -43,6 +43,30 @@ public class Assay extends uk.ac.ebi.subs.data.submittable.Assay implements Stor
     private Submission submission;
     @DBRef
     private ValidationResult validationResult;
+    @DBRef
+    private DataType dataType;
+    @DBRef
+    private DataTypeTemplate dataTypeTemplate;
+
+    @Override
+    public DataType getDataType() {
+        return dataType;
+    }
+
+    @Override
+    public void setDataType(DataType dataType) {
+        this.dataType = dataType;
+    }
+
+    @Override
+    public DataTypeTemplate getDataTypeTemplate() {
+        return dataTypeTemplate;
+    }
+
+    @Override
+    public void setDataTypeTemplate(DataTypeTemplate dataTypeTemplate) {
+        this.dataTypeTemplate = dataTypeTemplate;
+    }
 
     public ValidationResult getValidationResult() {
         return validationResult;
