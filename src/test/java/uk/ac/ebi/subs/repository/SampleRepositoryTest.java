@@ -53,6 +53,10 @@ public class SampleRepositoryTest {
     @Before
     public void buildUp() {
         tearDown();
+        
+        testDataType = new DataType();
+        testDataType.setId("samples");
+        dataTypeRepository.insert(testDataType);
     }
 
     private void submissionWithTwoSamples() {
@@ -64,9 +68,7 @@ public class SampleRepositoryTest {
         testSub.setId(UUID.randomUUID().toString());
         submissionRepository.insert(testSub);
 
-        testDataType = new DataType();
-        testDataType.setId("samples");
-        dataTypeRepository.insert(testDataType);
+
 
         samples.add(new Sample());
         samples.add(new Sample());
