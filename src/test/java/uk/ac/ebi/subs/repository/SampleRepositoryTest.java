@@ -10,8 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import uk.ac.ebi.subs.repository.model.DataType;
 import uk.ac.ebi.subs.repository.model.Sample;
 import uk.ac.ebi.subs.repository.model.Submission;
+import uk.ac.ebi.subs.repository.repos.DataTypeRepository;
 import uk.ac.ebi.subs.repository.repos.SubmissionRepository;
 import uk.ac.ebi.subs.repository.repos.submittables.SampleRepository;
 
@@ -35,9 +37,14 @@ public class SampleRepositoryTest {
     SubmissionRepository submissionRepository;
 
     @Autowired
+    DataTypeRepository dataTypeRepository;
+
+    @Autowired
     SampleRepository sampleRepository;
 
     Submission testSub;
+
+    DataType testDataType;
 
     List<Sample> samples;
 
@@ -55,6 +62,11 @@ public class SampleRepositoryTest {
         testSub.getSubmitter().setEmail("test@example.ac.uk");
         testSub.getTeam().setName("testTeam");
         testSub.setId(UUID.randomUUID().toString());
+        submissionRepository.insert(testSub);
+
+        testDataType = new DataType();
+        testDataType.setId("samples");
+        dataTypeRepository.insert(testDataType);
 
         samples.add(new Sample());
         samples.add(new Sample());
@@ -62,12 +74,15 @@ public class SampleRepositoryTest {
         samples.get(0).setAlias("one");
         samples.get(1).setAlias("two");
 
-        samples.forEach(s -> s.setId(UUID.randomUUID().toString()));
-        samples.forEach(s -> s.setTeam(testSub.getTeam()));
-        samples.forEach(s -> s.setCreatedDate(new Date()));
+        for (Sample s : samples){
+            s.setId(UUID.randomUUID().toString());
+            s.setTeam(testSub.getTeam());
+            s.setCreatedDate(new Date());
+            s.setDataType(testDataType);
+            s.setSubmission(testSub);
+        }
 
-        submissionRepository.insert(testSub);
-        samples.forEach(s -> s.setSubmission(testSub));
+
         sampleRepository.insert(samples);
 
     }
@@ -76,6 +91,7 @@ public class SampleRepositoryTest {
     public void tearDown() {
         submissionRepository.deleteAll();
         sampleRepository.deleteAll();
+        dataTypeRepository.deleteAll();
     }
 
     @Test
@@ -91,6 +107,8 @@ public class SampleRepositoryTest {
 
 
         assertThat(sampleRepository.findBySubmissionIdAndAliasIn(testSub.getId(), Arrays.asList("two")).size(), is(equalTo(1)));
+
+        assertThat(sampleRepository.findBySubmissionIdAndDataTypeId(testSub.getId(),testDataType.getId(),pageRequest).getTotalElements(),is(equalTo((long) samples.size())));
     }
 
     @Test

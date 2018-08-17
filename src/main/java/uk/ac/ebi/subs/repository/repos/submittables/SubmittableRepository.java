@@ -64,6 +64,9 @@ public interface SubmittableRepository<T extends StoredSubmittable> extends Mong
     @PreAuthorizeSubmissionIdTeamName
     Page<T> findBySubmissionId(@P("submissionId") @Param("submissionId") String submissionId, Pageable pageable);
 
+    @RestResource(exported = true, path = "by-submission-and-dataType", rel = "by-submission-and-dataType")
+    @PreAuthorizeSubmissionIdTeamName
+    Page<T> findBySubmissionIdAndDataTypeId(@P("submissionId") @Param("submissionId") String submissionId, @P("dataTypeId") @Param("dataTypeId") String dataTypeId, Pageable pageable);
 
     @RestResource(exported = true, path = "by-team", rel = "by-team")
     @Query("'team.name': ?0") //THIS IS A DUMMY QUERY, real implementation comes from Implementation of SubmittableRepositoryCustom
