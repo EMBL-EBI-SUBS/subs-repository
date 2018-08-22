@@ -1,15 +1,17 @@
 package uk.ac.ebi.subs.repository.repos;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.security.access.method.P;
 import uk.ac.ebi.subs.repository.model.Checklist;
 
 @RepositoryRestResource
 public interface ChecklistRepository extends MongoRepository<Checklist, String> {
 
     @RestResource(exported = true, path = "by-data-type-id", rel = "by-data-type-id")
-    <S extends Checklist> S findByDataTypeId(String dataTypeID);
+    <S extends Checklist> S findByDataTypeId(@P("dataTypeId") @Param("dataTypeId") String dataTypeId);
 
     @Override
     @RestResource(exported = false) // Prevent exposing PUT /things and PATCH /things/:id through REST
