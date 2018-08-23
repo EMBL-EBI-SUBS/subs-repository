@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.hateoas.Identifiable;
 import uk.ac.ebi.subs.data.component.Archive;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Set;
 
 @Data
 @Document
-public class DataType {
+public class DataType implements Identifiable<String> {
 
     @Id
     private String id;

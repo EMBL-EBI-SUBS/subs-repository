@@ -6,11 +6,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.hateoas.Identifiable;
 import uk.ac.ebi.subs.repository.model.templates.Template;
 
 @Data
 @Document
-public class Checklist {
+public class Checklist implements Identifiable<String> {
 
     @Id
     private String id;
