@@ -29,5 +29,4 @@ before_install:
 after_success:
   - test $TRAVIS_BRANCH = "dev" && ./gradlew uploadArchives
 group: "stable"
-dist: "precise"
 os: "linux"
