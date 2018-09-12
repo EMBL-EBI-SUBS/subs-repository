@@ -58,6 +58,7 @@ public class SubmittableHelperService {
         validationResult.setUuid(UUID.randomUUID().toString());
 
         validationResult.setEntityType(submittable.getClass().getCanonicalName()); // Must be the full qualified class name
+        validationResult.setDataTypeId(submittable.getDataType().getId());
         validationResult.setSubmissionId(submittable.getSubmission().getId());
         validationResultRepository.save(validationResult);
 
