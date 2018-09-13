@@ -1,14 +1,19 @@
 package uk.ac.ebi.subs.repository.repos;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.access.method.P;
 import uk.ac.ebi.subs.repository.model.Checklist;
+import uk.ac.ebi.subs.repository.model.templates.Template;
+
+import java.util.Collection;
+import java.util.List;
 
 @RepositoryRestResource
-public interface ChecklistRepository extends MongoRepository<Checklist, String> {
+public interface ChecklistRepository extends MongoRepository<Checklist, String>  {
 
     @RestResource(exported = true, path = "by-data-type-id", rel = "by-data-type-id")
     <S extends Checklist> S findByDataTypeId(@P("dataTypeId") @Param("dataTypeId") String dataTypeId);
@@ -24,4 +29,5 @@ public interface ChecklistRepository extends MongoRepository<Checklist, String> 
     @Override
     @RestResource(exported = false) // Prevent exposing  DELETE /things/:id
     void delete(Checklist entity);
+
 }

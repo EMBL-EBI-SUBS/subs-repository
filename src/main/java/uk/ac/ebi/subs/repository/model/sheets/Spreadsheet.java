@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import uk.ac.ebi.subs.data.component.Team;
+import uk.ac.ebi.subs.repository.model.Checklist;
 import uk.ac.ebi.subs.repository.model.Submission;
 import uk.ac.ebi.subs.repository.model.templates.Capture;
 import uk.ac.ebi.subs.repository.model.templates.Template;
@@ -27,18 +28,16 @@ import java.util.ListIterator;
 import java.util.Optional;
 
 @CompoundIndexes({
-        @CompoundIndex(background = true, name = "submission", def = "{ 'submission': 1}"),
-        @CompoundIndex(background = true, name = "submission_template_target_type", def = "{ 'submission': 1, 'template.targetType': 1}")
+        @CompoundIndex(background = true, name = "submission_data_type", def = "{ 'submissionId': 1, 'template.targetType': 1}")
 })
 @Document
 @Data
-public class Sheet {
+public class Spreadsheet {
 
-    @DBRef
-    private Submission submission;
 
-    @DBRef
-    private Template template;
+    private String submissionId;
+    private String checklistId;
+    private String dataTypeId;
 
     private String sourceFileName;
     private String sheetName;

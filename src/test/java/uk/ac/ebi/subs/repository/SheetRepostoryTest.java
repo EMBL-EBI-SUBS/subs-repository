@@ -11,29 +11,28 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 import uk.ac.ebi.subs.repository.model.sheets.Row;
-import uk.ac.ebi.subs.repository.model.sheets.Sheet;
-import uk.ac.ebi.subs.repository.model.templates.Template;
-import uk.ac.ebi.subs.repository.repos.SheetRepository;
+import uk.ac.ebi.subs.repository.model.sheets.Spreadsheet;
+import uk.ac.ebi.subs.repository.repos.SpreadsheetRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class SheetRepostoryTest {
 
     @Autowired
-    private SheetRepository sheetRepository;
+    private SpreadsheetRepository spreadsheetRepository;
 
     @Before
     public void buildUp() {
-        sheetRepository.deleteAll();
+        spreadsheetRepository.deleteAll();
 
-        Sheet sheet = exampleSheet();
+        Spreadsheet sheet = exampleSheet();
 
-        sheetRepository.insert(sheet);
+        spreadsheetRepository.insert(sheet);
 
     }
 
-    private Sheet exampleSheet() {
-        Sheet sheet = new Sheet();
+    private Spreadsheet exampleSheet() {
+        Spreadsheet sheet = new Spreadsheet();
         sheet.setHeaderRow(new Row(new String[]{"header1", "header2", "header3", "header4"}));
         sheet.addRow(new String[]{"a", "", "b", "c"});
         sheet.addRow(new String[]{"4", "", "5", "6"});
@@ -43,13 +42,13 @@ public class SheetRepostoryTest {
 
     @After
     public void tearDown() {
-        sheetRepository.deleteAll();
+        spreadsheetRepository.deleteAll();
     }
 
     @Test
     public void fetchAll() {
 
-        Page<Sheet> sheets = sheetRepository.findAll(new PageRequest(0,10));
+        Page<Spreadsheet> sheets = spreadsheetRepository.findAll(new PageRequest(0,10));
 
         Assert.notNull(sheets);
         Assert.isTrue(sheets.getTotalElements() == 1L);
@@ -57,7 +56,7 @@ public class SheetRepostoryTest {
     }
 
     @Test
-    public void testfetchBySubmissionAndTemplateType(){
-        sheetRepository.findBySubmissionIdAndTargetType("bob","bob", new PageRequest(0,10));
+    public void findBySubmissionIdAndDataTypeIdOrderByCreatedDateDesc(){
+        spreadsheetRepository.findBySubmissionIdAndDataTypeIdOrderByCreatedDateDesc("bob","bob", new PageRequest(0,10));
     }
 }

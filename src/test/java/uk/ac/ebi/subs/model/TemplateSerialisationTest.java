@@ -22,10 +22,7 @@ public class TemplateSerialisationTest {
 
     @Before
     public void buildUp() {
-        template = Template.builder()
-                .name("test")
-                .targetType("things")
-                .build();
+        template = new Template();
 
         template
                 .add(
