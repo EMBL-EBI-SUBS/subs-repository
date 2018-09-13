@@ -13,8 +13,6 @@ import org.springframework.util.Assert;
 import uk.ac.ebi.subs.repository.model.Checklist;
 import uk.ac.ebi.subs.repository.repos.ChecklistRepository;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.equalTo;

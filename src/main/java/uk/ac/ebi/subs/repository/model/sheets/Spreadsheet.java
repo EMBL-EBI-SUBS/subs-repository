@@ -1,6 +1,5 @@
 package uk.ac.ebi.subs.repository.model.sheets;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NonNull;
 import org.springframework.data.annotation.CreatedBy;
@@ -11,15 +10,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import uk.ac.ebi.subs.data.component.Team;
-import uk.ac.ebi.subs.repository.model.Checklist;
-import uk.ac.ebi.subs.repository.model.Submission;
-import uk.ac.ebi.subs.repository.model.templates.Capture;
-import uk.ac.ebi.subs.repository.model.templates.Template;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
@@ -61,11 +54,12 @@ public class Spreadsheet {
     @LastModifiedBy
     private String lastModifiedBy;
 
-    public int getTotalRowCount(){
+    public int getTotalRowCount() {
         return rows.size();
     }
-    public int getProcessedRowCount(){
-        return (int)rows.stream().filter(Row::isProcessed).count();
+
+    public int getProcessedRowCount() {
+        return (int) rows.stream().filter(Row::isProcessed).count();
     }
 
     @NonNull
