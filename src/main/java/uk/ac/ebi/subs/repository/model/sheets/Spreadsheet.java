@@ -1,6 +1,5 @@
 package uk.ac.ebi.subs.repository.model.sheets;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NonNull;
 import org.springframework.data.annotation.CreatedBy;
@@ -11,14 +10,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import uk.ac.ebi.subs.data.component.Team;
-import uk.ac.ebi.subs.repository.model.Submission;
-import uk.ac.ebi.subs.repository.model.templates.Capture;
-import uk.ac.ebi.subs.repository.model.templates.Template;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
@@ -27,18 +21,16 @@ import java.util.ListIterator;
 import java.util.Optional;
 
 @CompoundIndexes({
-        @CompoundIndex(background = true, name = "submission", def = "{ 'submission': 1}"),
-        @CompoundIndex(background = true, name = "submission_template_target_type", def = "{ 'submission': 1, 'template.targetType': 1}")
+        @CompoundIndex(background = true, name = "submission_data_type", def = "{ 'submissionId': 1, 'template.targetType': 1}")
 })
 @Document
 @Data
-public class Sheet {
+public class Spreadsheet {
 
-    @DBRef
-    private Submission submission;
 
-    @DBRef
-    private Template template;
+    private String submissionId;
+    private String checklistId;
+    private String dataTypeId;
 
     private String sourceFileName;
     private String sheetName;
@@ -62,11 +54,12 @@ public class Sheet {
     @LastModifiedBy
     private String lastModifiedBy;
 
-    public int getTotalRowCount(){
+    public int getTotalRowCount() {
         return rows.size();
     }
-    public int getProcessedRowCount(){
-        return (int)rows.stream().filter(Row::isProcessed).count();
+
+    public int getProcessedRowCount() {
+        return (int) rows.stream().filter(Row::isProcessed).count();
     }
 
     @NonNull

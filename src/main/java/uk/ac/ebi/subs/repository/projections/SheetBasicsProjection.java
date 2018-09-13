@@ -2,11 +2,11 @@ package uk.ac.ebi.subs.repository.projections;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
-import uk.ac.ebi.subs.repository.model.sheets.Sheet;
+import uk.ac.ebi.subs.repository.model.sheets.Spreadsheet;
 
 import java.util.Date;
 
-@Projection(name = "sheetBasics", types = {Sheet.class})
+@Projection(name = "sheetBasics", types = {Spreadsheet.class})
 public interface SheetBasicsProjection {
 
     @Value("#{target.template.name}")
