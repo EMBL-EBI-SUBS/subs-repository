@@ -1,5 +1,7 @@
 package uk.ac.ebi.subs.repository.repos;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,7 +18,7 @@ import java.util.List;
 public interface ChecklistRepository extends MongoRepository<Checklist, String>  {
 
     @RestResource(exported = true, path = "by-data-type-id", rel = "by-data-type-id")
-    <S extends Checklist> S findByDataTypeId(@P("dataTypeId") @Param("dataTypeId") String dataTypeId);
+    Page<Checklist> findByDataTypeId(@P("dataTypeId") @Param("dataTypeId") String dataTypeId, Pageable pageable);
 
     @Override
     @RestResource(exported = false) // Prevent exposing PUT /things and PATCH /things/:id through REST

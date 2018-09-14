@@ -63,7 +63,9 @@ public class ChecklistRepositoryTest {
     @Test
     public void whenChecklistExistsForASpecificDataTypeId_ThenQueryReturnsAChecklist() {
         final String samplesDataTypeId = "samples";
-        Checklist samplesChecklist = checklistRepository.findByDataTypeId(samplesDataTypeId);
+        Page<Checklist> samplesChecklistPage = checklistRepository.findByDataTypeId(samplesDataTypeId,new PageRequest(0, 10));
+
+        Checklist samplesChecklist = samplesChecklistPage.iterator().next();
 
         assertThat(samplesChecklist, is(notNullValue()));
         assertThat(samplesChecklist.getDataTypeId(), is(equalTo(samplesDataTypeId)));
@@ -72,9 +74,9 @@ public class ChecklistRepositoryTest {
     @Test
     public void whenChecklistNotExistsForASpecificDataTypeId_ThenQueryResultIsNull() {
         final String nonExistingDataTypeId = "non existing data type ID";
-        Checklist nullChecklist = checklistRepository.findByDataTypeId(nonExistingDataTypeId);
+        Page<Checklist> emptyChecklistPage = checklistRepository.findByDataTypeId(nonExistingDataTypeId,new PageRequest(0, 10));
 
-        assertThat(nullChecklist, is(nullValue()));
+        assertThat(emptyChecklistPage.getTotalElements(), is(equalTo(0L)));
     }
 
 
