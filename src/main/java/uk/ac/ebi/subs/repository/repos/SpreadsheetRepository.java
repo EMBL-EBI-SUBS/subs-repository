@@ -13,6 +13,8 @@ import uk.ac.ebi.subs.repository.security.PostAuthorizeReturnObjectHasTeamName;
 import uk.ac.ebi.subs.repository.security.PreAuthorizeSubmissionIdTeamName;
 import uk.ac.ebi.subs.repository.security.PreAuthorizeSubmittableTeamName;
 
+import java.util.Date;
+
 /**
  * Created by Dave on 21/10/2017.
  */
@@ -61,7 +63,8 @@ public interface SpreadsheetRepository extends MongoRepository<Spreadsheet,Strin
             Pageable pageable
     );
 
-
+    @RestResource(exported = false)
+    void removeByLastModifiedDateBeforeAndStatus(Date lastModifiedBy, String status);
 
     @RestResource(exported = false)
     void deleteBySubmissionId(String submissionId);
