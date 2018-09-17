@@ -59,7 +59,7 @@ public interface SpreadsheetRepository extends MongoRepository<Spreadsheet,Strin
     @PreAuthorizeSubmissionIdTeamName
     Page<Spreadsheet> findBySubmissionIdAndDataTypeIdOrderByCreatedDateDesc(
             @P("submissionId") @Param("submissionId") String submissionId,
-            @P("targetType") @Param("targetType") String targetType,
+            @P("dataTypeId") @Param("dataTypeId") String dataTypeId,
             Pageable pageable
     );
 
