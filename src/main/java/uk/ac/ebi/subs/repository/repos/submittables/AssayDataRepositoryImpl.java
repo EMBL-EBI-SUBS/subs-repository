@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.subs.repository.model.AssayData;
 import uk.ac.ebi.subs.repository.repos.submittables.support.SubmittablesAggregateSupport;
+import uk.ac.ebi.subs.validator.repository.ValidationResultRepository;
 
 import java.util.List;
 
@@ -14,8 +15,8 @@ public class AssayDataRepositoryImpl implements SubmittableRepositoryCustom<Assa
 
     private SubmittablesAggregateSupport<AssayData> aggregateSupport;
 
-    public AssayDataRepositoryImpl(MongoTemplate mongoTemplate) {
-        this.aggregateSupport = new SubmittablesAggregateSupport<>(mongoTemplate, AssayData.class);
+    public AssayDataRepositoryImpl(MongoTemplate mongoTemplate, ValidationResultRepository validationResultRepository) {
+        this.aggregateSupport = new SubmittablesAggregateSupport<>(mongoTemplate, validationResultRepository, AssayData.class);
 
     }
 
@@ -29,4 +30,13 @@ public class AssayDataRepositoryImpl implements SubmittableRepositoryCustom<Assa
         return aggregateSupport.itemsByTeams(teamNames, pageable);
     }
 
+    @Override
+    public Page<AssayData> findBySubmissionIdAndDataTypeIdWithErrors(String submissionId, String dataTypeId, Pageable pageable) {
+        return aggregateSupport.submittablesByDataTypeWithErrors(submissionId, dataTypeId, pageable);
+    }
+
+    @Override
+    public Page<AssayData> findBySubmissionIdAndDataTypeIdWithWarnings(String submissionId, String dataTypeId, Pageable pageable) {
+        return aggregateSupport.submittablesByDataTypeWithWarnings(submissionId, dataTypeId, pageable);
+    }
 }

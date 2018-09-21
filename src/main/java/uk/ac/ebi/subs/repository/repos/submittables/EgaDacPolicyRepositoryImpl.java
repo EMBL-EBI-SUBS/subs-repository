@@ -1,12 +1,12 @@
 package uk.ac.ebi.subs.repository.repos.submittables;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.subs.repository.model.EgaDacPolicy;
 import uk.ac.ebi.subs.repository.repos.submittables.support.SubmittablesAggregateSupport;
+import uk.ac.ebi.subs.validator.repository.ValidationResultRepository;
 
 import java.util.List;
 
@@ -15,8 +15,8 @@ public class EgaDacPolicyRepositoryImpl implements SubmittableRepositoryCustom<E
 
     private SubmittablesAggregateSupport<EgaDacPolicy> aggregateSupport;
 
-    public EgaDacPolicyRepositoryImpl(@Autowired MongoTemplate mongoTemplate) {
-        this.aggregateSupport = new SubmittablesAggregateSupport<>(mongoTemplate, EgaDacPolicy.class);
+    public EgaDacPolicyRepositoryImpl(MongoTemplate mongoTemplate, ValidationResultRepository validationResultRepository) {
+        this.aggregateSupport = new SubmittablesAggregateSupport<>(mongoTemplate, validationResultRepository, EgaDacPolicy.class);
     }
 
     @Override
@@ -27,5 +27,15 @@ public class EgaDacPolicyRepositoryImpl implements SubmittableRepositoryCustom<E
     @Override
     public Page<EgaDacPolicy> submittablesInTeams(List<String> teamNames, Pageable pageable) {
         return aggregateSupport.itemsByTeams(teamNames, pageable);
+    }
+
+    @Override
+    public Page<EgaDacPolicy> findBySubmissionIdAndDataTypeIdWithErrors(String submissionId, String dataTypeId, Pageable pageable) {
+        return aggregateSupport.submittablesByDataTypeWithErrors(submissionId, dataTypeId, pageable);
+    }
+
+    @Override
+    public Page<EgaDacPolicy> findBySubmissionIdAndDataTypeIdWithWarnings(String submissionId, String dataTypeId, Pageable pageable) {
+        return aggregateSupport.submittablesByDataTypeWithWarnings(submissionId, dataTypeId, pageable);
     }
 }
