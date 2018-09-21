@@ -131,12 +131,8 @@ public class SubmittablesAggregateSupport<T extends StoredSubmittable> {
     }
 
     private List<T> getListOfsubmittablesByEntityUuids(List<String> entityUuids, Pageable pageable) {
-        final List<T> resultsList = new ArrayList<>();
-
         final List<AggregationOperation> aggOps = new ArrayList<>(Arrays.asList(
-                entityUuidMatchOperation(entityUuids),
-                skip((long) pageable.getOffset()),
-                limit((long) pageable.getPageSize())
+                entityUuidMatchOperation(entityUuids)
         ));
 
         if (pageable.getSort() != null) {
