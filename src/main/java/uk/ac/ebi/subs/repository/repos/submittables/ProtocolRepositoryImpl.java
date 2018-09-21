@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.subs.repository.model.Protocol;
 import uk.ac.ebi.subs.repository.repos.submittables.support.SubmittablesAggregateSupport;
+import uk.ac.ebi.subs.validator.repository.ValidationResultRepository;
 
 import java.util.List;
 
@@ -14,8 +15,8 @@ public class ProtocolRepositoryImpl implements SubmittableRepositoryCustom<Proto
 
     private SubmittablesAggregateSupport<Protocol> aggregateSupport;
 
-    public ProtocolRepositoryImpl(MongoTemplate mongoTemplate) {
-        this.aggregateSupport = new SubmittablesAggregateSupport<>(mongoTemplate, Protocol.class);
+    public ProtocolRepositoryImpl(MongoTemplate mongoTemplate, ValidationResultRepository validationResultRepository) {
+        this.aggregateSupport = new SubmittablesAggregateSupport<>(mongoTemplate, validationResultRepository, Protocol.class);
     }
 
     @Override
@@ -28,4 +29,13 @@ public class ProtocolRepositoryImpl implements SubmittableRepositoryCustom<Proto
         return aggregateSupport.itemsByTeams(teamNames, pageable);
     }
 
+    @Override
+    public Page<Protocol> findBySubmissionIdAndDataTypeIdWithErrors(String submissionId, String dataTypeId, Pageable pageable) {
+        return aggregateSupport.submittablesByDataTypeWithErrors(submissionId, dataTypeId, pageable);
+    }
+
+    @Override
+    public Page<Protocol> findBySubmissionIdAndDataTypeIdWithWarnings(String submissionId, String dataTypeId, Pageable pageable) {
+        return aggregateSupport.submittablesByDataTypeWithWarnings(submissionId, dataTypeId, pageable);
+    }
 }

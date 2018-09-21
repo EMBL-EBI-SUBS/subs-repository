@@ -16,6 +16,8 @@ import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import uk.ac.ebi.subs.repository.model.StoredSubmittable;
+import uk.ac.ebi.subs.validator.data.ValidationResult;
+import uk.ac.ebi.subs.validator.repository.ValidationResultRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,9 +35,12 @@ public class SubmittablesAggregateSupport<T extends StoredSubmittable> {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private MongoTemplate mongoTemplate;
     private Class<T> clazz;
+    private ValidationResultRepository validationResultRepository;
 
-    public SubmittablesAggregateSupport(MongoTemplate mongoTemplate, Class<T> clazz) {
+    public SubmittablesAggregateSupport(MongoTemplate mongoTemplate,
+                                        ValidationResultRepository validationResultRepository, Class<T> clazz) {
         this.mongoTemplate = mongoTemplate;
+        this.validationResultRepository = validationResultRepository;
         this.clazz = clazz;
     }
 
@@ -47,6 +52,28 @@ public class SubmittablesAggregateSupport<T extends StoredSubmittable> {
         List<T> resultsList = getLimitedItemListByTeams(teamNames, pageable);
         long totalItemsCount = getTotalItemCountByTeams(teamNames);
         return new PageImpl<T>(resultsList, pageable, totalItemsCount);
+    }
+
+    public Page<T> submittablesByDataTypeWithErrors(String submissionId, String dataTypeId, Pageable pageable) {
+        Page<ValidationResult> pageOfValidationResults =
+                validationResultRepository.findBySubmissionIdAndDataTypeIdAndHasError(
+                        submissionId, dataTypeId, true, pageable);
+        return getPageOfSubmittablesByUuids(pageable, pageOfValidationResults);
+    }
+
+    public Page<T> submittablesByDataTypeWithWarnings(String submissionId, String dataTypeId, Pageable pageable) {
+        Page<ValidationResult> pageOfValidationResults =
+                validationResultRepository.findBySubmissionIdAndDataTypeIdAndHasWarning(
+                        submissionId, dataTypeId, true, pageable);
+        return getPageOfSubmittablesByUuids(pageable, pageOfValidationResults);
+    }
+
+    private Page<T> getPageOfSubmittablesByUuids(Pageable pageable, Page<ValidationResult> pageOfValidationResults) {
+        List<String> entityUuids = pageOfValidationResults.map(ValidationResult::getEntityUuid).getContent();
+        long totalItemsCount = pageOfValidationResults.getTotalElements();
+
+        List<T> submittablesWithWarnings = getListOfsubmittablesByEntityUuids(entityUuids, pageable);
+        return new PageImpl<T>(submittablesWithWarnings, pageable, totalItemsCount);
     }
 
     private long getTotalItemCountByTeams(List<String> teamNames) {
@@ -103,6 +130,21 @@ public class SubmittablesAggregateSupport<T extends StoredSubmittable> {
         return aggregationResults.getMappedResults();
     }
 
+    private List<T> getListOfsubmittablesByEntityUuids(List<String> entityUuids, Pageable pageable) {
+        final List<AggregationOperation> aggOps = new ArrayList<>(Arrays.asList(
+                entityUuidMatchOperation(entityUuids)
+        ));
+
+        if (pageable.getSort() != null) {
+            aggOps.add(new SortOperation(pageable.getSort()));
+        }
+
+        AggregationResults aggregationResults = mongoTemplate.aggregate(Aggregation.newAggregation(
+                aggOps), clazz, clazz);
+
+        return aggregationResults.getMappedResults();
+    }
+
     private GroupOperation groupByAliasWithFirstItem() {
         return group("alias", "team.name").first("$$ROOT").as("first");
     }
@@ -115,9 +157,11 @@ public class SubmittablesAggregateSupport<T extends StoredSubmittable> {
         return Aggregation.sort(Sort.Direction.DESC, "alias").and(Sort.Direction.DESC, "team.name").and(Sort.Direction.DESC, "createdDate");
     }
 
-
     private MatchOperation teamMatchOperation(List<String> teamNames) {
         return match(where("team.name").in(teamNames));
     }
 
+    private MatchOperation entityUuidMatchOperation(List<String> entityUuids) {
+        return match(where("_id").in(entityUuids));
+    }
 }
