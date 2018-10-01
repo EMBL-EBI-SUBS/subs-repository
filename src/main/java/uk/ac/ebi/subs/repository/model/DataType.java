@@ -31,6 +31,14 @@ public class DataType implements Identifiable<String> {
         this.validationSchema = validationSchema.toString();
     }
 
+    @JsonRawValue
+    private String exampleDocuments;
+
+    @JsonSetter("exampleDocuments")
+    public void setExampleDocument(JsonNode exampleDocuments) {
+        this.exampleDocuments = exampleDocuments.toString();
+    }
+
     private Set<RefRequirement> refRequirements;
 
     private List<String> requiredValidationAuthors;
