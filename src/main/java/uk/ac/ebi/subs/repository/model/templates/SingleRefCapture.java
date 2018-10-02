@@ -8,35 +8,26 @@ import org.json.JSONObject;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by Dave on 18/10/2017.
- */
-@Builder(toBuilder = true)
 @Data
-public class FieldCapture implements Capture {
+@Builder(toBuilder = true)
+public class SingleRefCapture implements Capture {
+
+    @NonNull
+    private String refKey;
+    private String displayName;
+    private boolean required;
 
     @Override
     public Capture copy() {
         return this.toBuilder().build();
     }
 
-    @NonNull
-    private String fieldName;
-
-    @Builder.Default
-    private JsonFieldType fieldType = JsonFieldType.String;
-
-    @Builder.Default
-    private boolean required = false;
-
-    private String displayName;
-
     @Override
     public int capture(int position, List<String> headers, List<String> values, JSONObject document) {
         String value = values.get(position);
 
         if (value != null) {
-            fieldType.addValueToDocument(fieldName, value, document);
+            addRef(value,document);
         }
         return ++position;
     }
@@ -48,4 +39,13 @@ public class FieldCapture implements Capture {
 
         return ++position;
     }
+
+
+    private void addRef(String value, JSONObject document){
+        JSONObject  ref = new JSONObject();
+        ref.put("alias",value);
+        document.put(refKey,ref);
+    }
+
+
 }
