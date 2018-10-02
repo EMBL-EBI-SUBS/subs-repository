@@ -2,6 +2,7 @@ package uk.ac.ebi.subs.repository.model.templates;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NonNull;
 import org.json.JSONObject;
 
 import java.util.Collections;
@@ -11,6 +12,7 @@ import java.util.List;
 @Builder(toBuilder = true)
 public class SingleRefCapture implements Capture {
 
+    @NonNull
     private String refKey;
     private String displayName;
     private boolean required;
@@ -38,10 +40,6 @@ public class SingleRefCapture implements Capture {
         return ++position;
     }
 
-    @Override
-    public List<String> expectedColumnHeaders() {
-        return Collections.emptyList();
-    }
 
     private void addRef(String value, JSONObject document){
         JSONObject  ref = new JSONObject();

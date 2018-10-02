@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.json.JSONObject;
 
+import java.util.Collections;
 import java.util.List;
 
 @JsonTypeInfo(
@@ -29,9 +30,13 @@ public interface Capture {
     default void setCaptureInList(int position, List<Capture> captures, String header){
         Capture cap = this;
         captures.set(position,cap);
-
     }
-
-    List<String> expectedColumnHeaders();
-
+    /**
+     *
+     * @return a list of column headers, in addition to the displayName. This is useful for captures that take multiple
+     * columns
+     */
+    default List<String> expectedColumnHeaders() {
+        return Collections.emptyList();
+    }
 }

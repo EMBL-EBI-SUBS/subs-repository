@@ -40,11 +40,6 @@ public class NoOpCapture implements Capture {
     }
 
     @Override
-    public List<String> expectedColumnHeaders() {
-        return Collections.emptyList();
-    }
-
-    @Override
     public boolean isRequired() {
         return false;
     }

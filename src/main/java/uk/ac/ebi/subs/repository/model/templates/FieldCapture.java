@@ -48,9 +48,4 @@ public class FieldCapture implements Capture {
 
         return ++position;
     }
-
-    @Override
-    public List<String> expectedColumnHeaders() {
-        return Collections.emptyList();
-    }
 }
