@@ -95,7 +95,7 @@ public class AttributeCapture implements Capture {
     }
 
     @Override
-    public List<String> expectedColumnHeaders() {
+    public List<String> additionalExpectedColumnHeaders() {
         List<String> columnHeaders = new ArrayList<>();
 
         if(allowUnits){

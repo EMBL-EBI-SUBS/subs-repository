@@ -36,7 +36,7 @@ public interface Capture {
      * @return a list of column headers, in addition to the displayName. This is useful for captures that take multiple
      * columns
      */
-    default List<String> expectedColumnHeaders() {
+    default List<String> additionalExpectedColumnHeaders() {
         return Collections.emptyList();
     }
 }
