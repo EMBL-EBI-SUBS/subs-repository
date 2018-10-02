@@ -3,6 +3,7 @@ package uk.ac.ebi.subs.repository.model.templates;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Collections;
@@ -10,12 +11,15 @@ import java.util.List;
 
 @Data
 @Builder(toBuilder = true)
-public class SingleRefCapture implements Capture {
+public class RefCapture implements Capture {
 
     @NonNull
     private String refKey;
     private String displayName;
     private boolean required;
+
+    @Builder.Default
+    private boolean asList = false;
 
     @Override
     public Capture copy() {
@@ -42,10 +46,32 @@ public class SingleRefCapture implements Capture {
 
 
     private void addRef(String value, JSONObject document){
-        JSONObject  ref = new JSONObject();
-        ref.put("alias",value);
-        document.put(refKey,ref);
+        if (asList){
+            addListRef(value,document);
+        }
+        else {
+            addSingleRef(value,document);
+        }
+
     }
 
+    private void addSingleRef(String value, JSONObject document){
+        document.put(refKey,ref(value));
+    }
+
+    private void addListRef(String value, JSONObject document){
+        if (!document.has(refKey)){
+            document.put(refKey,new JSONArray());
+        }
+
+        JSONArray array = document.getJSONArray(refKey);
+        array.put(ref(value));
+    }
+
+    private JSONObject ref(String value){
+        JSONObject  ref = new JSONObject();
+        ref.put("alias",value);
+        return ref;
+    }
 
 }
