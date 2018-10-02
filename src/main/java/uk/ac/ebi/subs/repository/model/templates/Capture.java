@@ -15,7 +15,8 @@ import java.util.List;
         @JsonSubTypes.Type(value = AttributeCapture.class, name = "attribute"),
         @JsonSubTypes.Type(value = FieldCapture.class, name = "field"),
         @JsonSubTypes.Type(value = NoOpCapture.class, name = "noop"),
-        @JsonSubTypes.Type(value = RefCapture.class, name = "singleRef")
+        @JsonSubTypes.Type(value = RefCapture.class, name = "ref"),
+        @JsonSubTypes.Type(value = FileCapture.class, name = "file")
 })
 public interface Capture {
     int capture(int position, List<String> headers, List<String> values, JSONObject document);
