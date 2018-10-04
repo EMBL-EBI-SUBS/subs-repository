@@ -2,8 +2,6 @@ package uk.ac.ebi.subs.repository.model.templates;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -13,9 +11,7 @@ import java.util.ListIterator;
 
 @Data
 @Builder(toBuilder = true)
-@NoArgsConstructor
 public class FileCapture implements Capture {
-
 
 
     private String displayName;
@@ -53,45 +49,43 @@ public class FileCapture implements Capture {
         files.put(file);
 
         String value = values.get(position);
-        file.put(NAME_FIELD_NAME,value);
+        file.put(NAME_FIELD_NAME, value);
 
-        return parseDependentColumns(position,headers,values,file);
+        return parseDependentColumns(position, headers, values, file);
     }
 
-    private int parseDependentColumns(int position, List<String> headers, List<String> values, JSONObject file){
+    private int parseDependentColumns(int position, List<String> headers, List<String> values, JSONObject file) {
         position++;
 
-        while(position < headers.size()){
+        while (position < headers.size()) {
             String header = headers.get(position).trim().toLowerCase();
             String value = values.get(position);
 
-            if (allowLabel && header.toLowerCase().equals( LABEL_COLUMN_NAME)){
-                file.put(LABEL_FIELD_NAME,value);
-            }
-            else if (allowType && header.toLowerCase().equals(TYPE_COLUMN_NAME)){
-                file.put(TYPE_FIELD_NAME,value);
-            }
-            else {
+            if (allowLabel && header.toLowerCase().equals(LABEL_COLUMN_NAME)) {
+                file.put(LABEL_FIELD_NAME, value);
+            } else if (allowType && header.toLowerCase().equals(TYPE_COLUMN_NAME)) {
+                file.put(TYPE_FIELD_NAME, value);
+            } else {
                 return position;
             }
 
             position++;
         }
 
-        if (defaultLabel != null && !file.has(LABEL_FIELD_NAME)){
-            file.put(LABEL_FIELD_NAME,defaultLabel);
+        if (defaultLabel != null && !file.has(LABEL_FIELD_NAME)) {
+            file.put(LABEL_FIELD_NAME, defaultLabel);
         }
-        if (defaultType != null && !file.has(TYPE_FIELD_NAME)){
-            file.put(TYPE_FIELD_NAME,defaultType);
+        if (defaultType != null && !file.has(TYPE_FIELD_NAME)) {
+            file.put(TYPE_FIELD_NAME, defaultType);
         }
 
         return position;
     }
 
 
-    private JSONArray ensureArray(JSONObject document,String arrayFieldName) {
+    private JSONArray ensureArray(JSONObject document, String arrayFieldName) {
 
-        if (!document.has(arrayFieldName)){
+        if (!document.has(arrayFieldName)) {
             document.put(arrayFieldName, new JSONArray());
         }
 
@@ -100,40 +94,36 @@ public class FileCapture implements Capture {
     }
 
 
-
     @Override
     public int map(int position, List<Capture> captures, List<String> headers) {
 
-        this.setCaptureInList(position,captures,headers.get(position));
+        this.setCaptureInList(position, captures, headers.get(position));
 
         position++;
         ListIterator<String> headerIterator = headers.listIterator(position);
 
-        while(headerIterator.hasNext()){
+        while (headerIterator.hasNext()) {
             position = headerIterator.nextIndex();
             String header = headerIterator.next().trim().toLowerCase();
 
-            if (allowLabel && header.toLowerCase().equals(LABEL_COLUMN_NAME)){
+            if (allowLabel && header.toLowerCase().equals(LABEL_COLUMN_NAME)) {
 
                 NoOpCapture unitsCapture = NoOpCapture.builder()
-                        .displayName( this.getDisplayName().concat(" label") )
+                        .displayName(this.getDisplayName().concat(" label"))
                         .build();
 
-                unitsCapture.setCaptureInList(position,captures,header);
+                unitsCapture.setCaptureInList(position, captures, header);
 
 
-
-            }
-            else if (allowType && header.toLowerCase().equals(TYPE_COLUMN_NAME)){
+            } else if (allowType && header.toLowerCase().equals(TYPE_COLUMN_NAME)) {
 
                 NoOpCapture termsCapture = NoOpCapture.builder()
-                        .displayName( this.getDisplayName().concat(" type") )
+                        .displayName(this.getDisplayName().concat(" type"))
                         .build();
 
-                termsCapture.setCaptureInList(position,captures,header);
+                termsCapture.setCaptureInList(position, captures, header);
 
-            }
-            else{
+            } else {
                 return position;
             }
         }
@@ -145,10 +135,10 @@ public class FileCapture implements Capture {
     public List<String> additionalExpectedColumnHeaders() {
         List<String> columnHeaders = new ArrayList<>();
 
-        if(allowLabel){
+        if (allowLabel) {
             columnHeaders.add(LABEL_COLUMN_NAME);
         }
-        if (allowType){
+        if (allowType) {
             columnHeaders.add(TYPE_COLUMN_NAME);
         }
 

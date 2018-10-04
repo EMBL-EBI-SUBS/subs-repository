@@ -13,7 +13,6 @@ import java.util.ListIterator;
 
 @Data
 @Builder(toBuilder = true)
-@NoArgsConstructor
 public class AttributeCapture implements Capture {
 
     @Override

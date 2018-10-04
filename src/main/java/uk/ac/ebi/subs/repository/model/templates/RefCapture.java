@@ -12,7 +12,6 @@ import java.util.List;
 
 @Data
 @Builder(toBuilder = true)
-@NoArgsConstructor
 public class RefCapture implements Capture {
 
     @NonNull

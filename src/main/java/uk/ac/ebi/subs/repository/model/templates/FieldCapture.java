@@ -14,7 +14,6 @@ import java.util.List;
  */
 @Builder(toBuilder = true)
 @Data
-@NoArgsConstructor
 public class FieldCapture implements Capture {
 
     @Override
