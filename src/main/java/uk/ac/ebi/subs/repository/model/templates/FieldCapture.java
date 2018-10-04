@@ -2,6 +2,7 @@ package uk.ac.ebi.subs.repository.model.templates;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.json.JSONObject;
 
@@ -13,6 +14,7 @@ import java.util.List;
  */
 @Builder(toBuilder = true)
 @Data
+@NoArgsConstructor
 public class FieldCapture implements Capture {
 
     @Override

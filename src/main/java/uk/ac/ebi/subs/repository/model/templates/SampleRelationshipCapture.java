@@ -2,6 +2,7 @@ package uk.ac.ebi.subs.repository.model.templates;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,6 +12,7 @@ import java.util.ListIterator;
 
 @Data
 @Builder(toBuilder = true)
+@NoArgsConstructor
 public class SampleRelationshipCapture implements Capture {
 
     private static final String SAMPLE_RELATIONSHIP_ATTRIBUTE_NAME = "sampleRelationships";
