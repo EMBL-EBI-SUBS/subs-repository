@@ -25,11 +25,7 @@ public class Sample extends uk.ac.ebi.subs.data.submittable.Sample implements St
         return this.getSampleRelationships().stream().map(sr -> asRef(sr));
     }
     private static AbstractSubsRef asRef(SampleRelationship sr){
-        AbstractSubsRef ref = new SampleRef();
-        ref.setAccession(sr.getAccession());
-        ref.setAlias(sr.getAlias());
-        ref.setTeam(sr.getTeam());
-        return ref;
+        return sr;
     }
 
     @DBRef
