@@ -81,7 +81,9 @@ public class AttributeCapture implements Capture {
         valuesArray.put(attribute);
 
         String value = values.get(position);
-        attribute.put("value", value);
+        if (value != null && !value.isEmpty()) {
+            attribute.put("value", value);
+        }
 
         return parseDependentColumns(position, headers, values, attribute);
     }

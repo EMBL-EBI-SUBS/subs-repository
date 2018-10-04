@@ -39,11 +39,14 @@ public class SampleRelationshipCapture implements Capture {
     public int capture(int position, List<String> headers, List<String> values, JSONObject document) {
         JSONArray relationships = ensureArray(document, SAMPLE_RELATIONSHIP_ATTRIBUTE_NAME);
 
-        JSONObject relationship = new JSONObject();
-        relationships.put(relationship);
+        JSONObject relationship = null;
 
         String value = values.get(position);
-        relationship.put(ALIAS_FIELD_NAME, value);
+        if (value != null && !value.isEmpty()) {
+            relationship = new JSONObject();
+            relationships.put(relationship);
+            relationship.put(ALIAS_FIELD_NAME, value);
+        }
 
         return parseDependentColumns(position, headers, values, relationship);
     }
@@ -55,7 +58,7 @@ public class SampleRelationshipCapture implements Capture {
             String header = headers.get(position).trim().toLowerCase();
             String value = values.get(position);
 
-            if (allowRelationshipNature && header.toLowerCase().equals(RELATIONSHIP_NATURE_COLUMN_NAME)) {
+            if (relationship != null && allowRelationshipNature && header.toLowerCase().equals(RELATIONSHIP_NATURE_COLUMN_NAME)) {
                 relationship.put(RELATIONSHIP_NATURE_FIELD_NAME, value);
             } else {
                 return position;
@@ -64,7 +67,7 @@ public class SampleRelationshipCapture implements Capture {
             position++;
         }
 
-        if (defaultRelationship != null && !relationship.has(RELATIONSHIP_NATURE_FIELD_NAME)) {
+        if (relationship != null &&  defaultRelationship != null && !relationship.has(RELATIONSHIP_NATURE_FIELD_NAME)) {
             relationship.put(RELATIONSHIP_NATURE_FIELD_NAME, defaultRelationship);
         }
 

@@ -32,7 +32,7 @@ public class RefCapture implements Capture {
     public int capture(int position, List<String> headers, List<String> values, JSONObject document) {
         String value = values.get(position);
 
-        if (value != null) {
+        if (value != null && !value.isEmpty()) {
             addRef(value, document);
         }
         return ++position;

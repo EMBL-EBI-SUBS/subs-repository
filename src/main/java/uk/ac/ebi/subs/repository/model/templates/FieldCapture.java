@@ -31,7 +31,7 @@ public class FieldCapture implements Capture {
     public int capture(int position, List<String> headers, List<String> values, JSONObject document) {
         String value = values.get(position);
 
-        if (value != null) {
+        if (value != null && !value.isEmpty()) {
             fieldType.addValueToDocument(fieldName, value, document);
         }
         return ++position;
