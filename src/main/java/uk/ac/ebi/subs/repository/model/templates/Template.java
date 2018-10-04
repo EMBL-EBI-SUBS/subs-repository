@@ -1,6 +1,5 @@
 package uk.ac.ebi.subs.repository.model.templates;
 
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.LinkedHashMap;
@@ -20,6 +19,10 @@ public class Template {
 
     private static class CaseInsensitiveMap extends LinkedHashMap<String, Capture> {
 
+        private static String mungeKey(Object key) {
+            return key.toString().toLowerCase();
+        }
+
         public Capture get(Object key) {
             return super.get(mungeKey(key));
         }
@@ -31,10 +34,6 @@ public class Template {
         @Override
         public boolean containsKey(Object key) {
             return super.containsKey(mungeKey(key));
-        }
-
-        private static String mungeKey(Object key) {
-            return key.toString().toLowerCase();
         }
 
 

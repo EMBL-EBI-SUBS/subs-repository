@@ -2,11 +2,9 @@ package uk.ac.ebi.subs.repository.model.templates;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.json.JSONObject;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,21 +14,18 @@ import java.util.List;
 @Data
 public class FieldCapture implements Capture {
 
+    @NonNull
+    private String fieldName;
+    @Builder.Default
+    private JsonFieldType fieldType = JsonFieldType.String;
+    @Builder.Default
+    private boolean required = false;
+    private String displayName;
+
     @Override
     public Capture copy() {
         return this.toBuilder().build();
     }
-
-    @NonNull
-    private String fieldName;
-
-    @Builder.Default
-    private JsonFieldType fieldType = JsonFieldType.String;
-
-    @Builder.Default
-    private boolean required = false;
-
-    private String displayName;
 
     @Override
     public int capture(int position, List<String> headers, List<String> values, JSONObject document) {
@@ -45,7 +40,7 @@ public class FieldCapture implements Capture {
     @Override
     public int map(int position, List<Capture> captures, List<String> headers) {
 
-        this.setCaptureInList(position,captures,headers.get(position));
+        this.setCaptureInList(position, captures, headers.get(position));
 
         return ++position;
     }

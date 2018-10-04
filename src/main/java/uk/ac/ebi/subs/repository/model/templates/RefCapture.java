@@ -2,12 +2,10 @@ package uk.ac.ebi.subs.repository.model.templates;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -35,7 +33,7 @@ public class RefCapture implements Capture {
         String value = values.get(position);
 
         if (value != null) {
-            addRef(value,document);
+            addRef(value, document);
         }
         return ++position;
     }
@@ -43,38 +41,37 @@ public class RefCapture implements Capture {
     @Override
     public int map(int position, List<Capture> captures, List<String> headers) {
 
-        this.setCaptureInList(position,captures,headers.get(position));
+        this.setCaptureInList(position, captures, headers.get(position));
 
         return ++position;
     }
 
 
-    private void addRef(String value, JSONObject document){
-        if (asList){
-            addListRef(value,document);
-        }
-        else {
-            addSingleRef(value,document);
+    private void addRef(String value, JSONObject document) {
+        if (asList) {
+            addListRef(value, document);
+        } else {
+            addSingleRef(value, document);
         }
 
     }
 
-    private void addSingleRef(String value, JSONObject document){
-        document.put(refKey,ref(value));
+    private void addSingleRef(String value, JSONObject document) {
+        document.put(refKey, ref(value));
     }
 
-    private void addListRef(String value, JSONObject document){
-        if (!document.has(refKey)){
-            document.put(refKey,new JSONArray());
+    private void addListRef(String value, JSONObject document) {
+        if (!document.has(refKey)) {
+            document.put(refKey, new JSONArray());
         }
 
         JSONArray array = document.getJSONArray(refKey);
         array.put(ref(value));
     }
 
-    private JSONObject ref(String value){
-        JSONObject  ref = new JSONObject();
-        ref.put("alias",value);
+    private JSONObject ref(String value) {
+        JSONObject ref = new JSONObject();
+        ref.put("alias", value);
         return ref;
     }
 

@@ -2,7 +2,6 @@ package uk.ac.ebi.subs.repository.model.templates;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -44,30 +43,29 @@ public class SampleRelationshipCapture implements Capture {
         relationships.put(relationship);
 
         String value = values.get(position);
-        relationship.put(ALIAS_FIELD_NAME,value);
+        relationship.put(ALIAS_FIELD_NAME, value);
 
-        return parseDependentColumns(position,headers,values,relationship);
+        return parseDependentColumns(position, headers, values, relationship);
     }
 
-    private int parseDependentColumns(int position, List<String> headers, List<String> values, JSONObject relationship){
+    private int parseDependentColumns(int position, List<String> headers, List<String> values, JSONObject relationship) {
         position++;
 
-        while(position < headers.size()){
+        while (position < headers.size()) {
             String header = headers.get(position).trim().toLowerCase();
             String value = values.get(position);
 
-            if (allowRelationshipNature && header.toLowerCase().equals(RELATIONSHIP_NATURE_COLUMN_NAME)){
-                relationship.put(RELATIONSHIP_NATURE_FIELD_NAME,value);
-            }
-            else {
+            if (allowRelationshipNature && header.toLowerCase().equals(RELATIONSHIP_NATURE_COLUMN_NAME)) {
+                relationship.put(RELATIONSHIP_NATURE_FIELD_NAME, value);
+            } else {
                 return position;
             }
 
             position++;
         }
 
-        if (defaultRelationship != null && !relationship.has(RELATIONSHIP_NATURE_FIELD_NAME)){
-            relationship.put(RELATIONSHIP_NATURE_FIELD_NAME,defaultRelationship);
+        if (defaultRelationship != null && !relationship.has(RELATIONSHIP_NATURE_FIELD_NAME)) {
+            relationship.put(RELATIONSHIP_NATURE_FIELD_NAME, defaultRelationship);
         }
 
         return position;
@@ -76,7 +74,7 @@ public class SampleRelationshipCapture implements Capture {
 
     private JSONArray ensureArray(JSONObject document, String arrayFieldName) {
 
-        if (!document.has(arrayFieldName)){
+        if (!document.has(arrayFieldName)) {
             document.put(arrayFieldName, new JSONArray());
         }
 
@@ -85,31 +83,28 @@ public class SampleRelationshipCapture implements Capture {
     }
 
 
-
     @Override
     public int map(int position, List<Capture> captures, List<String> headers) {
 
-        this.setCaptureInList(position,captures,headers.get(position));
+        this.setCaptureInList(position, captures, headers.get(position));
 
         position++;
         ListIterator<String> headerIterator = headers.listIterator(position);
 
-        while(headerIterator.hasNext()){
+        while (headerIterator.hasNext()) {
             position = headerIterator.nextIndex();
             String header = headerIterator.next().trim().toLowerCase();
 
-            if (allowRelationshipNature && header.toLowerCase().equals(RELATIONSHIP_NATURE_COLUMN_NAME)){
+            if (allowRelationshipNature && header.toLowerCase().equals(RELATIONSHIP_NATURE_COLUMN_NAME)) {
 
                 NoOpCapture unitsCapture = NoOpCapture.builder()
-                        .displayName( this.getDisplayName().concat(" relationship nature") )
+                        .displayName(this.getDisplayName().concat(" relationship nature"))
                         .build();
 
-                unitsCapture.setCaptureInList(position,captures,header);
+                unitsCapture.setCaptureInList(position, captures, header);
 
 
-
-            }
-            else{
+            } else {
                 return position;
             }
         }
@@ -121,7 +116,7 @@ public class SampleRelationshipCapture implements Capture {
     public List<String> additionalExpectedColumnHeaders() {
         List<String> columnHeaders = new ArrayList<>();
 
-        if(allowRelationshipNature){
+        if (allowRelationshipNature) {
             columnHeaders.add(RELATIONSHIP_NATURE_COLUMN_NAME);
         }
 

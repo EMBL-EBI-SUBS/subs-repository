@@ -17,9 +17,17 @@ public enum JsonFieldType {
     Boolean;
 
 
+    private static final Map<String, Boolean> booleanTextValues;
+
+    static {
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("true", true);
+        map.put("false", false);
+        booleanTextValues = Collections.unmodifiableMap(map);
+    }
 
     public void addValueToDocument(String fieldName, String value, JSONObject document) throws NumberFormatException {
-          switch (this) {
+        switch (this) {
             case String:
                 document.put(fieldName, value);
                 break;
@@ -40,13 +48,5 @@ public enum JsonFieldType {
                 throw new IllegalArgumentException("cannot add value for type: " + this.name());
         }
 
-    }
-
-    private static final Map<String,Boolean> booleanTextValues;
-    static {
-        Map<String,Boolean> map = new HashMap<>();
-        map.put("true", true);
-        map.put("false", false);
-        booleanTextValues = Collections.unmodifiableMap(map);
     }
 }

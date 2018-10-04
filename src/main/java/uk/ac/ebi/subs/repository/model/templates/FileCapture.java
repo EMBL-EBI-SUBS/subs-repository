@@ -14,27 +14,23 @@ import java.util.ListIterator;
 public class FileCapture implements Capture {
 
 
-    private String displayName;
-
-    @Builder.Default
-    private boolean required = false;
-
-    @Builder.Default
-    private boolean allowLabel = false;
-    @Builder.Default
-    private boolean allowType = false;
-
-    @Builder.Default
-    private String defaultLabel = null;
-    @Builder.Default
-    private String defaultType = null;
-
     private static final String LABEL_COLUMN_NAME = "label";
     private static final String TYPE_COLUMN_NAME = "type";
     private static final String FILES_ATTRIBUTE_NAME = "files";
     private static final String NAME_FIELD_NAME = "name";
     private static final String LABEL_FIELD_NAME = "label";
     private static final String TYPE_FIELD_NAME = "type";
+    private String displayName;
+    @Builder.Default
+    private boolean required = false;
+    @Builder.Default
+    private boolean allowLabel = false;
+    @Builder.Default
+    private boolean allowType = false;
+    @Builder.Default
+    private String defaultLabel = null;
+    @Builder.Default
+    private String defaultType = null;
 
     @Override
     public Capture copy() {
