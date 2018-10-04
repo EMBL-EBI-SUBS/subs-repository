@@ -17,7 +17,9 @@ public class FileCapture implements Capture {
 
 
     private String displayName;
-    private boolean required;
+
+    @Builder.Default
+    private boolean required = false;
 
     @Builder.Default
     private boolean allowLabel = false;

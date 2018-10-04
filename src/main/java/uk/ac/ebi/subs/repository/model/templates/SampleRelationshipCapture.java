@@ -13,17 +13,21 @@ import java.util.ListIterator;
 @Builder(toBuilder = true)
 public class SampleRelationshipCapture implements Capture {
 
-
     private static final String SAMPLE_RELATIONSHIP_ATTRIBUTE_NAME = "sampleRelationships";
     private static final String RELATIONSHIP_NATURE_FIELD_NAME = "relationshipNature";
     private static final String ALIAS_FIELD_NAME = "alias";
     private static final String RELATIONSHIP_NATURE_COLUMN_NAME = "relationship nature";
 
     private String displayName;
-    private boolean required;
 
-    private boolean allowRelationshipNature;
-    private String defaultRelationship;
+    @Builder.Default
+    private boolean required = false;
+
+    @Builder.Default
+    private boolean allowRelationshipNature = false;
+
+    @Builder.Default
+    private String defaultRelationship = null;
 
 
     @Override

@@ -15,8 +15,11 @@ public class RefCapture implements Capture {
 
     @NonNull
     private String refKey;
+
     private String displayName;
-    private boolean required;
+
+    @Builder.Default
+    private boolean required = false;
 
     @Builder.Default
     private boolean asList = false;
