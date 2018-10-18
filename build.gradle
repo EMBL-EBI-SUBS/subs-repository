@@ -11,11 +11,11 @@ buildscript {
 
 plugins {
     id 'com.sourcemuse.mongo' version '1.0.0'
-    id "org.springframework.boot" version "1.5.1.RELEASE"
+    id "org.springframework.boot" version "1.5.10.RELEASE"
 }
 
 group 'uk.ac.ebi.subs'
-version '2.17.0-SNAPSHOT'
+version '2.17.1-SNAPSHOT'
 
 
 apply plugin: 'java'
