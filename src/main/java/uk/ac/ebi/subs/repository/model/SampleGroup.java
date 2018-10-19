@@ -12,6 +12,7 @@ import uk.ac.ebi.subs.validator.data.ValidationResult;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 @CompoundIndexes({
@@ -133,5 +134,15 @@ public class SampleGroup extends uk.ac.ebi.subs.data.submittable.SampleGroup imp
 
     public void setLastModifiedBy(String lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
+    }
+
+    private Map<String,List<AbstractSubsRef>> references;
+
+    public void setReferences(Map<String, List<AbstractSubsRef>> references) {
+        this.references = references;
+    }
+
+    public Map<String, List<AbstractSubsRef>> getReferences() {
+        return references;
     }
 }

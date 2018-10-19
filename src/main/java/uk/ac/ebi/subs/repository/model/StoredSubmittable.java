@@ -7,6 +7,8 @@ import uk.ac.ebi.subs.data.submittable.Submittable;
 import uk.ac.ebi.subs.validator.data.ValidationResult;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 
@@ -53,5 +55,12 @@ public interface StoredSubmittable extends Submittable, Identifiable<String> {
     Checklist getChecklist();
 
     void setChecklist(Checklist checklist);
+
+    void setReferences(Map<String, List<AbstractSubsRef>> references);
+
+
+    Map<String, List<AbstractSubsRef>> getReferences();
+
+
 }
 

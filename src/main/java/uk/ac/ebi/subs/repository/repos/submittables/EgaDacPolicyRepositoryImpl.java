@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.subs.data.component.AbstractSubsRef;
 import uk.ac.ebi.subs.repository.model.EgaDacPolicy;
 import uk.ac.ebi.subs.repository.repos.submittables.support.SubmittablesAggregateSupport;
 import uk.ac.ebi.subs.validator.repository.ValidationResultRepository;
@@ -37,5 +38,10 @@ public class EgaDacPolicyRepositoryImpl implements SubmittableRepositoryCustom<E
     @Override
     public Page<EgaDacPolicy> findBySubmissionIdAndDataTypeIdWithWarnings(String submissionId, String dataTypeId, Pageable pageable) {
         return aggregateSupport.submittablesByDataTypeWithWarnings(submissionId, dataTypeId, pageable);
+    }
+
+    @Override
+    public List<EgaDacPolicy> findBySubmissionIdAndReference(String submissionId, AbstractSubsRef ref) {
+        return aggregateSupport.findBySubmissionIdAndReference(submissionId, ref);
     }
 }
