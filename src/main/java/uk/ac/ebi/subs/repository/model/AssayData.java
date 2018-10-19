@@ -9,6 +9,8 @@ import uk.ac.ebi.subs.data.component.AbstractSubsRef;
 import uk.ac.ebi.subs.validator.data.ValidationResult;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 @CompoundIndexes({
@@ -131,5 +133,15 @@ public class AssayData extends uk.ac.ebi.subs.data.submittable.AssayData impleme
 
     public void setLastModifiedBy(String lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
+    }
+
+    private Map<String,List<AbstractSubsRef>> references;
+
+    public void setReferences(Map<String, List<AbstractSubsRef>> references) {
+        this.references = references;
+    }
+
+    public Map<String, List<AbstractSubsRef>> getReferences() {
+        return references;
     }
 }

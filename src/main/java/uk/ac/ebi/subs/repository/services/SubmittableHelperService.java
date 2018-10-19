@@ -10,6 +10,7 @@ import uk.ac.ebi.subs.validator.repository.ValidationResultRepository;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class SubmittableHelperService {
@@ -28,6 +29,19 @@ public class SubmittableHelperService {
     public void setupNewSubmittable(StoredSubmittable submittable) {
         uuidAndTeamFromSubmissionSetUp(submittable);
         processingStatusAndValidationResultSetUp(submittable);
+        fillInReferences(submittable);
+    }
+
+    public static void fillInReferences(StoredSubmittable submittable) {
+
+        submittable.setReferences(
+                submittable.refs()
+                        .collect(Collectors.groupingBy(
+                                ref -> ref.getClass().getSimpleName()
+                                )
+                        )
+        );
+
     }
 
     public void uuidAndTeamFromSubmissionSetUp(StoredSubmittable submittable) {

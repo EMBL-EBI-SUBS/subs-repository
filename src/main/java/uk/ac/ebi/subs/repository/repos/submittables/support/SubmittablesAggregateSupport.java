@@ -15,6 +15,11 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.aggregation.SortOperation;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import uk.ac.ebi.subs.data.component.AbstractSubsRef;
+import uk.ac.ebi.subs.data.submittable.BaseSubmittable;
+import uk.ac.ebi.subs.data.submittable.Submittable;
 import uk.ac.ebi.subs.repository.model.StoredSubmittable;
 import uk.ac.ebi.subs.validator.data.ValidationResult;
 import uk.ac.ebi.subs.validator.repository.ValidationResultRepository;
@@ -42,6 +47,48 @@ public class SubmittablesAggregateSupport<T extends StoredSubmittable> {
         this.mongoTemplate = mongoTemplate;
         this.validationResultRepository = validationResultRepository;
         this.clazz = clazz;
+    }
+
+    /**
+     * find instances of T that are in the submission and have a reference matching ref
+     *
+     * @param submissionId
+     * @param ref
+     * @return
+     */
+    public List<T> findBySubmissionIdAndReference(String submissionId, AbstractSubsRef ref){
+
+        boolean haveAccession = ref.getAccession() != null;
+        boolean haveAlias = ref.getAlias() != null;
+
+        Criteria aliasMatch = Criteria.where("alias").is(ref.getAlias()).and("team").is(ref.getTeam());
+        Criteria accessionMatch = Criteria.where("accession").is(ref.getAccession());
+
+        Criteria elemMatchCriteria;
+
+
+        if (haveAccession && haveAlias){
+            elemMatchCriteria = new Criteria().orOperator(aliasMatch, accessionMatch);
+        }
+        else if (haveAccession){
+            elemMatchCriteria = accessionMatch;
+        }
+        else if (haveAlias){
+            elemMatchCriteria = aliasMatch;
+        }
+        else {
+            elemMatchCriteria = new Criteria();
+        }
+
+
+        Query query = new Query();
+        query.addCriteria(
+                Criteria.where("submission.$id").is(submissionId)
+                        .and("references."+ref.getClass().getSimpleName()).elemMatch(elemMatchCriteria)
+        );
+
+
+        return mongoTemplate.find(query,clazz);
     }
 
     public Page<T> itemsByTeam(String teamName, Pageable pageable) {

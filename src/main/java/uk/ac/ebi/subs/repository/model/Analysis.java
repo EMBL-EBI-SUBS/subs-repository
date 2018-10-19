@@ -1,5 +1,6 @@
 package uk.ac.ebi.subs.repository.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -10,6 +11,8 @@ import uk.ac.ebi.subs.data.component.AbstractSubsRef;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @CompoundIndexes({
@@ -53,6 +56,17 @@ public class Analysis extends uk.ac.ebi.subs.data.submittable.Analysis implement
     private DataType dataType;
     @DBRef
     private Checklist checklist;
+
+    private Map<String,List<AbstractSubsRef>> references;
+
+    public void setReferences(Map<String, List<AbstractSubsRef>> references) {
+        this.references = references;
+    }
+
+    public Map<String, List<AbstractSubsRef>> getReferences() {
+        return references;
+    }
+
 
     public ValidationResult getValidationResult() {
         return validationResult;

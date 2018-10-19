@@ -4,10 +4,13 @@ package uk.ac.ebi.subs.model;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import uk.ac.ebi.subs.repository.model.sheets.Spreadsheet;
 
 import java.util.Optional;
 
+@RunWith(SpringJUnit4ClassRunner.class)
 public class SheetTrimmingTest {
 
     private Spreadsheet sheet;
