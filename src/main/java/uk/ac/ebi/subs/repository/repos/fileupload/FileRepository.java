@@ -50,7 +50,7 @@ public interface FileRepository extends MongoRepository<File, String> {
     Page<File> findBySubmissionId(@P("submissionId") @Param("submissionId") String submissionId, Pageable pageable);
 
     Stream<File> findBySubmissionIdAndStatusNot(
-            @Param("submissionId") String submissionId, @Param("ststus") FileStatus fileStatus);
+            @Param("submissionId") String submissionId, @Param("status") FileStatus fileStatus);
 
     @PreAuthorizeSubmissionIdTeamName
     File findByFilenameAndSubmissionId(String filename, String submissionId);
