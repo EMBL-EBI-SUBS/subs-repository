@@ -12,7 +12,6 @@ import uk.ac.ebi.subs.repository.model.fileupload.File;
 import uk.ac.ebi.subs.repository.security.PreAuthorizeSubmissionIdTeamName;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * This is a MongoDB data REST repository for {@link File}s.
@@ -49,7 +48,7 @@ public interface FileRepository extends MongoRepository<File, String> {
     @PreAuthorizeSubmissionIdTeamName
     Page<File> findBySubmissionId(@P("submissionId") @Param("submissionId") String submissionId, Pageable pageable);
 
-    Stream<File> findBySubmissionIdAndStatusNot(
+    long countBySubmissionIdAndStatusNot(
             @Param("submissionId") String submissionId, @Param("status") FileStatus fileStatus);
 
     @PreAuthorizeSubmissionIdTeamName

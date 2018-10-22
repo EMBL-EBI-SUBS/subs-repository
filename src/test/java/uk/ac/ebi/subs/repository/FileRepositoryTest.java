@@ -15,12 +15,9 @@ import uk.ac.ebi.subs.repository.repos.fileupload.FileRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
@@ -122,16 +119,10 @@ public class FileRepositoryTest {
         createAndPersistFileIntoRepo(TUS_ID_3, FILENAME_3, SUBMISSION_ID_1, USER_1, FileStatus.UPLOADING);
         createAndPersistFileIntoRepo(TUS_ID_4, FILENAME_4, SUBMISSION_ID_1, USER_1, FileStatus.READY_FOR_ARCHIVE);
 
-        Stream<File> filesNotReadyToArchive =
-                fileRepository.findBySubmissionIdAndStatusNot(SUBMISSION_ID_1, FileStatus.READY_FOR_ARCHIVE);
+        long notReadyToArchiveCount =
+                fileRepository.countBySubmissionIdAndStatusNot(SUBMISSION_ID_1, FileStatus.READY_FOR_ARCHIVE);
 
-        int notReadyToArchiveCount = 0;
-        for (File file : filesNotReadyToArchive.collect(Collectors.toList())) {
-            assertThat(file.getStatus(), not(equalTo(FileStatus.READY_FOR_ARCHIVE)));
-            notReadyToArchiveCount++;
-        }
-
-        assertThat(notReadyToArchiveCount, is(equalTo(3)));
+        assertThat(notReadyToArchiveCount, is(equalTo(3L)));
     }
 
     private void cleanupRepository() {
