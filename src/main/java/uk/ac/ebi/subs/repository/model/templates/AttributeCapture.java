@@ -76,10 +76,10 @@ public class AttributeCapture implements Capture {
 
     @Override
     public int capture(int position, List<String> headers, List<String> values, JSONObject document) {
-        JSONObject attributes = ensureObject(document, ATTRIBUTES_FIELD_NAME);
+        JSONObject attributes = JsonUtils.ensureObject(document, ATTRIBUTES_FIELD_NAME);
 
         String name = headers.get(position);
-        JSONArray valuesArray = ensureArray(attributes, name);
+        JSONArray valuesArray = JsonUtils.ensureArray(attributes, name);
 
         JSONObject attribute = new JSONObject();
         valuesArray.put(attribute);
@@ -116,7 +116,7 @@ public class AttributeCapture implements Capture {
             if (header.toLowerCase().equals(UNITS_COLUMN_NAME)) {
                 attribute.put(UNITS_FIELD_NAME, value);
             } else if (header.toLowerCase().equals(TERMS_COLUMN_NAME)) {
-                JSONArray terms = ensureArray(attribute, TERMS_FIELD_NAME);
+                JSONArray terms = JsonUtils.ensureArray(attribute, TERMS_FIELD_NAME);
                 JSONObject term = new JSONObject();
                 term.put(URL_FIELD_NAME, value);
                 terms.put(term);
@@ -129,27 +129,5 @@ public class AttributeCapture implements Capture {
 
         return position;
     }
-
-
-    private JSONArray ensureArray(JSONObject document, String arrayFieldName) {
-
-        if (!document.has(arrayFieldName)) {
-            document.put(arrayFieldName, new JSONArray());
-        }
-
-        return document.getJSONArray(arrayFieldName);
-
-    }
-
-    private JSONObject ensureObject(JSONObject document, String objectFieldName) {
-
-        if (!document.has(objectFieldName)) {
-            document.put(objectFieldName, new JSONObject());
-        }
-
-        return document.getJSONObject(objectFieldName);
-
-    }
-
 
 }

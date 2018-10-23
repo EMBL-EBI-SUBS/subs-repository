@@ -43,7 +43,7 @@ public class SampleRelationshipCapture implements Capture {
 
     @Override
     public int capture(int position, List<String> headers, List<String> values, JSONObject document) {
-        JSONArray relationships = ensureArray(document, SAMPLE_RELATIONSHIP_ATTRIBUTE_NAME);
+        JSONArray relationships = JsonUtils.ensureArray(document, SAMPLE_RELATIONSHIP_ATTRIBUTE_NAME);
 
         JSONObject relationship = null;
 
@@ -79,18 +79,6 @@ public class SampleRelationshipCapture implements Capture {
 
         return position;
     }
-
-
-    private JSONArray ensureArray(JSONObject document, String arrayFieldName) {
-
-        if (!document.has(arrayFieldName)) {
-            document.put(arrayFieldName, new JSONArray());
-        }
-
-        return document.getJSONArray(arrayFieldName);
-
-    }
-
 
     @Override
     public int map(int position, List<Capture> captures, List<String> headers) {

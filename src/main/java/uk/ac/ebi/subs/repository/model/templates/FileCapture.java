@@ -46,7 +46,7 @@ public class FileCapture implements Capture {
 
     @Override
     public int capture(int position, List<String> headers, List<String> values, JSONObject document) {
-        JSONArray files = ensureArray(document, FILES_ATTRIBUTE_NAME);
+        JSONArray files = JsonUtils.ensureArray(document, FILES_ATTRIBUTE_NAME);
 
         JSONObject file = new JSONObject();
         files.put(file);
@@ -84,18 +84,6 @@ public class FileCapture implements Capture {
 
         return position;
     }
-
-
-    private JSONArray ensureArray(JSONObject document, String arrayFieldName) {
-
-        if (!document.has(arrayFieldName)) {
-            document.put(arrayFieldName, new JSONArray());
-        }
-
-        return document.getJSONArray(arrayFieldName);
-
-    }
-
 
     @Override
     public int map(int position, List<Capture> captures, List<String> headers) {

@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Capture a cell value to the alias field in a JSON structure conforming to the AbstractSubsRef component
+ *
  * @see uk.ac.ebi.subs.data.component.AbstractSubsRef
  */
 @Data
@@ -65,11 +66,7 @@ public class RefCapture implements Capture {
     }
 
     private void addListRef(String value, JSONObject document) {
-        if (!document.has(refKey)) {
-            document.put(refKey, new JSONArray());
-        }
-
-        JSONArray array = document.getJSONArray(refKey);
+        JSONArray array = JsonUtils.ensureArray(document, refKey);
         array.put(ref(value));
     }
 
