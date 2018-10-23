@@ -6,6 +6,10 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+/**
+ * This satisfies the Capture interface, but doesn't actually change the document at all. It's useful to
+ * fill in the column list when building up a spreadsheet template
+ */
 @Data
 @Builder(toBuilder = true)
 public class NoOpCapture implements Capture {

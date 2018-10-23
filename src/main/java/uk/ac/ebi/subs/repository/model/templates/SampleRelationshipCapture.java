@@ -9,6 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+/**
+ * Capture a cell value as the alias for a SampleRelationship, a cell adjacent (to the right) can be captured
+ * as the relationship nature, or the relationship nature can be set as a default.
+ *
+ * @see uk.ac.ebi.subs.data.component.SampleRelationship
+ */
 @Data
 @Builder(toBuilder = true)
 public class SampleRelationshipCapture implements Capture {

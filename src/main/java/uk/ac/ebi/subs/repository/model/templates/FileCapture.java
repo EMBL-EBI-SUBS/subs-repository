@@ -9,6 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+/**
+ * Map a cell from a spreadsheet to a JSON document matching the File component
+ * The primary column will provide the file name, it is also possible to have secondary columns for a label or type.
+ * You can also set default values for label or type.
+ *
+ * @see uk.ac.ebi.subs.data.component.File
+ */
 @Data
 @Builder(toBuilder = true)
 public class FileCapture implements Capture {

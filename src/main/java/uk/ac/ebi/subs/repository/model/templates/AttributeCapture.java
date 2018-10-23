@@ -9,7 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-
+/**
+ * Capture a column into a JSON structure that matches the Attribute component. Columns called 'units' or 'terms' to the
+ * immediate right of the primary column will be added to the attribute structure
+ * @see uk.ac.ebi.subs.data.component.Attribute
+ */
 @Data
 @Builder(toBuilder = true)
 public class AttributeCapture implements Capture {
