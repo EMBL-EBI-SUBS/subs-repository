@@ -52,7 +52,7 @@ public class AttributeCapture implements Capture {
             if (allowUnits && header.toLowerCase().equals(UNITS_COLUMN_NAME)) {
 
                 NoOpCapture unitsCapture = NoOpCapture.builder()
-                        .displayName(this.getDisplayName().concat(" units"))
+                        .displayName(UNITS_COLUMN_NAME)
                         .build();
 
                 unitsCapture.setCaptureInList(position, captures, header);
@@ -61,7 +61,7 @@ public class AttributeCapture implements Capture {
             } else if (allowTerms && header.toLowerCase().equals(TERMS_COLUMN_NAME)) {
 
                 NoOpCapture termsCapture = NoOpCapture.builder()
-                        .displayName(this.getDisplayName().concat(" ontology term"))
+                        .displayName(TERMS_COLUMN_NAME)
                         .build();
 
                 termsCapture.setCaptureInList(position, captures, header);
