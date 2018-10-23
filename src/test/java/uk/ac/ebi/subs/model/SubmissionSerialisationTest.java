@@ -4,14 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.runners.JUnit4;
 import uk.ac.ebi.subs.data.component.Contact;
 import uk.ac.ebi.subs.repository.model.Submission;
 
 import java.io.IOException;
 import java.util.Arrays;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(JUnit4.class)
 public class SubmissionSerialisationTest {
 
     ObjectMapper objectMapper = new ObjectMapper();
@@ -29,12 +29,12 @@ public class SubmissionSerialisationTest {
 
         String serialisedSubmission = objectMapper.writeValueAsString(s);
 
-        Submission deserialisedSubmission = objectMapper.readValue(serialisedSubmission,Submission.class);
+        Submission deserialisedSubmission = objectMapper.readValue(serialisedSubmission, Submission.class);
 
         String arbitaryJsonAfterDeser = deserialisedSubmission.getUiData();
 
-        Contact deserialisedContact = objectMapper.readValue(arbitaryJsonAfterDeser,Contact.class);
+        Contact deserialisedContact = objectMapper.readValue(arbitaryJsonAfterDeser, Contact.class);
 
-        Assert.assertEquals(arbitaryData,deserialisedContact);
+        Assert.assertEquals(arbitaryData, deserialisedContact);
     }
 }
