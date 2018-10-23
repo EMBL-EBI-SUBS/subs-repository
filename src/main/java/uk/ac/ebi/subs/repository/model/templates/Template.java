@@ -5,6 +5,9 @@ import lombok.Data;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * A description of requirements for a spreadsheet and mappings from a spreadsheet to a JSON document
+ */
 @Data
 public class Template {
 
