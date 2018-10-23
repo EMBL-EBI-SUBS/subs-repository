@@ -16,6 +16,7 @@ import uk.ac.ebi.subs.repository.repos.fileupload.FileRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -31,6 +32,7 @@ public class FileRepositoryTest {
     private static final String FILENAME_1 = "test_file.cram";
     private static final String FILENAME_2 = "test_file.bam";
     private static final String FILENAME_3 = "test_file2.bam";
+    private static final String FILENAME_4 = "test_file1.bam";
     private static final String SUBMISSION_ID_1 = "submissionID_12345";
     private static final String SUBMISSION_ID_2 = "submissionID_67890";
     private static final String SUBMISSION_ID_3 = "submissionID_11223";
@@ -108,6 +110,19 @@ public class FileRepositoryTest {
         assertEquals(uploadingFiles.getContent().get(0), files.get(2));
         assertEquals(uploadedFiles.getContent().get(0), files.get(0));
         assertEquals(uploadedFiles.getContent().get(1), files.get(3));
+    }
+
+    @Test
+    public void given3FilesFrom4NotReady_To_Archive_State__ReturnsThe3FilesWithNotReadyState() {
+        createAndPersistFileIntoRepo(TUS_ID_1, FILENAME_1, SUBMISSION_ID_1, USER_1, FileStatus.UPLOADED);
+        createAndPersistFileIntoRepo(TUS_ID_2, FILENAME_2, SUBMISSION_ID_1, USER_1, FileStatus.READY_FOR_CHECKSUM);
+        createAndPersistFileIntoRepo(TUS_ID_3, FILENAME_3, SUBMISSION_ID_1, USER_1, FileStatus.UPLOADING);
+        createAndPersistFileIntoRepo(TUS_ID_4, FILENAME_4, SUBMISSION_ID_1, USER_1, FileStatus.READY_FOR_ARCHIVE);
+
+        long notReadyToArchiveCount =
+                fileRepository.countBySubmissionIdAndStatusNot(SUBMISSION_ID_1, FileStatus.READY_FOR_ARCHIVE);
+
+        assertThat(notReadyToArchiveCount, is(equalTo(3L)));
     }
 
     private void cleanupRepository() {
