@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 /**
- * Created by Dave on 18/10/2017.
+ * Map a cell value to a single top level field in a JSON document
  */
 @Builder(toBuilder = true)
 @Data

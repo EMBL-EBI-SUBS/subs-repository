@@ -1,27 +1,31 @@
 package uk.ac.ebi.subs.model;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import uk.ac.ebi.subs.repository.model.templates.*;
+import org.junit.runners.JUnit4;
+import uk.ac.ebi.subs.repository.model.templates.AttributeCapture;
+import uk.ac.ebi.subs.repository.model.templates.FieldCapture;
+import uk.ac.ebi.subs.repository.model.templates.NoOpCapture;
+import uk.ac.ebi.subs.repository.model.templates.Template;
 
 import java.io.IOException;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
+@RunWith(JUnit4.class)
 public class TemplateSerialisationTest {
 
     private Template template;
-    @Autowired
+
     private ObjectMapper objectMapper;
 
     @Before
     public void buildUp() {
+        objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         template = new Template();
 
         template

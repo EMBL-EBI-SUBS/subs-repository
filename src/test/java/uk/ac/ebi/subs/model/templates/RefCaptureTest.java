@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import uk.ac.ebi.subs.repository.model.templates.RefCapture;
@@ -13,7 +14,7 @@ import uk.ac.ebi.subs.repository.model.templates.RefCapture;
 import java.util.Arrays;
 import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(JUnit4.class)
 public class RefCaptureTest {
 
     RefCapture singleRefCapture;

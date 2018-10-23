@@ -9,7 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-
+/**
+ * Capture a column into a JSON structure that matches the Attribute component. Columns called 'units' or 'terms' to the
+ * immediate right of the primary column will be added to the attribute structure
+ * @see uk.ac.ebi.subs.data.component.Attribute
+ */
 @Data
 @Builder(toBuilder = true)
 public class AttributeCapture implements Capture {
@@ -48,7 +52,7 @@ public class AttributeCapture implements Capture {
             if (allowUnits && header.toLowerCase().equals(UNITS_COLUMN_NAME)) {
 
                 NoOpCapture unitsCapture = NoOpCapture.builder()
-                        .displayName(this.getDisplayName().concat(" units"))
+                        .displayName(UNITS_COLUMN_NAME)
                         .build();
 
                 unitsCapture.setCaptureInList(position, captures, header);
@@ -57,7 +61,7 @@ public class AttributeCapture implements Capture {
             } else if (allowTerms && header.toLowerCase().equals(TERMS_COLUMN_NAME)) {
 
                 NoOpCapture termsCapture = NoOpCapture.builder()
-                        .displayName(this.getDisplayName().concat(" ontology term"))
+                        .displayName(TERMS_COLUMN_NAME)
                         .build();
 
                 termsCapture.setCaptureInList(position, captures, header);
@@ -72,10 +76,10 @@ public class AttributeCapture implements Capture {
 
     @Override
     public int capture(int position, List<String> headers, List<String> values, JSONObject document) {
-        JSONObject attributes = ensureObject(document, ATTRIBUTES_FIELD_NAME);
+        JSONObject attributes = JsonUtils.ensureObject(document, ATTRIBUTES_FIELD_NAME);
 
         String name = headers.get(position);
-        JSONArray valuesArray = ensureArray(attributes, name);
+        JSONArray valuesArray = JsonUtils.ensureArray(attributes, name);
 
         JSONObject attribute = new JSONObject();
         valuesArray.put(attribute);
@@ -112,7 +116,7 @@ public class AttributeCapture implements Capture {
             if (header.toLowerCase().equals(UNITS_COLUMN_NAME)) {
                 attribute.put(UNITS_FIELD_NAME, value);
             } else if (header.toLowerCase().equals(TERMS_COLUMN_NAME)) {
-                JSONArray terms = ensureArray(attribute, TERMS_FIELD_NAME);
+                JSONArray terms = JsonUtils.ensureArray(attribute, TERMS_FIELD_NAME);
                 JSONObject term = new JSONObject();
                 term.put(URL_FIELD_NAME, value);
                 terms.put(term);
@@ -125,27 +129,5 @@ public class AttributeCapture implements Capture {
 
         return position;
     }
-
-
-    private JSONArray ensureArray(JSONObject document, String arrayFieldName) {
-
-        if (!document.has(arrayFieldName)) {
-            document.put(arrayFieldName, new JSONArray());
-        }
-
-        return document.getJSONArray(arrayFieldName);
-
-    }
-
-    private JSONObject ensureObject(JSONObject document, String objectFieldName) {
-
-        if (!document.has(objectFieldName)) {
-            document.put(objectFieldName, new JSONObject());
-        }
-
-        return document.getJSONObject(objectFieldName);
-
-    }
-
 
 }
