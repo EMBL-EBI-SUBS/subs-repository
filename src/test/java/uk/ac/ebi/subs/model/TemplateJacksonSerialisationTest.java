@@ -15,7 +15,7 @@ import uk.ac.ebi.subs.repository.model.templates.Template;
 import java.io.IOException;
 
 @RunWith(JUnit4.class)
-public class TemplateSerialisationTest {
+public class TemplateJacksonSerialisationTest {
 
     private Template template;
 

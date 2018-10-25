@@ -1,12 +1,17 @@
 package uk.ac.ebi.subs.repository.model;
 
-import org.springframework.data.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import uk.ac.ebi.subs.validator.data.ValidationResult;
 import uk.ac.ebi.subs.data.component.AbstractSubsRef;
+import uk.ac.ebi.subs.validator.data.ValidationResult;
 
 import java.util.Collections;
 import java.util.Date;
@@ -137,6 +142,7 @@ public class Project extends uk.ac.ebi.subs.data.submittable.Project implements 
 
     private Map<String,List<AbstractSubsRef>> references;
 
+    @JsonIgnore
     public void setReferences(Map<String, List<AbstractSubsRef>> references) {
         this.references = references;
     }
