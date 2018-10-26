@@ -18,7 +18,7 @@ import java.util.List;
 public interface ChecklistRepository extends MongoRepository<Checklist, String>  {
 
     @RestResource(exported = true, path = "by-data-type-id", rel = "by-data-type-id")
-    Page<Checklist> findByDataTypeId(@P("dataTypeId") @Param("dataTypeId") String dataTypeId, Pageable pageable);
+    Page<Checklist> findByDataTypeId(@P("dataTypeId") @Param("dataTypeId") String dataTypeId);
 
     @Override
     @RestResource(exported = false) // Prevent exposing PUT /things and PATCH /things/:id through REST
