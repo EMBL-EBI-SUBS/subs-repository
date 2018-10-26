@@ -13,6 +13,7 @@ import org.springframework.util.Assert;
 import uk.ac.ebi.subs.repository.model.Checklist;
 import uk.ac.ebi.subs.repository.repos.ChecklistRepository;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -62,7 +63,7 @@ public class ChecklistRepositoryTest {
     @Test
     public void whenChecklistExistsForASpecificDataTypeId_ThenQueryReturnsAChecklist() {
         final String samplesDataTypeId = "samples";
-        Page<Checklist> samplesChecklistPage = checklistRepository.findByDataTypeId(samplesDataTypeId,new PageRequest(0, 10));
+        List<Checklist> samplesChecklistPage = checklistRepository.findByDataTypeId(samplesDataTypeId);
 
         Checklist samplesChecklist = samplesChecklistPage.iterator().next();
 
@@ -73,9 +74,9 @@ public class ChecklistRepositoryTest {
     @Test
     public void whenChecklistNotExistsForASpecificDataTypeId_ThenQueryResultIsNull() {
         final String nonExistingDataTypeId = "non existing data type ID";
-        Page<Checklist> emptyChecklistPage = checklistRepository.findByDataTypeId(nonExistingDataTypeId,new PageRequest(0, 10));
+        List<Checklist> emptyChecklistPage = checklistRepository.findByDataTypeId(nonExistingDataTypeId);
 
-        assertThat(emptyChecklistPage.getTotalElements(), is(equalTo(0L)));
+        assertThat(emptyChecklistPage.size(), is(equalTo(0)));
     }
 
 
