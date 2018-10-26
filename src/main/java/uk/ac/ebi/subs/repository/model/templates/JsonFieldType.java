@@ -14,7 +14,8 @@ public enum JsonFieldType {
     String,
     IntegerNumber,
     FloatNumber,
-    Boolean;
+    Boolean,
+    DateString;
 
 
     private static final Map<String, Boolean> booleanTextValues;
