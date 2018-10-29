@@ -28,9 +28,15 @@ public class Assay extends uk.ac.ebi.subs.data.submittable.Assay implements Stor
 
     @Override
     public Stream<AbstractSubsRef> refs() {
+        Stream<AbstractSubsRef> studyStream = (this.getStudyRef() == null)
+                ? Stream.empty() : Stream.of((AbstractSubsRef) this.getStudyRef());
+
+        Stream<AbstractSubsRef> sampleStream = (this.getSampleUses() == null)
+                ? Stream.empty() : this.getSampleUses().stream().map(su -> (AbstractSubsRef) su.getSampleRef());
+
         return Stream.concat(
-            Stream.of( (AbstractSubsRef)this.getStudyRef()),
-            this.getSampleUses().stream().map(su -> (AbstractSubsRef)su.getSampleRef())
+                studyStream,
+                sampleStream
         );
     }
 
@@ -141,7 +147,7 @@ public class Assay extends uk.ac.ebi.subs.data.submittable.Assay implements Stor
         this.lastModifiedBy = lastModifiedBy;
     }
 
-    private Map<String,List<AbstractSubsRef>> references;
+    private Map<String, List<AbstractSubsRef>> references;
 
     @JsonIgnore
     public void setReferences(Map<String, List<AbstractSubsRef>> references) {

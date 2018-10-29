@@ -30,11 +30,11 @@ public class Analysis extends uk.ac.ebi.subs.data.submittable.Analysis implement
     public Stream<AbstractSubsRef> refs() {
         List<AbstractSubsRef> refs = new LinkedList<>();
 
-        refs.addAll(this.getStudyRefs());
-        refs.addAll(this.getSampleRefs());
-        refs.addAll(this.getAssayRefs());
-        refs.addAll(this.getAssayDataRefs());
-        refs.addAll(this.getAnalysisRefs());
+        if (this.getStudyRefs() != null) refs.addAll(this.getStudyRefs());
+        if (this.getSampleRefs() != null) refs.addAll(this.getSampleRefs());
+        if (this.getAssayRefs() != null) refs.addAll(this.getAssayRefs());
+        if (this.getAssayDataRefs() != null) refs.addAll(this.getAssayDataRefs());
+        if (this.getAnalysisRefs() != null) refs.addAll(this.getAnalysisRefs());
 
         return refs.stream();
     }
@@ -60,7 +60,7 @@ public class Analysis extends uk.ac.ebi.subs.data.submittable.Analysis implement
     @DBRef
     private Checklist checklist;
 
-    private Map<String,List<AbstractSubsRef>> references;
+    private Map<String, List<AbstractSubsRef>> references;
 
     @JsonIgnore
     public void setReferences(Map<String, List<AbstractSubsRef>> references) {

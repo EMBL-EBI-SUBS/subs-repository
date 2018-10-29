@@ -28,6 +28,8 @@ import java.util.stream.Stream;
 public class Study extends uk.ac.ebi.subs.data.submittable.Study implements StoredSubmittable {
 
     public Stream<AbstractSubsRef> refs(){
+        if (this.getProjectRef() == null) return  Stream.empty();
+
         return Stream.of(this.getProjectRef());
     }
 
