@@ -28,6 +28,8 @@ import java.util.stream.Stream;
 public class Sample extends uk.ac.ebi.subs.data.submittable.Sample implements StoredSubmittable {
 
     public Stream<AbstractSubsRef> refs(){
+        if (this.getSampleRelationships() == null) return Stream.empty();
+
         return this.getSampleRelationships().stream().map(sr -> asRef(sr));
     }
     private static AbstractSubsRef asRef(SampleRelationship sr){

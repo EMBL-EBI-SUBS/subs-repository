@@ -29,6 +29,8 @@ public class EgaDacPolicy extends uk.ac.ebi.subs.data.submittable.EgaDacPolicy i
 
     @Override
     public Stream<AbstractSubsRef> refs() {
+        if (this.getDacRef() == null) return Stream.empty();
+
         return Stream.of((AbstractSubsRef) this.getDacRef());
     }
 

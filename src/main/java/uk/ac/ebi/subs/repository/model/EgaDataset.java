@@ -28,9 +28,20 @@ public class EgaDataset extends uk.ac.ebi.subs.data.submittable.EgaDataset imple
 
     @Override
     public Stream<AbstractSubsRef> refs() {
-        return Stream.of(
-                (AbstractSubsRef)this.getEgaDacPolicyRef()
-        ).filter(ref -> ref != null);
+
+        Stream<AbstractSubsRef> analysisStream = (this.getAnalysisRefs() == null)
+                ? Stream.empty() : this.getAnalysisRefs().stream().map(ref -> (AbstractSubsRef) ref);
+
+        Stream<AbstractSubsRef> dataStream = (this.getDataRefs() == null)
+                ? Stream.empty() : this.getDataRefs().stream().map(ref -> (AbstractSubsRef) ref);
+
+        Stream<AbstractSubsRef> policyRefStream = (this.getEgaDacPolicyRef() == null)
+                ? Stream.empty() : Stream.of(this.getEgaDacPolicyRef());
+
+        return Stream.concat(
+                analysisStream,
+                Stream.concat(dataStream, policyRefStream)
+        );
     }
 
     @DBRef
@@ -141,7 +152,7 @@ public class EgaDataset extends uk.ac.ebi.subs.data.submittable.EgaDataset imple
         this.lastModifiedBy = lastModifiedBy;
     }
 
-    private Map<String,List<AbstractSubsRef>> references;
+    private Map<String, List<AbstractSubsRef>> references;
 
     @JsonIgnore
     public void setReferences(Map<String, List<AbstractSubsRef>> references) {

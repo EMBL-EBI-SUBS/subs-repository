@@ -28,6 +28,8 @@ public class AssayData extends uk.ac.ebi.subs.data.submittable.AssayData impleme
 
     @Override
     public Stream<AbstractSubsRef> refs() {
+        if (this.getAssayRefs() == null) return Stream.empty();
+
         return this.getAssayRefs().stream()
                 .filter(ref -> ref != null)
                 .map(assayRef -> (AbstractSubsRef)assayRef);
