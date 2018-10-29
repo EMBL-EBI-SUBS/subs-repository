@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import uk.ac.ebi.subs.data.component.AbstractSubsRef;
 import uk.ac.ebi.subs.validator.data.ValidationResult;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -38,10 +39,9 @@ public class EgaDataset extends uk.ac.ebi.subs.data.submittable.EgaDataset imple
         Stream<AbstractSubsRef> policyRefStream = (this.getEgaDacPolicyRef() == null)
                 ? Stream.empty() : Stream.of(this.getEgaDacPolicyRef());
 
-        return Stream.concat(
-                analysisStream,
-                Stream.concat(dataStream, policyRefStream)
-        );
+        return Arrays.asList(analysisStream,dataStream,policyRefStream)
+                .stream()
+                .flatMap(stream -> stream);
     }
 
     @DBRef
