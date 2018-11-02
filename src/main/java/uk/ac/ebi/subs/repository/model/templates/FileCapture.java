@@ -69,7 +69,7 @@ public class FileCapture implements Capture {
             } else if (allowType && header.toLowerCase().equals(TYPE_COLUMN_NAME)) {
                 file.put(TYPE_FIELD_NAME, value);
             } else {
-                return position;
+                break;
             }
 
             position++;
