@@ -8,7 +8,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.access.method.P;
 import uk.ac.ebi.subs.repository.model.UiSupportItem;
-import uk.ac.ebi.subs.repository.projections.SubmissionWithStatus;
 import uk.ac.ebi.subs.repository.security.PreAuthorizeAdminTeam;
 
 

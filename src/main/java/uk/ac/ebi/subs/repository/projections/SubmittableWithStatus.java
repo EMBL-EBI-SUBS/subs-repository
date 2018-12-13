@@ -14,7 +14,6 @@ import java.util.Date;
         EgaDac.class,
         EgaDacPolicy.class,
         EgaDataset.class,
-        Project.class,
         Protocol.class,
         Sample.class,
         SampleGroup.class,
