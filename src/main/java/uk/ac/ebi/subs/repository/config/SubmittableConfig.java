@@ -22,7 +22,7 @@ public class SubmittableConfig {
     private final Logger logger = LoggerFactory.getLogger(SubmittableConfig.class);
 
     @Data(staticConstructor = "of")
-    static class RepoTypeRefConfig<T extends StoredSubmittable> {
+    public static class RepoTypeRefConfig<T extends StoredSubmittable> {
         @NonNull
         private final Class<T> submittableClass;
         @NonNull
@@ -146,6 +146,14 @@ public class SubmittableConfig {
                             sampleRepository
                     )
             );
+            configList.add(
+                    RepoTypeRefConfig.of(
+                            Sample.class,
+                            SampleRelationship.class,
+                            sampleRepository
+                    )
+            );
+
         }
 
         if (repositoryConfig.isStudyEnabled()) {
@@ -171,6 +179,7 @@ public class SubmittableConfig {
                 availableRepoConfig
                         .stream()
                         .map(RepoTypeRefConfig::getRepository)
+                        .distinct()
                         .collect(Collectors.toList())
         );
     }
@@ -211,6 +220,7 @@ public class SubmittableConfig {
                 availableRepoConfig
                         .stream()
                         .map(RepoTypeRefConfig::getSubmittableClass)
+                        .distinct()
                         .collect(Collectors.toList())
         );
     }
