@@ -57,4 +57,7 @@ public interface SubmissionRepository extends MongoRepository<Submission, String
 
     @RestResource(exported = false)
     Page<Submission> findByTeamNameInOrderByCreatedDateDesc(List<String> teamNames, Pageable pageable);
+
+    @RestResource(exported = false)
+    Page<Submission> findByTeamNameInOrderByLastModifiedDateDesc(List<String> teamNames, Pageable pageable);
 }
