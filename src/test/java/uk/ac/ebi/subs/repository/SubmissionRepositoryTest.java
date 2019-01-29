@@ -37,8 +37,11 @@ public class SubmissionRepositoryTest {
     private static final String TEST_TEAM_NAME = "testTeam";
     private static final LocalDateTime LOCAL_DATE_TIME = LocalDateTime.of(2019, 01, 12, 11, 11);
     private static final Date CREATED_DATE1 = Date.from(LOCAL_DATE_TIME.atZone(ZoneId.systemDefault()).toInstant());
+    private static final Date LAST_MODIFIED_DATE1 = CREATED_DATE1;
     private static final Date CREATED_DATE2 = Date.from(LOCAL_DATE_TIME.plusDays(2).atZone(ZoneId.systemDefault()).toInstant());
+    private static final Date LAST_MODIFIED_DATE2 = CREATED_DATE2;
     private static final Date CREATED_DATE3 = Date.from(LOCAL_DATE_TIME.plusDays(4).atZone(ZoneId.systemDefault()).toInstant());
+    private static final Date LAST_MODIFIED_DATE3 = CREATED_DATE3;
 
     @Before
     public void buildUp() {
@@ -72,7 +75,7 @@ public class SubmissionRepositoryTest {
     }
 
     @Test
-    public void testFindByTeamNameInOrderByCreatedByDesc() {
+    public void testFindByTeamNameInOrderByCreatedDateDesc() {
         testSub.setCreatedDate(CREATED_DATE1);
         submissionRepository.save(testSub);
 
@@ -96,6 +99,36 @@ public class SubmissionRepositoryTest {
         assertThat(retrievedSubmissions.get(0).getCreatedDate(), Matchers.is(equalTo(CREATED_DATE3)));
         assertThat(retrievedSubmissions.get(1).getCreatedDate(), Matchers.is(equalTo(CREATED_DATE2)));
         assertThat(retrievedSubmissions.get(2).getCreatedDate(), Matchers.is(equalTo(CREATED_DATE1)));
+    }
+
+    @Test
+    public void testFindByTeamNameInOrderByLastModifiedDateDesc() {
+        testSub.setCreatedDate(CREATED_DATE1);
+        testSub.setLastModifiedDate(LAST_MODIFIED_DATE1);
+        submissionRepository.save(testSub);
+
+        Submission testSub2 = generateSubmission();
+        testSub2.setCreatedDate(CREATED_DATE2);
+        testSub2.setLastModifiedDate(LAST_MODIFIED_DATE2);
+        submissionRepository.save(testSub2);
+
+        Submission testSub3 = generateSubmission();
+        testSub3.setCreatedDate(CREATED_DATE3);
+        testSub3.setLastModifiedDate(LAST_MODIFIED_DATE3);
+        submissionRepository.save(testSub3);
+
+        Pageable pageable = new PageRequest(0, 10);
+        Page<Submission> subs = submissionRepository.findByTeamNameInOrderByLastModifiedDateDesc(
+                Arrays.asList(testSub.getTeam().getName()),
+                pageable
+        );
+
+        assertThat(subs.getTotalElements(),equalTo(3L));
+
+        List<Submission> retrievedSubmissions = subs.getContent();
+        assertThat(retrievedSubmissions.get(0).getCreatedDate(), Matchers.is(equalTo(LAST_MODIFIED_DATE3)));
+        assertThat(retrievedSubmissions.get(1).getCreatedDate(), Matchers.is(equalTo(LAST_MODIFIED_DATE2)));
+        assertThat(retrievedSubmissions.get(2).getCreatedDate(), Matchers.is(equalTo(LAST_MODIFIED_DATE1)));
     }
 
     private Submission generateSubmission() {
