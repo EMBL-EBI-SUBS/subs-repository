@@ -51,8 +51,9 @@ public interface FileRepository extends MongoRepository<File, String> {
     long countBySubmissionIdAndStatusNot(
             @Param("submissionId") String submissionId, @Param("status") FileStatus fileStatus);
 
+    @RestResource(path= "by-filename-and-submission", rel= "by-filename-and-submission")
     @PreAuthorizeSubmissionIdTeamName
-    File findByFilenameAndSubmissionId(String filename, String submissionId);
+    File findByFilenameAndSubmissionId(@Param("filename") String filename, @Param("submissionId") String submissionId);
 
     @PreAuthorizeSubmissionIdTeamName
     Page<File> findByStatus(FileStatus status, Pageable pageable);
