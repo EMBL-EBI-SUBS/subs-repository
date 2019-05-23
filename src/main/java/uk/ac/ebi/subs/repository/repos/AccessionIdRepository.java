@@ -10,5 +10,5 @@ import java.util.List;
 public interface AccessionIdRepository extends MongoRepository<AccessionIdWrapper, String> {
 
     AccessionIdWrapper findBySubmissionId(String submissionId);
-    List<AccessionIdWrapper> findByMessageSentDateIsNotNull();
+    List<AccessionIdWrapper> findByMessageSentDateIsNull();
 }

@@ -58,9 +58,9 @@ public class AccessionIdRepositoryTest {
 
     @Test
     public void when5AccessionIdsBySubmissionIDInRepoAnd3AlreadySentThenOnlyReturnsTheNotSent() {
-        List<AccessionIdWrapper> accessionIdWrappers = accessionIdRepository.findByMessageSentDateIsNotNull();
+        List<AccessionIdWrapper> accessionIdWrappers = accessionIdRepository.findByMessageSentDateIsNull();
 
-        assertThat(accessionIdWrappers.size(), is(equalTo(3)));
+        assertThat(accessionIdWrappers.size(), is(equalTo(2)));
     }
 
     private void generateBiosamplesAccessionIds() {
