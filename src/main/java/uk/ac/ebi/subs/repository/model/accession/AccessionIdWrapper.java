@@ -10,14 +10,11 @@ import java.util.List;
 
 @Document
 @Data
-@EqualsAndHashCode
-public class AccessionIdWrapper {
+@EqualsAndHashCode(callSuper = true)
+public class AccessionIdWrapper extends uk.ac.ebi.subs.data.accession.AccessionIdWrapper {
 
     @Id
     private String id;
 
-    private String submissionId;
-    private String bioStudiesAccessionId;
-    private List<String> bioSamplesAccessionIds;
     private LocalDateTime messageSentDate;
 }
