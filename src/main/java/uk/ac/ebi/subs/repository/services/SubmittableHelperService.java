@@ -28,7 +28,7 @@ public class SubmittableHelperService {
 
     public void setupNewSubmittable(StoredSubmittable submittable) {
         uuidAndTeamFromSubmissionSetUp(submittable);
-        processingStatusAndValidationResultSetUp(submittable);
+        processingStatusAndValidationResultSetUpForSubmittable(submittable);
         fillInReferences(submittable);
     }
 
@@ -55,9 +55,15 @@ public class SubmittableHelperService {
         setTeamFromSubmission(submittable);
     }
 
-    public void processingStatusAndValidationResultSetUp(StoredSubmittable submittable) {
-        createValidationResult(submittable);
-        createProcessingStatus(submittable);
+    public void processingStatusAndValidationResultSetUpForSubmittable(StoredSubmittable submittable) {
+        ValidationResult validationResult = createValidationResult(submittable);
+        ProcessingStatus processingStatus = createProcessingStatus(submittable);
+
+        submittable.setValidationResult(validationResult);
+        submittable.setProcessingStatus(processingStatus);
+        SubmittableRepository repository = submittableRepositoryMap.get(submittable.getClass());
+        repository.save(submittable);
+
     }
 
     public void setTeamFromSubmission(StoredSubmittable submittable) {
@@ -66,7 +72,7 @@ public class SubmittableHelperService {
         }
     }
 
-    private void createValidationResult(StoredSubmittable submittable) {
+    private ValidationResult createValidationResult(StoredSubmittable submittable) {
         ValidationResult validationResult = new ValidationResult();
         validationResult.setEntityUuid(submittable.getId());
         validationResult.setUuid(UUID.randomUUID().toString());
@@ -74,21 +80,13 @@ public class SubmittableHelperService {
         validationResult.setEntityType(submittable.getClass().getCanonicalName()); // Must be the full qualified class name
         validationResult.setDataTypeId(submittable.getDataType().getId());
         validationResult.setSubmissionId(submittable.getSubmission().getId());
-        validationResultRepository.save(validationResult);
-
-        submittable.setValidationResult(validationResult);
-
-        SubmittableRepository repository = submittableRepositoryMap.get(submittable.getClass());
-        repository.save(submittable);
+        return validationResultRepository.save(validationResult);
     }
 
-    private void createProcessingStatus(StoredSubmittable submittable) {
+    private ProcessingStatus createProcessingStatus(StoredSubmittable submittable) {
         ProcessingStatus processingStatus = ProcessingStatus.createForSubmittable(submittable);
         processingStatus.setId(UUID.randomUUID().toString());
-        processingStatusRepository.insert(processingStatus);
-
-        SubmittableRepository repository = submittableRepositoryMap.get(submittable.getClass());
-        repository.save(submittable);
+        return processingStatusRepository.insert(processingStatus);
     }
 
 }

@@ -58,8 +58,6 @@ public class ProcessingStatus extends uk.ac.ebi.subs.data.status.ProcessingStatu
 
         processingStatus.copyDetailsFromSubmittable(storedSubmittable);
 
-        storedSubmittable.setProcessingStatus(processingStatus);
-
         return processingStatus;
     }
 
