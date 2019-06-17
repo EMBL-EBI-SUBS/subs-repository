@@ -11,6 +11,7 @@ import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.Identifiable;
 import uk.ac.ebi.subs.data.status.ProcessingStatusEnum;
@@ -42,6 +43,8 @@ public class ProcessingStatus extends uk.ac.ebi.subs.data.status.ProcessingStatu
     private String submissionId;
     private String submittableId;
     private String submittableType;
+    @DBRef
+    private DataType dataType;
     private String accession;
     private String message;
     private String archive;
@@ -143,6 +146,14 @@ public class ProcessingStatus extends uk.ac.ebi.subs.data.status.ProcessingStatu
 
     public void setSubmittableType(String submittableType) {
         this.submittableType = submittableType;
+    }
+
+    public DataType getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(DataType dataType) {
+        this.dataType = dataType;
     }
 
     public String getAccession() {
