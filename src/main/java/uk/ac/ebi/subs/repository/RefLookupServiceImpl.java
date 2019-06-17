@@ -1,6 +1,5 @@
 package uk.ac.ebi.subs.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.subs.data.component.AbstractSubsRef;
 import uk.ac.ebi.subs.repository.model.StoredSubmittable;
@@ -14,12 +13,17 @@ import java.util.stream.Collectors;
 @Service
 public class RefLookupServiceImpl implements RefLookupService {
 
-    @Autowired
-    Map<Class<? extends AbstractSubsRef>, SubmittableRepository<? extends StoredSubmittable>> referenceRepositoryMap;
+    private Map<Class<? extends AbstractSubsRef>, SubmittableRepository<? extends StoredSubmittable>> referenceRepositoryMap;
+
+    public RefLookupServiceImpl(Map<Class<? extends AbstractSubsRef>, SubmittableRepository<? extends StoredSubmittable>> referenceRepositoryMap) {
+        this.referenceRepositoryMap = referenceRepositoryMap;
+    }
 
     @Override
     public <T extends AbstractSubsRef> StoredSubmittable lookupRef(T ref) {
         SubmittableRepository repo = referenceRepositoryMap.get(ref.getClass());
+
+        if (repo == null) return null;
 
         if(ref.isAccessioned()) {
             return repo.findFirstByAccessionOrderByCreatedDateDesc(ref.getAccession());
