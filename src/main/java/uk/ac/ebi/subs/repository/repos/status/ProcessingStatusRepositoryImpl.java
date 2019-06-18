@@ -2,13 +2,23 @@ package uk.ac.ebi.subs.repository.repos.status;
 
 
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.*;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.GroupOperation;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.stereotype.Component;
 import uk.ac.ebi.subs.repository.model.ProcessingStatus;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 @Component
@@ -96,10 +106,24 @@ public class ProcessingStatusRepositoryImpl implements ProcessingStatusRepositor
         return idsByType;
     }
 
+    public Map<String, Set<String>> summariseDataTypesWithSubmittableIds(String submissionId, Collection<String> relevantStatuses) {
+        Aggregation agg =  Aggregation.newAggregation(
+                submissionMatchOperation(submissionId),
+                match(where("status").in(relevantStatuses)),
+                group("dataType").addToSet("submittableId").as("submittableIds"),
+                project("submittableIds").and("_id").as("dataType")
+        );
 
+        AggregationResults<DataTypeSubmittableIds> aggregationResults = mongoTemplate.aggregate(agg,ProcessingStatus.class, DataTypeSubmittableIds.class);
 
+        Map<String,Set<String>> idsByType = new HashMap<>();
 
+        for (DataTypeSubmittableIds typeIds : aggregationResults.getMappedResults()){
+            idsByType.put(typeIds.getDataType(), typeIds.getSubmittableIds());
+        }
 
+        return idsByType;
+    }
 
     private MatchOperation submissionMatchOperation(String submissionId) {
         return match(where("submissionId").is(submissionId));
@@ -166,6 +190,27 @@ public class ProcessingStatusRepositoryImpl implements ProcessingStatusRepositor
 
         public void setSubmittableType(String submittableType) {
             this.submittableType = submittableType;
+        }
+
+        public Set<String> getSubmittableIds() {
+            return submittableIds;
+        }
+
+        public void setSubmittableIds(Set<String> submittableIds) {
+            this.submittableIds = submittableIds;
+        }
+    }
+
+    public class DataTypeSubmittableIds {
+        private String dataType;
+        private Set<String> submittableIds;
+
+        public String getDataType() {
+            return dataType;
+        }
+
+        public void setDataType(String dataType) {
+            this.dataType = dataType;
         }
 
         public Set<String> getSubmittableIds() {
