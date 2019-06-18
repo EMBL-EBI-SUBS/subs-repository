@@ -3,8 +3,10 @@ package uk.ac.ebi.subs.repository.repos;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
+import uk.ac.ebi.subs.data.component.Archive;
 import uk.ac.ebi.subs.repository.model.DataType;
-import uk.ac.ebi.subs.repository.model.SubmissionPlan;
+
+import java.util.List;
 
 @RepositoryRestResource
 public interface DataTypeRepository extends MongoRepository<DataType, String> {
@@ -20,4 +22,6 @@ public interface DataTypeRepository extends MongoRepository<DataType, String> {
     @Override
     @RestResource(exported = false) // Prevent exposing  DELETE /things/:id
     public void delete(DataType entity);
+
+    List<DataType> findByArchive(Archive archive);
 }
