@@ -86,7 +86,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             Analysis.class,
-                            Collections.singletonList(dataTypeRepository.findOne("variantCalls")),
+                            getDataTypes(Collections.singletonList("variantCalls")),
                             AnalysisRef.class,
                             analysisRepository
                     )
@@ -98,7 +98,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             AssayData.class,
-                            Arrays.asList(dataTypeRepository.findOne("sequencingRuns"), dataTypeRepository.findOne("metabolightsAssayData")),
+                            getDataTypes(Arrays.asList("sequencingRuns", "metabolightsAssayData")),
                             AssayDataRef.class,
                             assayDataRepository
                     )
@@ -110,7 +110,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             Assay.class,
-                            Arrays.asList(dataTypeRepository.findOne("sequencingExperiments"), dataTypeRepository.findOne("metabolomicsAssays")),
+                            getDataTypes(Arrays.asList("sequencingExperiments", "metabolomicsAssays")),
                             AssayRef.class,
                             assayRepository
                     )
@@ -122,7 +122,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             EgaDacPolicy.class,
-                            Collections.singletonList(dataTypeRepository.findOne("egaDacPolicy")),
+                            getDataTypes(Collections.singletonList("egaDacPolicy")),
                             EgaDacPolicyRef.class,
                             egaDacPolicyRepository
                     )
@@ -134,7 +134,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             EgaDac.class,
-                            Collections.singletonList(dataTypeRepository.findOne("egaDac")),
+                            getDataTypes(Collections.singletonList("egaDac")),
                             EgaDacRef.class,
                             egaDacRepository
                     )
@@ -146,7 +146,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             EgaDataset.class,
-                            Collections.singletonList(dataTypeRepository.findOne("egaDataset")),
+                            getDataTypes(Collections.singletonList("egaDataset")),
                             EgaDatasetRef.class,
                             egaDatasetRepository
                     )
@@ -158,7 +158,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             Project.class,
-                            Collections.singletonList(dataTypeRepository.findOne("projects")),
+                            getDataTypes(Collections.singletonList("projects")),
                             ProjectRef.class,
                             projectRepository
                     )
@@ -170,7 +170,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             Protocol.class,
-                            Collections.singletonList(dataTypeRepository.findOne("metabolightsProtocols")),
+                            getDataTypes(Collections.singletonList("metabolightsProtocols")),
                             ProtocolRef.class,
                             protocolRepository
                     )
@@ -194,7 +194,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             Sample.class,
-                            Collections.singletonList(dataTypeRepository.findOne("samples")),
+                            getDataTypes(Collections.singletonList("samples")),
                             SampleRef.class,
                             sampleRepository
                     )
@@ -202,7 +202,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             Sample.class,
-                            Collections.singletonList(dataTypeRepository.findOne("samples")),
+                            getDataTypes(Collections.singletonList("samples")),
                             SampleRelationship.class,
                             sampleRepository
                     )
@@ -214,7 +214,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             Study.class,
-                            Arrays.asList(dataTypeRepository.findOne("enaStudies"), dataTypeRepository.findOne("metabolomicsStudies")),
+                            getDataTypes(Arrays.asList("enaStudies", "metabolomicsStudies")),
                             StudyRef.class,
                             studyRepository
                     )
@@ -226,6 +226,18 @@ public class SubmittableConfig {
         return Collections.unmodifiableList(configList);
     }
 
+    private List<DataType> getDataTypes(List<String> dataTypeIds) {
+        List<DataType> dataTypes = new ArrayList<>();
+
+        dataTypeIds.forEach( dataTypeId -> {
+                DataType dataType = dataTypeRepository.findOne(dataTypeId);
+            if (dataType != null) {
+                dataTypes.add(dataType);
+            }
+        });
+
+        return dataTypes;
+    }
 
     @Bean
     public List<SubmittableRepository<?>> submissionContentsRepositories(List<RepoTypeRefConfig<?>> availableRepoConfig) {
