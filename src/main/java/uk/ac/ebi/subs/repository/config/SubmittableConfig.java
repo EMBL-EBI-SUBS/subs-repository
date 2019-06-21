@@ -182,7 +182,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             SampleGroup.class,
-                            Collections.singletonList(dataTypeRepository.findOne("sampleGroups")),
+                            Collections.emptyList(),
                             SampleGroupRef.class,
                             sampleGroupRepository
                     )
