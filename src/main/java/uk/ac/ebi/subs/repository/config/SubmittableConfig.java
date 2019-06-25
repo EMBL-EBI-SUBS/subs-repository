@@ -239,6 +239,7 @@ public class SubmittableConfig {
         return dataTypes;
     }
 
+
     @Bean
     public List<SubmittableRepository<?>> submissionContentsRepositories(List<RepoTypeRefConfig<?>> availableRepoConfig) {
         return Collections.unmodifiableList(
@@ -281,7 +282,7 @@ public class SubmittableConfig {
     }
 
     @Bean
-    public Map<String, SubmittableRepository<? extends StoredSubmittable>> dataTyapeRepositoryMap(List<RepoTypeRefConfig<?>> availableRepoConfig) {
+    public Map<String, SubmittableRepository<? extends StoredSubmittable>> dataTypeRepositoryMap(List<RepoTypeRefConfig<?>> availableRepoConfig) {
         Map<String, SubmittableRepository<? extends StoredSubmittable>> map = new HashMap<>();
 
         availableRepoConfig.forEach(repoTypeRefConfig ->
