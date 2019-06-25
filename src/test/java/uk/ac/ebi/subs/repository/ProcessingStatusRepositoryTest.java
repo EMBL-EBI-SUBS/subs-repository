@@ -1,16 +1,23 @@
 package uk.ac.ebi.subs.repository;
 
-import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import uk.ac.ebi.subs.data.component.Archive;
+import uk.ac.ebi.subs.data.status.ProcessingStatusEnum;
+import uk.ac.ebi.subs.repository.model.DataType;
 import uk.ac.ebi.subs.repository.model.ProcessingStatus;
+import uk.ac.ebi.subs.repository.repos.DataTypeRepository;
 import uk.ac.ebi.subs.repository.repos.status.ProcessingStatusRepository;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -24,7 +31,10 @@ public class ProcessingStatusRepositoryTest {
     @Autowired
     private ProcessingStatusRepository processingStatusRepository;
 
-    @Before
+    @Autowired
+    private DataTypeRepository dataTypeRepository;
+
+    @After
     public void buildUp() {
         processingStatusRepository.deleteAll();
     }
@@ -80,6 +90,40 @@ public class ProcessingStatusRepositoryTest {
         assertThat(statusCounts,is(equalTo(expected)));
     }
 
+    @Test
+    public void testDataTypeAggregation() {
+        Set<String> processingStatusesToAllow = setupStatusesToProcess();
+
+        DataType sampleDataType = createDataType("Sample", Archive.BioSamples, "Sample");
+        DataType projectDataType = createDataType("Project", Archive.BioStudies, "Project");
+        DataType studyDataType = createDataType("Study", Archive.Ena, "Study");
+
+        createProcessingStatus(sampleDataType, "testSubId", UUID.randomUUID().toString());
+        createProcessingStatus(sampleDataType, "testSubId", UUID.randomUUID().toString());
+        createProcessingStatus(projectDataType, "testSubId", UUID.randomUUID().toString());
+        createProcessingStatus(studyDataType, "testSubId", UUID.randomUUID().toString());
+
+        Map<DataType, Set<String>> dataTypeWithSubmittableIds = processingStatusRepository.summariseDataTypesWithSubmittableIds("testSubId", processingStatusesToAllow);
+
+        assertThat(dataTypeWithSubmittableIds.size(), is(equalTo(3)));
+        assertThat(dataTypeWithSubmittableIds.containsKey(sampleDataType), is(true));
+        assertThat(dataTypeWithSubmittableIds.get(sampleDataType).size(), is(equalTo(2)));
+        assertThat(dataTypeWithSubmittableIds.containsKey(projectDataType), is(true));
+        assertThat(dataTypeWithSubmittableIds.get(projectDataType).size(), is(equalTo(1)));
+        assertThat(dataTypeWithSubmittableIds.containsKey(studyDataType), is(true));
+        assertThat(dataTypeWithSubmittableIds.get(studyDataType).size(), is(equalTo(1)));
+    }
+
+    private void createProcessingStatus(DataType sampleDataType, String submissionId, String submittableId) {
+        ProcessingStatus processingStatus = new ProcessingStatus();
+        processingStatus.setDataType(sampleDataType);
+        processingStatus.setStatus(ProcessingStatusEnum.Draft);
+        processingStatus.setArchive(sampleDataType.getArchive().name());
+        processingStatus.setSubmissionId(submissionId);
+        processingStatus.setSubmittableId(submittableId);
+        processingStatus.setSubmittableType(sampleDataType.getSubmittableClassName());
+        processingStatusRepository.save(processingStatus);
+    }
 
     private ProcessingStatus status(String status, String subId, String type) {
         ProcessingStatus ps = new ProcessingStatus();
@@ -89,6 +133,22 @@ public class ProcessingStatusRepositoryTest {
         ps.setSubmittableType(type);
 
         return ps;
+    }
+
+    private Set<String> setupStatusesToProcess() {
+        Set<String> processingStatusesToAllow = new HashSet<>();
+        processingStatusesToAllow.add(ProcessingStatusEnum.Draft.name());
+        processingStatusesToAllow.add(ProcessingStatusEnum.Submitted.name());
+
+        return processingStatusesToAllow;
+    }
+    private DataType createDataType(String dataTypeId, Archive archiveName, String submittsbleClassName) {
+        DataType dataType = new DataType();
+        dataType.setId(dataTypeId);
+        dataType.setArchive(archiveName);
+        dataType.setSubmittableClassName(submittsbleClassName);
+
+        return dataTypeRepository.save(dataType);
     }
 
 }

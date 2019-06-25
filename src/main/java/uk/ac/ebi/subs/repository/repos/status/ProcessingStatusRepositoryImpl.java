@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.subs.repository.model.DataType;
 import uk.ac.ebi.subs.repository.model.ProcessingStatus;
 
 import java.util.Collection;
@@ -107,7 +108,7 @@ public class ProcessingStatusRepositoryImpl implements ProcessingStatusRepositor
     }
 
     @Override
-    public Map<String, Set<String>> summariseDataTypesWithSubmittableIds(String submissionId, Collection<String> relevantStatuses) {
+    public Map<DataType, Set<String>> summariseDataTypesWithSubmittableIds(String submissionId, Collection<String> relevantStatuses) {
         Aggregation agg =  Aggregation.newAggregation(
                 submissionMatchOperation(submissionId),
                 match(where("status").in(relevantStatuses)),
@@ -117,7 +118,7 @@ public class ProcessingStatusRepositoryImpl implements ProcessingStatusRepositor
 
         AggregationResults<DataTypeSubmittableIds> aggregationResults = mongoTemplate.aggregate(agg,ProcessingStatus.class, DataTypeSubmittableIds.class);
 
-        Map<String,Set<String>> idsByType = new HashMap<>();
+        Map<DataType,Set<String>> idsByType = new HashMap<>();
 
         for (DataTypeSubmittableIds typeIds : aggregationResults.getMappedResults()){
             idsByType.put(typeIds.getDataType(), typeIds.getSubmittableIds());
@@ -203,14 +204,14 @@ public class ProcessingStatusRepositoryImpl implements ProcessingStatusRepositor
     }
 
     public class DataTypeSubmittableIds {
-        private String dataType;
+        private DataType dataType;
         private Set<String> submittableIds;
 
-        public String getDataType() {
+        public DataType getDataType() {
             return dataType;
         }
 
-        public void setDataType(String dataType) {
+        public void setDataType(DataType dataType) {
             this.dataType = dataType;
         }
 
