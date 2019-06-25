@@ -106,6 +106,7 @@ public class ProcessingStatusRepositoryImpl implements ProcessingStatusRepositor
         return idsByType;
     }
 
+    @Override
     public Map<String, Set<String>> summariseDataTypesWithSubmittableIds(String submissionId, Collection<String> relevantStatuses) {
         Aggregation agg =  Aggregation.newAggregation(
                 submissionMatchOperation(submissionId),

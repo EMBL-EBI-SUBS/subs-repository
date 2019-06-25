@@ -12,4 +12,6 @@ public interface ProcessingStatusRepositoryCustom {
     Map<String, Map<String, Integer>> summariseSubmissionStatusAndType(String submissionId);
 
     Map<String, Set<String>> summariseSubmissionTypesWithSubmittableIds(String submissionId, Collection<String> relevantStatuses);
+
+    Map<String, Set<String>> summariseDataTypesWithSubmittableIds(String submissionId, Collection<String> relevantStatuses);
 }
