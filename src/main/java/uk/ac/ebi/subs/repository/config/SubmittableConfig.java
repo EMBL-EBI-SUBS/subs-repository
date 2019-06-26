@@ -1,10 +1,13 @@
 package uk.ac.ebi.subs.repository.config;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import uk.ac.ebi.subs.data.component.AbstractSubsRef;
@@ -23,7 +26,6 @@ import uk.ac.ebi.subs.data.component.StudyRef;
 import uk.ac.ebi.subs.repository.model.Analysis;
 import uk.ac.ebi.subs.repository.model.Assay;
 import uk.ac.ebi.subs.repository.model.AssayData;
-import uk.ac.ebi.subs.repository.model.DataType;
 import uk.ac.ebi.subs.repository.model.EgaDac;
 import uk.ac.ebi.subs.repository.model.EgaDacPolicy;
 import uk.ac.ebi.subs.repository.model.EgaDataset;
@@ -48,7 +50,6 @@ import uk.ac.ebi.subs.repository.repos.submittables.StudyRepository;
 import uk.ac.ebi.subs.repository.repos.submittables.SubmittableRepository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -57,8 +58,8 @@ import java.util.stream.Collectors;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableConfigurationProperties(RepositoryMappingProperties.class)
 public class SubmittableConfig {
-
 
     private final Logger logger = LoggerFactory.getLogger(SubmittableConfig.class);
 
@@ -67,7 +68,7 @@ public class SubmittableConfig {
         @NonNull
         private final Class<T> submittableClass;
         @NonNull
-        private final List<DataType> dataTypes;
+        private final List<String> dataTypes;
         @NonNull
         private final Class<? extends AbstractSubsRef> refClass;
         @NonNull
@@ -86,7 +87,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             Analysis.class,
-                            getDataTypes(Collections.singletonList("variantCalls")),
+                            repositoryMappingProperties.getAnalysis(),
                             AnalysisRef.class,
                             analysisRepository
                     )
@@ -98,7 +99,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             AssayData.class,
-                            getDataTypes(Arrays.asList("sequencingRuns", "metabolightsAssayData")),
+                            repositoryMappingProperties.getAssayData(),
                             AssayDataRef.class,
                             assayDataRepository
                     )
@@ -110,7 +111,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             Assay.class,
-                            getDataTypes(Arrays.asList("sequencingExperiments", "metabolomicsAssays")),
+                            repositoryMappingProperties.getAssay(),
                             AssayRef.class,
                             assayRepository
                     )
@@ -122,7 +123,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             EgaDacPolicy.class,
-                            getDataTypes(Collections.singletonList("egaDacPolicy")),
+                            repositoryMappingProperties.getEgaDacPolicy(),
                             EgaDacPolicyRef.class,
                             egaDacPolicyRepository
                     )
@@ -134,7 +135,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             EgaDac.class,
-                            getDataTypes(Collections.singletonList("egaDac")),
+                            repositoryMappingProperties.getEgaDac(),
                             EgaDacRef.class,
                             egaDacRepository
                     )
@@ -146,7 +147,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             EgaDataset.class,
-                            getDataTypes(Collections.singletonList("egaDataset")),
+                            repositoryMappingProperties.getEgaDataset(),
                             EgaDatasetRef.class,
                             egaDatasetRepository
                     )
@@ -158,7 +159,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             Project.class,
-                            getDataTypes(Collections.singletonList("projects")),
+                            repositoryMappingProperties.getProject(),
                             ProjectRef.class,
                             projectRepository
                     )
@@ -170,7 +171,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             Protocol.class,
-                            getDataTypes(Collections.singletonList("metabolightsProtocols")),
+                            repositoryMappingProperties.getProtocol(),
                             ProtocolRef.class,
                             protocolRepository
                     )
@@ -194,7 +195,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             Sample.class,
-                            getDataTypes(Collections.singletonList("samples")),
+                            repositoryMappingProperties.getSample(),
                             SampleRef.class,
                             sampleRepository
                     )
@@ -202,7 +203,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             Sample.class,
-                            getDataTypes(Collections.singletonList("samples")),
+                            repositoryMappingProperties.getSample(),
                             SampleRelationship.class,
                             sampleRepository
                     )
@@ -214,7 +215,7 @@ public class SubmittableConfig {
             configList.add(
                     RepoTypeRefConfig.of(
                             Study.class,
-                            getDataTypes(Arrays.asList("enaStudies", "metabolomicsStudies")),
+                            repositoryMappingProperties.getStudy(),
                             StudyRef.class,
                             studyRepository
                     )
@@ -225,20 +226,6 @@ public class SubmittableConfig {
 
         return Collections.unmodifiableList(configList);
     }
-
-    private List<DataType> getDataTypes(List<String> dataTypeIds) {
-        List<DataType> dataTypes = new ArrayList<>();
-
-        dataTypeIds.forEach( dataTypeId -> {
-                DataType dataType = dataTypeRepository.findOne(dataTypeId);
-            if (dataType != null) {
-                dataTypes.add(dataType);
-            }
-        });
-
-        return dataTypes;
-    }
-
 
     @Bean
     public List<SubmittableRepository<?>> submissionContentsRepositories(List<RepoTypeRefConfig<?>> availableRepoConfig) {
@@ -282,20 +269,26 @@ public class SubmittableConfig {
     }
 
     @Bean
-    public Map<String, SubmittableRepository<? extends StoredSubmittable>> dataTypeRepositoryMap(List<RepoTypeRefConfig<?>> availableRepoConfig) {
-        Map<String, SubmittableRepository<? extends StoredSubmittable>> map = new HashMap<>();
+    public DataTypeRepositoryMap dataTypeRepositoryMap(List<RepoTypeRefConfig<?>> availableRepoConfig) {
+        DataTypeRepositoryMap map = new DataTypeRepositoryMap();
 
         availableRepoConfig.forEach(repoTypeRefConfig ->
-            repoTypeRefConfig.dataTypes.forEach( dataType ->
-                map.put(
-                        dataType.getId(),
-                        repoTypeRefConfig.getRepository()
+                repoTypeRefConfig.getDataTypes().forEach( dataType ->
+                        map.getDataTypeRepositoryMap().put(
+                                dataType,
+                                repoTypeRefConfig.getRepository()
+                        )
                 )
-            )
         );
 
+        return map;
+    }
 
-        return Collections.unmodifiableMap(map);
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DataTypeRepositoryMap {
+        Map<String, SubmittableRepository<? extends StoredSubmittable>> dataTypeRepositoryMap = new HashMap<>();
     }
 
     @Bean
@@ -337,4 +330,7 @@ public class SubmittableConfig {
 
     @NonNull
     private DataTypeRepository dataTypeRepository;
+
+    @NonNull
+    private RepositoryMappingProperties repositoryMappingProperties;
 }
