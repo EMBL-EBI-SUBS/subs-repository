@@ -1,6 +1,8 @@
 package uk.ac.ebi.subs.repository.services;
 
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
+import uk.ac.ebi.subs.data.status.ProcessingStatusEnum;
 import uk.ac.ebi.subs.repository.model.ProcessingStatus;
 import uk.ac.ebi.subs.repository.model.StoredSubmittable;
 import uk.ac.ebi.subs.repository.repos.status.ProcessingStatusRepository;
@@ -13,18 +15,23 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
+@EnableConfigurationProperties(ArchiveProperties.class)
 public class SubmittableHelperService {
 
-    public SubmittableHelperService(ProcessingStatusRepository processingStatusRepository, ValidationResultRepository validationResultRepository,
-                                    Map<Class<? extends StoredSubmittable>, SubmittableRepository<? extends StoredSubmittable>> submittableRepositoryMap) {
+    public SubmittableHelperService(ProcessingStatusRepository processingStatusRepository,
+                                    ValidationResultRepository validationResultRepository,
+                                    Map<Class<? extends StoredSubmittable>, SubmittableRepository<? extends StoredSubmittable>> submittableRepositoryMap,
+                                    ArchiveProperties archiveProperties) {
         this.processingStatusRepository = processingStatusRepository;
         this.validationResultRepository = validationResultRepository;
         this.submittableRepositoryMap = submittableRepositoryMap;
+        this.archiveProperties = archiveProperties;
     }
 
     private ProcessingStatusRepository processingStatusRepository;
     private ValidationResultRepository validationResultRepository;
     private Map<Class<? extends StoredSubmittable>, SubmittableRepository<? extends StoredSubmittable>> submittableRepositoryMap;
+    private ArchiveProperties archiveProperties;
 
     public void setupNewSubmittable(StoredSubmittable submittable) {
         uuidAndTeamFromSubmissionSetUp(submittable);
@@ -85,6 +92,11 @@ public class SubmittableHelperService {
 
     private ProcessingStatus createProcessingStatus(StoredSubmittable submittable) {
         ProcessingStatus processingStatus = ProcessingStatus.createForSubmittable(submittable);
+
+        if (!archiveProperties.enabledDataTypeNames().contains(processingStatus.getDataType().getId())) {
+            processingStatus.setStatus(ProcessingStatusEnum.ArchiveDisabled);
+        }
+
         processingStatus.setId(UUID.randomUUID().toString());
         return processingStatusRepository.insert(processingStatus);
     }
