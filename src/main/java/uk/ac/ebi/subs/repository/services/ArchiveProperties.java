@@ -22,7 +22,7 @@ class ArchiveProperties {
     List<String> enabledDataTypeNames() {
         List<String> dataTypeNames = new ArrayList<>();
         for (String archiveName : enabled) {
-            dataTypeNames.addAll(dataTypes.get(enabled));
+            dataTypeNames.addAll(dataTypes.get(archiveName));
         }
 
         return dataTypeNames;
