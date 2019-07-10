@@ -15,7 +15,7 @@ plugins {
 }
 
 group 'uk.ac.ebi.subs'
-version '2.28.9-SNAPSHOT'
+version '2.29.0-SNAPSHOT'
 
 
 apply plugin: 'java'
@@ -28,8 +28,7 @@ repositories {
 }
 
 dependencies {
-    compile("uk.ac.ebi.subs:validator-common:3.9.0-SNAPSHOT")
-    compile("uk.ac.ebi.subs:subs-data-model:2.11.1-SNAPSHOT")
+    compile("uk.ac.ebi.subs:validator-common:3.10.0-SNAPSHOT")
 
     compile ('org.atteo:evo-inflector:1.2.1') // better pluralisation
     compile("org.json:json:20160810")
