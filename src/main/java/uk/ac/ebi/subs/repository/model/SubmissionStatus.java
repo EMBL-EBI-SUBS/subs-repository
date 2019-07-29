@@ -39,6 +39,8 @@ public class SubmissionStatus extends uk.ac.ebi.subs.data.status.SubmissionStatu
     @LastModifiedBy
     private String lastModifiedBy;
 
+    private String message;
+
     private Team team;
 
     public SubmissionStatus() {
@@ -94,6 +96,14 @@ public class SubmissionStatus extends uk.ac.ebi.subs.data.status.SubmissionStatu
 
     public void setLastModifiedBy(String lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public Team getTeam() {return team;}
