@@ -20,7 +20,8 @@ import java.util.Date;
 
 @CompoundIndexes({
         @CompoundIndex(background = true, name = "submissionId_submittableId", def = "{ 'submissionId': 1, 'submittableId': 1}"),
-        @CompoundIndex(background = true, name = "submissionId_status", def = "{ 'submissionId': 1, 'status': 1}")
+        @CompoundIndex(background = true, name = "submissionId_status", def = "{ 'submissionId': 1, 'status': 1}"),
+        @CompoundIndex(background = true, name = "submittableId", def = "{ 'submittableId': 1}")
 })
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
