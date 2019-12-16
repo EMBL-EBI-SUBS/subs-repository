@@ -22,7 +22,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -64,7 +66,7 @@ public class SubmissionRepositoryTest {
     @Test
     public void listSubmissions() {
         storeSubmission();
-        Pageable pageable = new PageRequest(0, 10);
+        Pageable pageable = PageRequest.of(0, 10);
         Page<Submission> subs = submissionRepository.findByTeamNameInOrderByCreatedDateDesc(
                 Collections.singletonList(TEST_TEAM_NAME),
                 pageable
@@ -87,7 +89,7 @@ public class SubmissionRepositoryTest {
         testSub3.setCreatedDate(CREATED_DATE3);
         submissionRepository.save(testSub3);
 
-        Pageable pageable = new PageRequest(0, 10);
+        Pageable pageable = PageRequest.of(0, 10);
         Page<Submission> subs = submissionRepository.findByTeamNameInOrderByCreatedDateDesc(
                 Arrays.asList(testSub.getTeam().getName()),
                 pageable
@@ -117,7 +119,7 @@ public class SubmissionRepositoryTest {
         testSub3.setLastModifiedDate(LAST_MODIFIED_DATE3);
         submissionRepository.save(testSub3);
 
-        Pageable pageable = new PageRequest(0, 10);
+        Pageable pageable = PageRequest.of(0, 10);
         Page<Submission> subs = submissionRepository.findByTeamNameInOrderByLastModifiedDateDesc(
                 Arrays.asList(testSub.getTeam().getName()),
                 pageable
@@ -141,7 +143,8 @@ public class SubmissionRepositoryTest {
     }
 
     private void assertSubmissionStored() {
-        Submission stored = submissionRepository.findOne(testSub.getId());
+        Submission stored = submissionRepository.findById(testSub.getId()).orElse(null);
+        assertThat(stored, is(notNullValue()));
         assertThat("Submission stored", stored.getTeam().getName(), equalTo(TEST_TEAM_NAME));
     }
 }

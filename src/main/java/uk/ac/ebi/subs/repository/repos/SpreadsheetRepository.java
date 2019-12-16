@@ -14,6 +14,7 @@ import uk.ac.ebi.subs.repository.security.PreAuthorizeSubmissionIdTeamName;
 import uk.ac.ebi.subs.repository.security.PreAuthorizeSubmittableTeamName;
 
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * Created by Dave on 21/10/2017.
@@ -25,7 +26,7 @@ public interface SpreadsheetRepository extends MongoRepository<Spreadsheet,Strin
     @Override
     @RestResource(exported = true)
     @PostAuthorizeReturnObjectHasTeamName
-    public Spreadsheet findOne(String id);
+    public Optional<Spreadsheet> findById(String id);
 
     // exported as GET /things
     @Override

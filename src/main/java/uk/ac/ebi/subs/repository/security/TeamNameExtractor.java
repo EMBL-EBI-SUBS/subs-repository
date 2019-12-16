@@ -27,16 +27,14 @@ public class TeamNameExtractor {
 
     public static final String ADMIN_USER_DOMAIN_NAME = "usiAdmin";
 
-
     public String adminRole() {
         return ADMIN_USER_DOMAIN_NAME;
     }
 
-
     public String processingStatusTeam(ProcessingStatus processingStatus) {
         Optional<Team> optionalTeam = submissionContentsRepositories //TODO can we be more targetted here?
                 .stream()
-                .map(repo -> (StoredSubmittable) repo.findOne(processingStatus.getSubmittableId()))
+                .map(repo -> (StoredSubmittable) repo.findById(processingStatus.getSubmittableId()).get())
                 .filter(Objects::nonNull)
                 .map(storedSubmittable -> storedSubmittable.getTeam())
                 .filter(Objects::nonNull)
@@ -57,7 +55,7 @@ public class TeamNameExtractor {
     }
 
     public String submissionIdTeam(String submissionId) {
-        Submission submission = submissionRepository.findOne(submissionId);
+        Submission submission = submissionRepository.findById(submissionId).orElse(null);
 
         if (submission == null) throw new ResourceNotFoundException();
 

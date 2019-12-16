@@ -45,7 +45,7 @@ public class FileRepositoryTest {
     private static final String TUS_ID_3 = "TUSID_56";
     private static final String TUS_ID_4 = "TUSID_78";
 
-    private PageRequest pageRequest = new PageRequest(0, 10);
+    private PageRequest pageRequest = PageRequest.of(0, 10);
 
     @Before
     public void setup() {

@@ -15,6 +15,7 @@ import uk.ac.ebi.subs.repository.security.PreAuthorizeParamTeamName;
 import uk.ac.ebi.subs.repository.security.PreAuthorizeSubmissionTeamName;
 
 import java.util.List;
+import java.util.Optional;
 
 @RepositoryRestResource(excerptProjection = SubmissionWithStatus.class)
 public interface SubmissionRepository extends MongoRepository<Submission, String> {
@@ -23,7 +24,7 @@ public interface SubmissionRepository extends MongoRepository<Submission, String
     @Override
     @RestResource(exported = true)
     @PostAuthorizeReturnObjectHasTeamName
-    public Submission findOne(String id);
+    public Optional<Submission> findById(String id);
 
     // exported as GET /things
     @Override

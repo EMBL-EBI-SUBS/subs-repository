@@ -17,6 +17,7 @@ import uk.ac.ebi.subs.repository.security.PreAuthorizeSubmittableTeamName;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @NoRepositoryBean
@@ -27,7 +28,7 @@ public interface SubmittableRepository<T extends StoredSubmittable> extends Mong
     @Override
     @RestResource(exported = true)
     @PostAuthorizeReturnObjectHasTeamName
-    public T findOne(String id);
+    public Optional<T> findById(String id);
 
     // exported as GET /things
     @Override

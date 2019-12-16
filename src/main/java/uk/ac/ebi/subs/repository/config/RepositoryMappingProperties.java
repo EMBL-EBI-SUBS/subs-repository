@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ConfigurationProperties(prefix = "usi.repositoryMapping")
+@ConfigurationProperties(prefix = "usi.repository-mapping")
 public class RepositoryMappingProperties {
 
     private List<String> analysis;

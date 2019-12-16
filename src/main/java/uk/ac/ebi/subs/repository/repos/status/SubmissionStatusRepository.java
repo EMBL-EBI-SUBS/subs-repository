@@ -10,6 +10,7 @@ import uk.ac.ebi.subs.repository.model.SubmissionStatus;
 import uk.ac.ebi.subs.repository.security.PostAuthorizeSubmissionStatusTeamName;
 import uk.ac.ebi.subs.repository.security.PreAuthorizeSubmissionStatusTeamName;
 
+import java.util.Optional;
 
 @RepositoryRestResource
 public interface SubmissionStatusRepository extends MongoRepository<SubmissionStatus, String>, SubmissionStatusRepositoryCustom{
@@ -18,7 +19,7 @@ public interface SubmissionStatusRepository extends MongoRepository<SubmissionSt
     @Override
     @RestResource(exported = true)
     @PostAuthorizeSubmissionStatusTeamName
-    public SubmissionStatus findOne(String id);
+    public Optional<SubmissionStatus> findById(String id);
 
     // exported as GET /things
     @Override
@@ -35,6 +36,4 @@ public interface SubmissionStatusRepository extends MongoRepository<SubmissionSt
     @Override
     @RestResource(exported = false)
     void delete(SubmissionStatus t);
-
-
 }

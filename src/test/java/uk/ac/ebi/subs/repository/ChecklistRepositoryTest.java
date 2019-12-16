@@ -53,10 +53,10 @@ public class ChecklistRepositoryTest {
     @Test
     public void fetchAll() {
 
-        Page<Checklist> checklists = checklistRepository.findAll(new PageRequest(0, 10));
+        Page<Checklist> checklists = checklistRepository.findAll(PageRequest.of(0, 10));
 
-        Assert.notNull(checklists);
-        Assert.isTrue(checklists.getTotalElements() == 1L);
+        Assert.notNull(checklists, "[Assertion failed] - sheets argument required; it must not be null");
+        Assert.isTrue(checklists.getTotalElements() == 1L, "[Assertion failed] - there should be only 1 spreadsheet");
         System.out.println(checklists.getContent());
     }
 

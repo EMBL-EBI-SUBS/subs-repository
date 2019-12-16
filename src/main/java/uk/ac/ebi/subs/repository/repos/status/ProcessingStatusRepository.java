@@ -14,6 +14,7 @@ import uk.ac.ebi.subs.repository.security.PreAuthorizeProcessingStatusTeamName;
 import uk.ac.ebi.subs.repository.security.PreAuthorizeSubmissionIdTeamName;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RepositoryRestResource(excerptProjection = ProcessingStatusWithAlias.class)
@@ -23,7 +24,7 @@ public interface ProcessingStatusRepository extends MongoRepository<ProcessingSt
     @Override
     @RestResource(exported = true)
     @PostAuthorizeProcessingStatusTeamName
-    public ProcessingStatus findOne(String id);
+    public Optional<ProcessingStatus> findById(String id);
 
     // exported as GET /things
     @Override

@@ -13,7 +13,6 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.hateoas.Identifiable;
 import uk.ac.ebi.subs.data.status.ProcessingStatusEnum;
 
 import java.util.Date;

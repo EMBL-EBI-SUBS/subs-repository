@@ -43,13 +43,13 @@ public class EntityModificationTest {
 
         submissionRepository.save(submission);
 
-        submission = submissionRepository.findOne(submission.getId());
+        submission = submissionRepository.findById(submission.getId()).get();
         Date beforeModification = submission.getLastModifiedDate();
 
         // change object.
         submission.setName("submission-2");
         submissionRepository.save(submission);
-        submission = submissionRepository.findOne(submission.getId());
+        submission = submissionRepository.findById(submission.getId()).get();
         Date afterModification = submission.getLastModifiedDate();
 
         assertNotEquals(beforeModification, afterModification);
@@ -59,7 +59,7 @@ public class EntityModificationTest {
         // change nested object.
         submission.getSubmitter().setName("submitter-2");
         submissionRepository.save(submission);
-        submission = submissionRepository.findOne(submission.getId());
+        submission = submissionRepository.findById(submission.getId()).get();
         afterModification = submission.getLastModifiedDate();
 
         assertTrue(afterModification.after(beforeModification));
@@ -80,7 +80,7 @@ public class EntityModificationTest {
                 Pair.of(new Study(), StudyRepository.class)
         );
 
-        storedSubmittableRepoPair.stream().forEach(pair -> {
+        storedSubmittableRepoPair.forEach(pair -> {
             SubmittableRepository submittableRepository = submittableRepositories.stream()
                     .filter(repo -> pair.getSecond().isAssignableFrom(repo.getClass())).findFirst().get();
 
@@ -96,7 +96,7 @@ public class EntityModificationTest {
 
             submittableRepository.save(ss);
 
-            ss = submittableRepository.findOne(ss.getId());
+            ss = (StoredSubmittable) submittableRepository.findById(ss.getId()).get();
 
             Date afterModification = ss.getLastModifiedDate();
 

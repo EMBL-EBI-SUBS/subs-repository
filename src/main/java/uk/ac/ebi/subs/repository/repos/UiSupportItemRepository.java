@@ -10,6 +10,8 @@ import org.springframework.security.access.method.P;
 import uk.ac.ebi.subs.repository.model.UiSupportItem;
 import uk.ac.ebi.subs.repository.security.PreAuthorizeAdminTeam;
 
+import java.util.Optional;
+
 
 /**
  * UI support items can be created/edited/deleted by admins and read by anyone
@@ -20,7 +22,7 @@ public interface UiSupportItemRepository extends MongoRepository<UiSupportItem, 
     // exported as GET /uiSupportItems/:id
     @Override
     @RestResource(exported = true)
-    UiSupportItem findOne(String id);
+    Optional<UiSupportItem> findById(String id);
 
     // exported as GET /uiSupportItems
     @Override
@@ -47,5 +49,4 @@ public interface UiSupportItemRepository extends MongoRepository<UiSupportItem, 
     @RestResource(exported = true)
     @PreAuthorizeAdminTeam
     void delete(@P("entity") UiSupportItem entity);
-
 }
