@@ -30,4 +30,5 @@ public class Checklist implements Identifiable<String> {
 
     private Template spreadsheetTemplate;
 
+    private Boolean valid;
 }
