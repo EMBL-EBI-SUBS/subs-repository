@@ -29,7 +29,7 @@ import static org.junit.Assert.assertTrue;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = TestRepoApplication.class)
+@SpringBootTest
 public class RefLookupServiceTest {
     @Autowired
     private RefLookupService refLookupService;
