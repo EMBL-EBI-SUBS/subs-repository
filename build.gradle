@@ -27,6 +27,8 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
+bootRepackage.enabled = false
+
 dependencies {
     compile("uk.ac.ebi.subs:validator-common:3.14.0-SNAPSHOT")
 
