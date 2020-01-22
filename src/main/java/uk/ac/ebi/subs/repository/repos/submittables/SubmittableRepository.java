@@ -28,7 +28,7 @@ public interface SubmittableRepository<T extends StoredSubmittable> extends Mong
     @Override
     @RestResource(exported = true)
     @PostAuthorizeReturnObjectHasTeamName
-    public Optional<T> findById(String id);
+    public T findOne(String id);
 
     // exported as GET /things
     @Override

@@ -48,7 +48,7 @@ public class SheetRepostoryTest {
     @Test
     public void fetchAll() {
 
-        Page<Spreadsheet> sheets = spreadsheetRepository.findAll(PageRequest.of(0,10));
+        Page<Spreadsheet> sheets = spreadsheetRepository.findAll(new PageRequest(0,10));
 
         Assert.notNull(sheets, "[Assertion failed] - sheets argument required; it must not be null");
         Assert.isTrue(sheets.getTotalElements() == 1L, "[Assertion failed] - there should be only 1 spreadsheet");
@@ -58,6 +58,6 @@ public class SheetRepostoryTest {
     @Test
     public void findBySubmissionIdAndDataTypeIdOrderByCreatedDateDesc(){
         spreadsheetRepository.findBySubmissionIdAndDataTypeIdOrderByCreatedDateDesc("bob","bob",
-                PageRequest.of(0,10));
+                new PageRequest(0,10));
     }
 }

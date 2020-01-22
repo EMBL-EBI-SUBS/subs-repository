@@ -66,7 +66,7 @@ public class SubmissionRepositoryTest {
     @Test
     public void listSubmissions() {
         storeSubmission();
-        Pageable pageable = PageRequest.of(0, 10);
+        Pageable pageable = new PageRequest(0, 10);
         Page<Submission> subs = submissionRepository.findByTeamNameInOrderByCreatedDateDesc(
                 Collections.singletonList(TEST_TEAM_NAME),
                 pageable
@@ -89,7 +89,7 @@ public class SubmissionRepositoryTest {
         testSub3.setCreatedDate(CREATED_DATE3);
         submissionRepository.save(testSub3);
 
-        Pageable pageable = PageRequest.of(0, 10);
+        Pageable pageable = new PageRequest(0, 10);
         Page<Submission> subs = submissionRepository.findByTeamNameInOrderByCreatedDateDesc(
                 Arrays.asList(testSub.getTeam().getName()),
                 pageable
@@ -119,7 +119,7 @@ public class SubmissionRepositoryTest {
         testSub3.setLastModifiedDate(LAST_MODIFIED_DATE3);
         submissionRepository.save(testSub3);
 
-        Pageable pageable = PageRequest.of(0, 10);
+        Pageable pageable = new PageRequest(0, 10);
         Page<Submission> subs = submissionRepository.findByTeamNameInOrderByLastModifiedDateDesc(
                 Arrays.asList(testSub.getTeam().getName()),
                 pageable
@@ -143,7 +143,7 @@ public class SubmissionRepositoryTest {
     }
 
     private void assertSubmissionStored() {
-        Submission stored = submissionRepository.findById(testSub.getId()).orElse(null);
+        Submission stored = submissionRepository.findOne(testSub.getId());
         assertThat(stored, is(notNullValue()));
         assertThat("Submission stored", stored.getTeam().getName(), equalTo(TEST_TEAM_NAME));
     }

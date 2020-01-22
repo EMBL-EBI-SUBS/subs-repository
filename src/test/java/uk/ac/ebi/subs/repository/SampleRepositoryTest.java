@@ -60,7 +60,7 @@ public class SampleRepositoryTest {
 
     List<Sample> samples;
 
-    PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("id"));
+    PageRequest pageRequest = new PageRequest(0, 10);
 
     private ValidationResult validationResult1;
     private ValidationResult validationResult2;
@@ -167,7 +167,7 @@ public class SampleRepositoryTest {
         //should be most recent version
         assertThat(currentVersion.getCreatedDate(), is(equalTo(samples.get(1).getCreatedDate())));
 
-        PageRequest sortedPageRequest = PageRequest.of(0, 10, Sort.Direction.DESC,"alias");
+        PageRequest sortedPageRequest = new PageRequest(0, 10, Sort.Direction.DESC,"alias");
 
         Page<Sample> aliaseSortedSamplesInTeam = sampleRepository.submittablesInTeam(
                 testSub.getTeam().getName(),sortedPageRequest

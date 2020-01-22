@@ -60,7 +60,7 @@ public class ArchivedChecklistRepositoryTest {
         assertThat(original.getCreatedDate(), is(notNullValue()));
         assertThat(original.getLastModifiedDate(), is(notNullValue()));
 
-        Checklist updated = checklistRepository.findById(original.getId()).orElse(null);
+        Checklist updated = checklistRepository.findOne(original.getId());
         updated.setVersion(original.getVersion() + 1);
 
         checklistRepository.save(updated);
@@ -73,7 +73,7 @@ public class ArchivedChecklistRepositoryTest {
 
         archivedChecklistRepository.save(archivedChecklist);
 
-        archivedChecklist = archivedChecklistRepository.findById(archivedChecklist.getId()).orElse(null);
+        archivedChecklist = archivedChecklistRepository.findOne(archivedChecklist.getId());
 
         assertThat(archivedChecklist, is(notNullValue()));
         assertThat(archivedChecklist.getCreatedDate(), is(notNullValue()));

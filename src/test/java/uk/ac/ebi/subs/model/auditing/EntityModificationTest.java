@@ -4,10 +4,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.util.Pair;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.client.RestTemplate;
 import uk.ac.ebi.subs.data.component.Submitter;
+import uk.ac.ebi.subs.repository.config.Config;
 import uk.ac.ebi.subs.repository.model.*;
 import uk.ac.ebi.subs.repository.repos.SubmissionRepository;
 import uk.ac.ebi.subs.repository.repos.submittables.*;
@@ -43,13 +46,13 @@ public class EntityModificationTest {
 
         submissionRepository.save(submission);
 
-        submission = submissionRepository.findById(submission.getId()).get();
+        submission = submissionRepository.findOne(submission.getId());
         Date beforeModification = submission.getLastModifiedDate();
 
         // change object.
         submission.setName("submission-2");
         submissionRepository.save(submission);
-        submission = submissionRepository.findById(submission.getId()).get();
+        submission = submissionRepository.findOne(submission.getId());
         Date afterModification = submission.getLastModifiedDate();
 
         assertNotEquals(beforeModification, afterModification);
@@ -59,7 +62,7 @@ public class EntityModificationTest {
         // change nested object.
         submission.getSubmitter().setName("submitter-2");
         submissionRepository.save(submission);
-        submission = submissionRepository.findById(submission.getId()).get();
+        submission = submissionRepository.findOne(submission.getId());
         afterModification = submission.getLastModifiedDate();
 
         assertTrue(afterModification.after(beforeModification));
@@ -96,7 +99,7 @@ public class EntityModificationTest {
 
             submittableRepository.save(ss);
 
-            ss = (StoredSubmittable) submittableRepository.findById(ss.getId()).get();
+            ss = (StoredSubmittable) submittableRepository.findOne(ss.getId());
 
             Date afterModification = ss.getLastModifiedDate();
 

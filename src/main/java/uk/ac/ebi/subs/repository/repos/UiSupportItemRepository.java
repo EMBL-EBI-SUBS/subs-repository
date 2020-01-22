@@ -22,7 +22,7 @@ public interface UiSupportItemRepository extends MongoRepository<UiSupportItem, 
     // exported as GET /uiSupportItems/:id
     @Override
     @RestResource(exported = true)
-    Optional<UiSupportItem> findById(String id);
+    UiSupportItem findOne(String id);
 
     // exported as GET /uiSupportItems
     @Override

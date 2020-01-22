@@ -24,7 +24,7 @@ public interface ProcessingStatusRepository extends MongoRepository<ProcessingSt
     @Override
     @RestResource(exported = true)
     @PostAuthorizeProcessingStatusTeamName
-    public Optional<ProcessingStatus> findById(String id);
+    public ProcessingStatus findOne(String id);
 
     // exported as GET /things
     @Override

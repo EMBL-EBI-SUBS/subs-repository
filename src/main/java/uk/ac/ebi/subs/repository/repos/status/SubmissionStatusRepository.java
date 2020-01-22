@@ -19,7 +19,7 @@ public interface SubmissionStatusRepository extends MongoRepository<SubmissionSt
     @Override
     @RestResource(exported = true)
     @PostAuthorizeSubmissionStatusTeamName
-    public Optional<SubmissionStatus> findById(String id);
+    public SubmissionStatus findOne(String id);
 
     // exported as GET /things
     @Override

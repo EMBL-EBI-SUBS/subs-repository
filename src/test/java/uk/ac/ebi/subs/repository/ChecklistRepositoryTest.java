@@ -55,7 +55,7 @@ public class ChecklistRepositoryTest {
     @Test
     public void fetchAll() {
 
-        Page<Checklist> checklists = checklistRepository.findAll(PageRequest.of(0, 10));
+        Page<Checklist> checklists = checklistRepository.findAll(new PageRequest(0, 10));
 
         assertThat(checklists, is(notNullValue()));
         assertThat(checklists.getTotalElements(), is(equalTo(1L)));

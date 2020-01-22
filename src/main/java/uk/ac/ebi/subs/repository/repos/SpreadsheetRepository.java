@@ -26,7 +26,7 @@ public interface SpreadsheetRepository extends MongoRepository<Spreadsheet,Strin
     @Override
     @RestResource(exported = true)
     @PostAuthorizeReturnObjectHasTeamName
-    public Optional<Spreadsheet> findById(String id);
+    public Spreadsheet findOne(String id);
 
     // exported as GET /things
     @Override

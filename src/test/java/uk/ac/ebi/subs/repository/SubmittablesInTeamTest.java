@@ -49,10 +49,10 @@ public class SubmittablesInTeamTest {
 
     @Test
     public void testAggregationWithNoData() {
-        Page<Sample> samples = sampleRepository.submittablesInTeam(teamName, PageRequest.of(0,100, Sort.by("id")));
+        Page<Sample> samples = sampleRepository.submittablesInTeam(teamName, new PageRequest(0,100));
         assertThat(samples, notNullValue());
         assertThat(samples, emptyIterable());
-        assertThat(samples.getTotalElements(), is(equalTo(-1L)));
+        assertThat(samples.getTotalElements(), is(equalTo(0L)));
     }
 
     @Test
@@ -65,17 +65,17 @@ public class SubmittablesInTeamTest {
         sampleRepository.save(sample("alice", "1st"));
         sampleRepository.save(sample("charlotte", "1st"));
 
-        Page<Sample> samples = sampleRepository.submittablesInTeam(teamName,  PageRequest.of(0, 2, Sort.by("id")));
+        Page<Sample> samples = sampleRepository.submittablesInTeam(teamName,  new PageRequest(0, 2));
 
         assertThat(samples, notNullValue());
-        assertThat(samples.getTotalElements(), is(equalTo(2L)));
+        assertThat(samples.getTotalElements(), is(equalTo(3L)));
         assertThat(samples.getContent().get(0).getAlias(), equalTo("alice"));// alphabetical ordering works
         assertThat(samples.getContent().get(0).getTitle(), equalTo("1st"));// alphabetical ordering works
         assertThat(samples.getContent().get(1).getAlias(), equalTo("bob"));//got bob
         assertThat(samples.getContent().get(1).getTitle(), equalTo("3rd"));//got most recent version of bob
-        assertThat(samples.getTotalPages(), is(equalTo(1)));
+        assertThat(samples.getTotalPages(), is(equalTo(2)));
 
-        samples = sampleRepository.submittablesInTeam(teamName,  PageRequest.of(1, 2, Sort.by("id")));
+        samples = sampleRepository.submittablesInTeam(teamName,  new PageRequest(1, 2));
         assertThat(samples, notNullValue());
         assertThat(samples.getTotalElements(), is(equalTo(3L)));
         assertThat(samples.getContent().get(0).getAlias(), equalTo("charlotte"));

@@ -24,7 +24,7 @@ public interface SubmissionRepository extends MongoRepository<Submission, String
     @Override
     @RestResource(exported = true)
     @PostAuthorizeReturnObjectHasTeamName
-    public Optional<Submission> findById(String id);
+    public Submission findOne(String id);
 
     // exported as GET /things
     @Override

@@ -10,6 +10,8 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'com.sourcemuse.mongo' version '1.0.0'
+    id 'org.springframework.boot' version '1.5.21.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 }
 
 repositories {
@@ -18,7 +20,7 @@ repositories {
 }
 
 group 'uk.ac.ebi.subs'
-version '2.32.0-SNAPSHOT'
+version '2.33.0-SNAPSHOT'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -26,21 +28,24 @@ java {
 }
 
 dependencies {
-    compile("uk.ac.ebi.subs:validator-common:3.11.4-SNAPSHOT")
+    compile("uk.ac.ebi.subs:validator-common:3.14.0-SNAPSHOT")
 
     compile ('org.atteo:evo-inflector:1.2.1') // better pluralisation
     compile("org.json:json:20190722")
-    compile("org.springframework.boot:spring-boot-configuration-processor:2.2.1.RELEASE")
+    compile("org.springframework.boot:spring-boot-configuration-processor")
 
     compileOnly("org.projectlombok:lombok:1.18.10")
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
 
-    compile("org.springframework.boot:spring-boot-starter-data-mongodb:2.2.1.RELEASE")
-    compile("org.springframework.boot:spring-boot-starter-data-rest:2.2.1.RELEASE")
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+    compile("org.springframework.boot:spring-boot-starter-data-rest")
 
-    testCompile("org.springframework.boot:spring-boot-starter-test:2.2.1.RELEASE")
+    compile 'org.springframework.security:spring-security-core'
 
-    compile 'org.springframework.security:spring-security-core:5.2.1.RELEASE'
+    implementation 'joda-time:joda-time'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-joda'
+
+    testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
 task jarWithAddedManifest(type: Jar) {
