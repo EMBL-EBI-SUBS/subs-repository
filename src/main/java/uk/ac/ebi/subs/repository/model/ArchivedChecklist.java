@@ -1,14 +1,11 @@
 package uk.ac.ebi.subs.repository.model;
 
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.domain.Auditable;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
-import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalField;
 import java.util.Date;
 import java.util.Optional;
 
@@ -23,7 +20,6 @@ public class ArchivedChecklist<U> implements Identifiable<String>, Persistable<S
 
     private Checklist checklist;
 
-    @CreatedDate
     private Date createdDate;
 
     @Override
