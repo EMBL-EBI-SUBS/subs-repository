@@ -1,7 +1,9 @@
 package uk.ac.ebi.subs.repository.model.templates;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -16,6 +18,8 @@ import java.util.ListIterator;
  */
 @Data
 @Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class AttributeCapture implements Capture {
 
     private static final String ATTRIBUTES_FIELD_NAME = "attributes";

@@ -60,7 +60,7 @@ public class SampleRepositoryTest {
 
     List<Sample> samples;
 
-    PageRequest pageRequest = PageRequest.of(0, 10);
+    PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("id"));
 
     private ValidationResult validationResult1;
     private ValidationResult validationResult2;

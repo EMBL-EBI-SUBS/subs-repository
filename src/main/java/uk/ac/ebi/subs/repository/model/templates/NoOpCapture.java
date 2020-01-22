@@ -1,7 +1,9 @@
 package uk.ac.ebi.subs.repository.model.templates;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.List;
  */
 @Data
 @Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class NoOpCapture implements Capture {
 
     private String displayName;

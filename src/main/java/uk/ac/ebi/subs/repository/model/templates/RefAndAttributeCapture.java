@@ -1,7 +1,9 @@
 package uk.ac.ebi.subs.repository.model.templates;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Singular;
 import org.json.JSONArray;
@@ -26,6 +28,8 @@ import java.util.Map;
  */
 @Data
 @Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class RefAndAttributeCapture implements Capture {
 
     @NonNull

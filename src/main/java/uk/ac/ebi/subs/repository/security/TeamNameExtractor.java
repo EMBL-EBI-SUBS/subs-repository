@@ -34,7 +34,7 @@ public class TeamNameExtractor {
     public String processingStatusTeam(ProcessingStatus processingStatus) {
         Optional<Team> optionalTeam = submissionContentsRepositories //TODO can we be more targetted here?
                 .stream()
-                .map(repo -> (StoredSubmittable) repo.findById(processingStatus.getSubmittableId()).get())
+                .map(repo -> (StoredSubmittable) repo.findById(processingStatus.getSubmittableId()).orElse(null))
                 .filter(Objects::nonNull)
                 .map(storedSubmittable -> storedSubmittable.getTeam())
                 .filter(Objects::nonNull)

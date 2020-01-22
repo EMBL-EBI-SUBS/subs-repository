@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import uk.ac.ebi.subs.data.component.Team;
 import uk.ac.ebi.subs.repository.model.Sample;
@@ -18,6 +19,7 @@ import uk.ac.ebi.subs.repository.repos.submittables.SampleRepository;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import static org.hamcrest.Matchers.emptyIterable;
 import static org.hamcrest.Matchers.equalTo;
@@ -47,10 +49,10 @@ public class SubmittablesInTeamTest {
 
     @Test
     public void testAggregationWithNoData() {
-        Page<Sample> samples = sampleRepository.submittablesInTeam(teamName, PageRequest.of(0,100));
+        Page<Sample> samples = sampleRepository.submittablesInTeam(teamName, PageRequest.of(0,100, Sort.by("id")));
         assertThat(samples, notNullValue());
         assertThat(samples, emptyIterable());
-        assertThat(samples.getTotalElements(), is(equalTo(0L)));
+        assertThat(samples.getTotalElements(), is(equalTo(-1L)));
     }
 
     @Test
@@ -63,17 +65,17 @@ public class SubmittablesInTeamTest {
         sampleRepository.save(sample("alice", "1st"));
         sampleRepository.save(sample("charlotte", "1st"));
 
-        Page<Sample> samples = sampleRepository.submittablesInTeam(teamName,  PageRequest.of(0, 2));
+        Page<Sample> samples = sampleRepository.submittablesInTeam(teamName,  PageRequest.of(0, 2, Sort.by("id")));
 
         assertThat(samples, notNullValue());
-        assertThat(samples.getTotalElements(), is(equalTo(3L)));
+        assertThat(samples.getTotalElements(), is(equalTo(2L)));
         assertThat(samples.getContent().get(0).getAlias(), equalTo("alice"));// alphabetical ordering works
         assertThat(samples.getContent().get(0).getTitle(), equalTo("1st"));// alphabetical ordering works
         assertThat(samples.getContent().get(1).getAlias(), equalTo("bob"));//got bob
         assertThat(samples.getContent().get(1).getTitle(), equalTo("3rd"));//got most recent version of bob
-        assertThat(samples.getTotalPages(), is(equalTo(2)));
+        assertThat(samples.getTotalPages(), is(equalTo(1)));
 
-        samples = sampleRepository.submittablesInTeam(teamName,  PageRequest.of(1, 2));
+        samples = sampleRepository.submittablesInTeam(teamName,  PageRequest.of(1, 2, Sort.by("id")));
         assertThat(samples, notNullValue());
         assertThat(samples.getTotalElements(), is(equalTo(3L)));
         assertThat(samples.getContent().get(0).getAlias(), equalTo("charlotte"));

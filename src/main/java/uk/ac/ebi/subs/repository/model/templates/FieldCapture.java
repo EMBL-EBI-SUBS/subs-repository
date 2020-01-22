@@ -1,7 +1,10 @@
 package uk.ac.ebi.subs.repository.model.templates;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.json.JSONObject;
 
@@ -11,6 +14,8 @@ import java.util.List;
  * Map a cell value to a single top level field in a JSON document
  */
 @Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class FieldCapture implements Capture {
 

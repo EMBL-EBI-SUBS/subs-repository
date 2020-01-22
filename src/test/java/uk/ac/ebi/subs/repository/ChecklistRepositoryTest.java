@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 import uk.ac.ebi.subs.repository.model.Checklist;
@@ -23,6 +24,7 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
+@EnableMongoAuditing
 public class ChecklistRepositoryTest {
 
     @Autowired
@@ -55,9 +57,9 @@ public class ChecklistRepositoryTest {
 
         Page<Checklist> checklists = checklistRepository.findAll(PageRequest.of(0, 10));
 
-        Assert.notNull(checklists, "[Assertion failed] - sheets argument required; it must not be null");
-        Assert.isTrue(checklists.getTotalElements() == 1L, "[Assertion failed] - there should be only 1 spreadsheet");
-        System.out.println(checklists.getContent());
+        assertThat(checklists, is(notNullValue()));
+        assertThat(checklists.getTotalElements(), is(equalTo(1L)));
+        assertThat(checklists.getContent().get(0).getCreatedDate(), is(notNullValue()));
     }
 
     @Test

@@ -1,7 +1,9 @@
 package uk.ac.ebi.subs.repository.model.templates;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.json.JSONObject;
 
@@ -14,6 +16,8 @@ import java.util.List;
 
 @Builder(toBuilder = true)
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class DateFieldCapture implements Capture {
 
     @NonNull
