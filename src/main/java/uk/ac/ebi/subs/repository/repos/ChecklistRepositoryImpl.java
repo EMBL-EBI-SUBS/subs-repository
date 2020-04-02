@@ -1,5 +1,6 @@
 package uk.ac.ebi.subs.repository.repos;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -29,6 +30,7 @@ public class ChecklistRepositoryImpl implements ChecklistRepositoryCustom {
                 .include("description")
                 .include("lastModifiedDate")
                 .include("validationSchema");
+        query.with(new Sort(Sort.Direction.ASC, "_id"));
 
         return mongoTemplate.find(query, ValidationSchema.class, "checklist");
     }
