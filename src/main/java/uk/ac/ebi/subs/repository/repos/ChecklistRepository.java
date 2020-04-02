@@ -10,9 +10,9 @@ import uk.ac.ebi.subs.repository.model.Checklist;
 import java.util.List;
 
 @RepositoryRestResource
-public interface ChecklistRepository extends MongoRepository<Checklist, String> {
+public interface ChecklistRepository extends MongoRepository<Checklist, String>, ChecklistRepositoryCustom {
 
-    @RestResource(exported = true, path = "by-data-type-id", rel = "by-data-type-id")
+    @RestResource(path = "by-data-type-id", rel = "by-data-type-id")
     List<Checklist> findByDataTypeId(@P("dataTypeId") @Param("dataTypeId") String dataTypeId);
 
     @Override
