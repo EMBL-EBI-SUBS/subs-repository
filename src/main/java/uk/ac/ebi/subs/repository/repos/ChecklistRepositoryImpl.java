@@ -41,7 +41,9 @@ public class ChecklistRepositoryImpl implements ChecklistRepositoryCustom {
         query.addCriteria(Criteria.where("validationSchema").exists(true))
                 .addCriteria(Criteria.where("_id").is(schemaId));
 
-        return mongoTemplate.findOne(query, Checklist.class).getValidationSchema();
+        final Checklist checklist = mongoTemplate.findOne(query, Checklist.class);
+
+        return checklist != null ? checklist.getValidationSchema() : null;
     }
 
 }

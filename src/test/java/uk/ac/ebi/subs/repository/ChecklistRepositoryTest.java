@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -105,13 +106,21 @@ public class ChecklistRepositoryTest {
     }
 
     @Test
-    public void getSpecificValidationSchema() throws IOException {
+    public void getSpecificValidationSchema_whenExists() throws IOException {
         final String expectedSchemaId = SCHEMA_IDS.get(DATA_TYPE_IDS.get(0));
         ObjectMapper mapper = new ObjectMapper();
         JsonNode validationSchema = mapper.readTree(checklistRepository.findValidationSchemaById(expectedSchemaId));
 
         assertThat(validationSchema, is(notNullValue()));
         assertThat(validationSchema.get("id").asText(), is(equalTo(expectedSchemaId)));
+    }
+
+    @Test
+    public void getSpecificValidationSchema_whenDoesNotExist() throws IOException {
+        final String nonExistingSchemaId = "notExists";
+        String validationSchemaStr = checklistRepository.findValidationSchemaById(nonExistingSchemaId);
+
+        assertThat(validationSchemaStr, is(nullValue()));
     }
 
     private void generateMockChecklists() {
