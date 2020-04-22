@@ -20,7 +20,7 @@ repositories {
 }
 
 group 'uk.ac.ebi.subs'
-version '2.34.2-SNAPSHOT'
+version '2.35.0-SNAPSHOT'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
