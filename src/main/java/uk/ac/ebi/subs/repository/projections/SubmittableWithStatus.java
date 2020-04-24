@@ -30,5 +30,5 @@ public interface SubmittableWithStatus {
     Team getTeam();
     String getAlias();
     String getTitle();
-
+    String getDescription();
 }
