@@ -4,7 +4,6 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.Identifiable;
-import uk.ac.ebi.subs.repository.config.Environment;
 
 import java.util.List;
 
@@ -21,5 +20,5 @@ public class SubmissionPlan implements Identifiable<String> {
 
     private List<String> dataTypeIds;
 
-    private List<Environment> enabledIn;
+    private boolean enabled;
 }
