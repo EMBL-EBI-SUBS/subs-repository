@@ -20,4 +20,5 @@ public class SubmissionPlan implements Identifiable<String> {
 
     private List<String> dataTypeIds;
 
+    private boolean enabled;
 }
