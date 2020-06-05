@@ -17,10 +17,11 @@ plugins {
 repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     mavenCentral()
+    mavenLocal()
 }
 
 group 'uk.ac.ebi.subs'
-version '2.36.0-SNAPSHOT'
+version '2.37.0-SNAPSHOT'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -30,7 +31,7 @@ java {
 bootRepackage.enabled = false
 
 dependencies {
-    compile("uk.ac.ebi.subs:validator-common:3.14.0-SNAPSHOT")
+    compile("uk.ac.ebi.subs:validator-common:3.15.0-SNAPSHOT")
 
     compile ('org.atteo:evo-inflector:1.2.1') // better pluralisation
     compile("org.json:json:20190722")
