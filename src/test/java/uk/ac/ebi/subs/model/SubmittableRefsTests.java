@@ -85,7 +85,7 @@ public class SubmittableRefsTests {
     @Test
     public void sample_group_null_refs(){
         SampleGroup sg = new SampleGroup();
-        sg.setSampleRefs(null);
+        sg.setSampleRelationships(null);
 
         List<AbstractSubsRef> refs = sg.refs().collect(Collectors.toList());
         Assert.assertTrue(refs.isEmpty());
